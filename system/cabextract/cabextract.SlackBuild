@@ -89,10 +89,8 @@ cp -a \
     $PKG/usr/doc/$PRGNAM-$VERSION
 chmod 0644 $PKG/usr/doc/$PRGNAM-$VERSION/*
 
-( cd $PKG/usr/man
-  find . -type f -exec gzip -9 {} \;
-  for i in $(find . -type l) ; do ln -s $(readlink $i).gz $i.gz ; rm $i ; done
-)
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
