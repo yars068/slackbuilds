@@ -1,0 +1,5 @@
+glib2 (library of C routines)
+
+GLib is a library which includes support routines for C such as lists, trees, hashes, memory allocation, and many other things.
+
+this is an upgrade over the standard -current package.

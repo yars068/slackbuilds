@@ -1,0 +1,5 @@
+lxnm (network manager for LXDE)
+
+LXNetdaemon is a fast, lightweight, stand-alone network manager.
+
+It requires lxpanel, available at slackbuilds.org.
