@@ -1,0 +1,5 @@
+freenx (Free implementation of the NX Server)
+
+Freenx is an application/thin-client server based on nx technology.
+NoMachine nx is the next-generation X compression and roundtrip suppression scheme. It can operate remote X11 sessions over 56k modem dialup links or anything better.
+This package contains a free (GPL) implementation of the nxserver component.

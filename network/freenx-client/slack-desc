@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+freenx-client: freenx-client (client for the FreeNX server)
+freenx-client:
+freenx-client: NX is an exciting new technology for remote display.
+freenx-client: It provides near local speed application responsiveness over high
+freenx-client: latency, low bandwidth links.
+freenx-client: FreeNX-client contains client libraries and executables for
+freenx-client: connecting to an NX server.
+freenx-client:
+freenx-client:
+freenx-client: freenx-client home: http://freenx.berlios.de/
+freenx-client:

@@ -3,12 +3,22 @@
 # Slackware build script for cherokee
 
 # Written by Pablo Hernan Saro (pablosaro@gmail.com)
+# modified to use user apache by default by ponce (matteo.bernardini@sns.it)
 
 PRGNAM=cherokee
-VERSION=${VERSION:-0.99.24}
-ARCH=${ARCH:-i686}
+VERSION=${VERSION:-1.0.8}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
@@ -24,10 +34,19 @@ elif [ "$ARCH" = "i686" ]; then
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"
   LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
 fi
 
 # Set the WWW root directory
 WWWROOT=${WWWROOT:-/var/www}
+
+# Set the WWW user - use apache by default
+WWWUSER=${WWWUSER:-apache}
+
+# Set the WWW group - use apache by default
+WWWGROUP=${WWWGROUP:-apache}
 
 # Enable/Disable IPv6 support
 IPV6=${IPV6:-no}
@@ -67,9 +86,12 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --build=$ARCH-slackware-linux \
   --with-wwwroot=$WWWROOT \
+  --with-wwwuser=$WWWUSER \
+  --with-wwwgroup=$WWWGROUP \
   --with-mysql=$MYSQL \
   --enable-ipv6=$IPV6 \
   --enable-admin=$ADMIN \
+  --disable-pam \
   --enable-trace=$TRACE
 
 make
@@ -78,10 +100,8 @@ make install DESTDIR=$PKG
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-( cd $PKG/usr/man
-  find . -type f -exec gzip -9 {} \;
-  for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-)
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
@@ -98,5 +118,4 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
-
 
