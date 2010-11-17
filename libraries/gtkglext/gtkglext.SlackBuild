@@ -72,6 +72,14 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# small rename in */Makefile.* for the new gdk/gtk in -current
+sed -i 's:-D\(G.*DISABLE_DEPRECATED\):-D__\1__:g' \
+	examples/Makefile.am examples/Makefile.in \
+	gdk/Makefile.am gdk/Makefile.in \
+	gdk/win32/Makefile.am gdk/win32/Makefile.in \
+	gdk/x11/Makefile.am gdk/x11/Makefile.in \
+	gtk/Makefile.am gtk/Makefile.in
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \

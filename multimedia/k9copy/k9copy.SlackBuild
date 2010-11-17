@@ -74,6 +74,10 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# http://bugs.gentoo.org/show_bug.cgi?id=304755
+# patch for gcc 4.5 in -current
+zcat $CWD/k9copy-2.3.5-gcc45.gz | patch -p0
+
 mkdir build
 cd build
   cmake \

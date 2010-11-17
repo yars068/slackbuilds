@@ -1,0 +1,186 @@
+#!/bin/sh
+# $Id: freenx.SlackBuild,v 1.10 2009/01/27 20:22:26 root Exp root $
+# Copyright (c) 2008, 2009  Eric Hameleers, Eindhoven, The Netherlands
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+#
+# Slackware SlackBuild script 
+# ===========================
+# By:         Eric Hameleers <alien@slackware.com>
+# For:        freenx
+# Descr:      Free implementation of the NX Server
+# URL:        http://freenx.berlios.de/
+# Needs:      nx
+# Changelog:  
+# 0.4.4-1:   15/Aug/2005 by Eric Hameleers <alien@sox.homeip.net>
+#            * Initial build.
+# 0.4.4-2:   18/Aug/2005 by Eric Hameleers <alien@sox.homeip.net>
+#            * Added patches for authorized_keys.
+# 0.4.4-3:   31/Aug/2005 by Eric Hameleers <alien@slackware.com>
+#            * Add the NoMachine public key to authorized_keys, so that our
+#              FreeNX package works out-of-the-box with NX clients.
+#              This is less secure than using our own key, but that is for the
+#              paranoid among us to consider :-)
+# 0.4.4-4:   03/Sep/2005 by Eric Hameleers <alien@slackware.com>
+#            * Reorganized the patches. Sound for Windows clients will now
+#              work out-of-the-box if enabled in the node.conf.
+# 0.4.4-5:   05/Sep/2005 by Eric Hameleers <alien@slackware.com>
+#            * Added a check for expect and nc as well. Also added the DSA key
+#              that a Nomachine client uses for the initial connection to a
+#              NX server (this is by default an allowed key for this FreeNX
+#              server package). You usually do not need this keyfile, but it is
+#              put in the doc directory for reference.
+# 0.7.3-1:    15/Nov/2008 by Eric Hameleers <alien@slackware.com>
+#             * Upgrade to NX 3.x and FreeNX 0.7.x
+# 0.7.3-2:    30/dec/2008 by Eric Hameleers <alien@slackware.com>
+#             * Patch nxserver bug that prevents NX logins when multimedia
+#               services are enabled on the client.
+# 0.7.3-3:    27/jan/2009 by Eric Hameleers <alien@slackware.com>
+#             * I changed several X paths to Slackware defaults in nxloadconfig
+#               and node.conf.sample (default X session and KDE start command).
+# 0.7.3-4:    24/sep/2010 by ponce <matteo.bernardini@sns.it>
+#             * ported to SBo.
+# 
+# Run 'sh freenx.SlackBuild --cleanup' to build a Slackware package.
+# The package (.tgz) is created in /tmp .
+# Install using 'installpkg'. 
+#
+# -----------------------------------------------------------------------------
+
+PRGNAM=freenx
+VERSION=${VERSION:-0.7.3}
+BUILD=${BUILD:-4}
+TAG=${TAG:-_SBo}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+CWD=$(pwd)
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+DOCS="AUTHORS COPYING ChangeLog CONTRIB nxcheckload.sample nxacl.sample \
+  $CWD/nomachine.id_dsa.key"
+
+if ! grep ^nx: /etc/passwd 2>&1 > /dev/null; then
+  printf "\n
+     no nx user: you must run preinstall.sh before running this script.\n
+     sh preinstall.sh\n
+     you can can change the default uid/gid for nx (240) in there, if needed.\n"
+  exit 1
+fi
+
+set -e
+
+mkdir -p $OUTPUT
+mkdir -p $TMP/tmp-$PRGNAM
+mkdir -p $PKG
+rm -rf $PKG/*
+rm -rf $TMP/tmp-$PRGNAM/*
+
+cd $TMP/tmp-$PRGNAM
+tar -xvf $CWD/${PRGNAM}-server-${VERSION}.tar.gz
+cd ${PRGNAM}-server-${VERSION}
+cat $CWD/patches/authkeys.patch | patch -p1 --verbose || exit 1
+cat $CWD/patches/netcat.patch | patch -p1 --verbose || exit 1
+cat $CWD/patches/nxserver_multimedia.diff | patch -p1 --verbose || exit 1
+cat $CWD/patches/nxpaths.diff | patch -p1 --verbose || exit 1
+sed -i -e "s#/usr/lib\$#/usr/lib${LIBDIRSUFFIX}#" \
+  -e "s#/usr/lib/#/usr/lib${LIBDIRSUFFIX}/#g" \
+   $(grep -lr '/usr/lib' *)
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+echo Building ...
+mkdir -p ${PKG}/usr/bin
+mkdir -p ${PKG}/usr/lib${LIBDIRSUFFIX}/cups/backend
+mkdir -p ${PKG}/etc/{nxserver,rc.d}
+mkdir -p ${PKG}/var/lib/nxserver/db/{closed,running,failed}
+
+cd nxserver-helper
+make
+cd ..
+
+cd nxviewer-passwd
+xmkmf
+make World
+cd ..
+
+cd nxredir
+make
+make install DESTDIR=$PKG
+cd ..
+
+chmod 755 ${PKG}/var/lib/nxserver
+chmod 700 ${PKG}/var/lib/nxserver/*
+chmod 700 ${PKG}/var/lib/nxserver/db/*
+
+install -m 755 nxserver-helper/nxserver-helper $PKG/usr/bin
+install -m 755 nxviewer-passwd/nxpasswd/nxpasswd $PKG/usr/bin
+
+install -m 755 nxcups-gethost nxdesktop_helper nxdialog nxkeygen nxloadconfig \
+  nxnode nxnode-login nxprint nxserver nxsetup nxviewer_helper \
+  $PKG/usr/bin
+
+install -m 755 node.conf.sample $PKG/etc/nxserver
+cp -a $PKG/etc/nxserver/node.conf.{sample,new}
+install -m 755 init.d/freenx-server $PKG/etc/rc.d/rc.freenx.new
+
+# Add a logrotate script:
+mkdir -p $PKG/etc/logrotate.d
+install -m 644 $CWD/freenx.logrotate $PKG/etc/logrotate.d/freenx-server.new
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION || true
+cat $CWD/$(basename $0) | sed \
+  -e "/^VERSION=/s/:-.*}/:-$VERSION}/" \
+  -e "/^ARCH=/s/:-.*}/:-$ARCH}/" \
+  -e "/^BUILD=/s/:-.*}/:-$BUILD}/" \
+  > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
+find $PKG/usr/doc -type f -exec chmod 644 {} \;
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+cd $PKG
+makepkg --linkadd y --chown n $OUTPUT/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.${PKGTYPE:-txz}

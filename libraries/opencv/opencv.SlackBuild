@@ -1,13 +1,13 @@
 #!/bin/sh
 
-# Slackware build script for cwp (customizable weather plasmoid)
+# Slackware build script for opencv (Open Source Computer Vision)
 
 # Written by M.Dinslage  contact: daedra1980@gmail.com
 # Big thanks to ponce for the patches.
 
 PRGNAM=opencv
 SRCNAM=OpenCV
-VERSION=${VERSION:-2.1.0}
+VERSION=${VERSION:-r3818}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -59,12 +59,9 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# patch for libpng-1.4
-patch -p1 < $CWD/libpng-1.4.patch
-
 # Honor LIB_SUFFIX http://sourceforge.net/tracker/index.php?func=detail&aid=2876292&group_id=22870&atid=376679
-# rewritten by ponce for 2.1.0
-patch -p1 < $CWD/libopencv-2.1.0-libdir.patch
+# rewritten by ponce for r3818
+patch -p1 < $CWD/libopencv-r3818-libdir.patch
 
 mkdir -p build
 cd build
@@ -78,6 +75,8 @@ cd build
     -DBUILD_SHARED_LIBS=ON \
     -DLIB_SUFFIX=$LIBDIRSUFFIX \
     -DLIB_INSTALL_DIR=/usr/lib$LIBDIRSUFFIX \
+    -DWITH_UNICAP=ON \
+    -DWITH_XINE=ON \
     ..
   make VERBOSE=1
   make install DESTDIR=$PKG

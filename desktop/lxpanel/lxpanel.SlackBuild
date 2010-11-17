@@ -24,7 +24,7 @@
 # modified by ponce <matteo.bernardini@sns.it>
 
 PRGNAM=lxpanel
-VERSION=0.5.6
+VERSION=20101104_412350e
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -74,8 +74,7 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# fix a battery applet issue:
-patch -p1 < $CWD/battery-applet.patch
+sh autogen.sh --sysconfdir=/etc --prefix=/usr
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \

@@ -26,7 +26,7 @@ fi
 
 # Start the window manager:
 if [ -z $XDG_SESSION_COOKIE ]; then
-    ck-launch-session startlxde
+    dbus-launch --exit-with-session ck-launch-session startlxde
 else
     startlxde
 fi

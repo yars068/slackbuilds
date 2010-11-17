@@ -1,0 +1,10 @@
+--- configure.orig	2010-10-12 13:56:36.000000000 -0700
++++ configure	2010-10-12 14:22:05.442177589 -0700
+@@ -2329,6 +2329,6 @@
+ fi
+ 
+ echo '%.opic : %.c' >> config.mak
+-echo '$(CC) $(CFLAGS) $(PIC_CFLAGS) -c $< -o $@' >> config.mak
++echo '	$(CC) $(CFLAGS) $(PIC_CFLAGS) -c $< -o $@' >> config.mak
+ 
+ echo "Done - type 'make help' for make info, 'make' to build"

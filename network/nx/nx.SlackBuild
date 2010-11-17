@@ -1,0 +1,276 @@
+#!/bin/sh
+# $Id: nx.SlackBuild,v 1.8 2009/01/27 20:22:47 root Exp root $
+# Copyright (c) 2008, 2009  Eric Hameleers, Eindhoven, The Netherlands
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+#
+# Slackware SlackBuild script 
+# ===========================
+# By:         Eric Hameleers <alien@slackware.com>
+# For:        nx
+# Descr:      a proxy system for X Window
+# URL:        http://www.nomachine.com/
+# Needs:      
+# Changelog:  
+# 1.5.0-1:   14/Aug/2005 by Eric Hameleers <alien@sox.homeip.net>
+#            * Initial build.
+# 1.5.0-2:   18/Aug/2005 by Eric Hameleers <alien@sox.homeip.net>
+#            * Updated to first maintenance release; added patched version of
+#              esd to get sound in the Windows/Mac client
+#              (the default esd is broken).
+#              If you want sound in KDE, use "UNIX/Custom" in nxclient and the
+#              command line is "nxesddsp startkde". Then, configure KDE to use
+#              the ESD and enable networked sound.
+# 1.5.0-3:   01/Sep/2005 by Eric Hameleers <alien@slackware.com>
+#            * Updated nxdesktop. Also, freenx is patched so that it runs
+#              "nxesddsp" automatically for KDE sessions, so sound should work
+#              with the default client configuration for KDE.
+# 1.5.0-4:   03/Sep/2005 by Eric Hameleers <alien@slackware.com>
+#              This time, nxesddsp should really work :-/ Forgot to use the
+#              patches, *and* forgot to copy the patched libs.
+# 3.2.0-1:    16/Nov/2008 by Eric Hameleers <alien@slackware.com>
+#             * Update to 3.2.0.
+# 3.3.0-1:    30/dec/2008 by Eric Hameleers <alien@slackware.com>
+#             * Update to 3.3.0.
+# 3.3.0-2:    27/jan/2009 by Eric Hameleers <alien@slackware.com>
+#             * 3.3.0 service release by NoMachine updates several components
+#               (nxcompext, nx-X11, nxagent, nxcompshad).
+# 3.4.0-1:    23/sep/2010 by ponce <matteo.bernardini@sns.it>
+#             * 3.4.0 updates and adaptations for slackbuilds.org
+# 
+# Run 'sh nx.SlackBuild' to build a Slackware package.
+# The package is created in /tmp .
+# Install using 'installpkg'. 
+#
+# -----------------------------------------------------------------------------
+
+PRGNAM=nx
+VERSION=${VERSION:-3.4.0}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_SBo}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+SOURCE[0]="$CWD/nxproxy-${VERSION}-2.tar.gz"
+SOURCE[1]="$CWD/nxcomp-${VERSION}-7.tar.gz"
+SOURCE[2]="$CWD/nxcompext-${VERSION}-1.tar.gz"
+SOURCE[3]="$CWD/nxssh-${VERSION}-2.tar.gz"
+SOURCE[4]="$CWD/nx-X11-${VERSION}-4.tar.gz"
+SOURCE[5]="$CWD/nxwin-${VERSION}-5.tar.gz"
+SOURCE[6]="$CWD/nxauth-${VERSION}-3.tar.gz"
+SOURCE[7]="$CWD/nxagent-${VERSION}-11.tar.gz"
+SOURCE[8]="$CWD/nxesd-${VERSION}-2.tar.gz"
+SOURCE[9]="$CWD/nxcompshad-${VERSION}-3.tar.gz"
+SOURCE[10]="$CWD/nxscripts-${VERSION}-1.tar.gz"
+
+set -e
+
+case "$ARCH" in
+  i486)      SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  s390)      SLKCFLAGS="-O2"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  powerpc)   SLKCFLAGS="-O2"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  x86_64)    SLKCFLAGS="-O2 -fPIC"
+             SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"
+             ;;
+  athlon-xp) SLKCFLAGS="-march=athlon-xp -O3 -pipe -fomit-frame-pointer"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+esac
+
+mkdir -p $OUTPUT
+mkdir -p $TMP/tmp-$PRGNAM
+mkdir -p $PKG
+rm -rf $PKG/*
+rm -rf $TMP/tmp-$PRGNAM/*
+
+cd $TMP/tmp-$PRGNAM
+echo "Extracting the source archive(s) for $PRGNAM..."
+for (( i = 0; i < ${#SOURCE[*]}; i++ )) ; do
+  tar -xvf ${SOURCE[$i]}
+done
+chown -R root:root *
+chmod -R u+w,go+r-w,a-s *
+
+echo Building ...
+export LDFLAGS="$SLKLDFLAGS"
+export CXXFLAGS="$SLKCFLAGS"
+export CFLAGS="$SLKCFLAGS"
+cat >> nx-X11/config/cf/host.def << EOF
+#ifdef  i386Architecture
+#undef  DefaultGcc2i386Opt
+#define DefaultGcc2i386Opt $SLKCFLAGS -fno-strict-aliasing
+#endif
+#ifdef  MipsArchitecture
+#undef  DefaultGcc2MipsOpt
+#define DefaultGcc2MipsOpt $SLKCFLAGS -fno-strict-aliasing
+#endif
+#ifdef s390xArchitecture
+#undef OptimizedCDebugFlags
+#define OptimizedCDebugFlags $SLKCFLAGS -fno-strict-aliasing
+#endif
+#ifdef  AMD64Architecture
+#undef  DefaultGcc2AMD64Opt
+#define DefaultGcc2AMD64Opt $SLKCFLAGS -fno-strict-aliasing
+#endif
+EOF
+
+sed -i -e "s|CXXFLAGS=.-O.*|CXXFLAGS=\"$CXXFLAGS\"|" */configure
+
+# Build Compression Library and Proxy
+for i in nxcomp nxproxy nxcompshad; do
+  cd $i
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --localstatedir=/var \
+    --sysconfdir=/etc
+  make
+  cd -
+done
+# Build X11 Support Libraries and Agents
+cd nx-X11
+make World
+cd -
+# Build Extended Compression Library
+cd nxcompext
+./configure --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --localstatedir=/var \
+  --sysconfdir=/etc
+make
+cd -
+# Build nxssh
+cd nxssh
+./configure --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --localstatedir=/var \
+  --sysconfdir=/etc \
+  --without-zlib-version-check
+make
+cd -
+# Build nxesd
+cd nxesd
+./configure --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --localstatedir=/var \
+  --sysconfdir=/etc
+make
+cd -
+
+# Install all the needed stuff to the package dir
+mkdir -p $PKG/usr/bin
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/NX/lib
+
+cp -a nx-X11/lib/X11/libX11.so.* \
+      nx-X11/lib/Xext/libXext.so.* \
+      nx-X11/lib/Xrender/libXrender.so.* \
+      $PKG/usr/lib${LIBDIRSUFFIX}/NX/lib
+install -m 755 nx-X11/programs/Xserver/nxagent \
+  $PKG/usr/lib${LIBDIRSUFFIX}/NX
+cat <<EOT > $PKG/usr/bin/nxagent
+#!/bin/sh
+
+NXCOMMAND=\$(basename \$0)
+
+export LD_LIBRARY_PATH=/usr/lib${LIBDIRSUFFIX}/NX/lib:\$LD_LIBRARY_PATH
+exec /usr/lib${LIBDIRSUFFIX}/NX/\$NXCOMMAND \${1+"\$@"}
+
+EOT
+chmod 755 $PKG/usr/bin/nxagent
+
+cp -a nxcomp/libXcomp.so.* $PKG/usr/lib${LIBDIRSUFFIX}/NX/lib
+cp -a nxcompext/libXcompext.so.* $PKG/usr/lib${LIBDIRSUFFIX}/NX/lib
+cp -a nxcompshad/libXcompshad.so.* $PKG/usr/lib${LIBDIRSUFFIX}/NX/lib
+install -m 755 nxproxy/nxproxy $PKG/usr/lib${LIBDIRSUFFIX}/NX
+ln -snf nxagent $PKG/usr/bin/nxproxy
+
+cp -a nxssh/nxssh $PKG/usr/lib${LIBDIRSUFFIX}/NX
+ln -snf nxagent $PKG/usr/bin/nxssh
+chmod 755 $PKG/usr/bin/nxssh
+
+cp -a nxesd/nxesd $PKG/usr/lib${LIBDIRSUFFIX}/NX
+ln -snf nxagent $PKG/usr/bin/nxesd
+chmod 755 $PKG/usr/bin/nxesd
+
+# Add documentation:
+mkdir -p \
+  $PKG/usr/doc/$PRGNAM-$VERSION/{nx-X11,nxcomp,nxcompext,nxesd,nxproxy,nxssh}
+cd nx-X11
+cp -a \
+  BUILD CHANGELOG* COPYING ChangeLog.X.org LABEL LICENSE README* RELNOTES \
+  $PKG/usr/doc/$PRGNAM-$VERSION/nx-X11
+cd -
+cd nxcomp
+cp -a \
+  COPYING LICENSE README* VERSION \
+  $PKG/usr/doc/$PRGNAM-$VERSION/nxcomp
+cd -
+cd nxcompext
+cp -a \
+  CHANGELOG COPYING LICENSE README* VERSION \
+  $PKG/usr/doc/$PRGNAM-$VERSION/nxcompext
+cd -
+cd nxesd
+cp -a \
+  AUTHORS CHANGELOG COPYING COPYRIGHT ChangeLog.ESD.original \
+  LICENSE MAINTAINERS NEWS README TIPS TODO \
+  $PKG/usr/doc/$PRGNAM-$VERSION/nxesd
+cd -
+cd nxproxy
+cp -a \
+  CHANGELOG COPYING LICENSE README* VERSION \
+  $PKG/usr/doc/$PRGNAM-$VERSION/nxproxy
+cd -
+cd nxssh
+cp -a \
+  CHANGELOG* CREDITS ChangeLog.SSH.orginal \
+  LICENCE OVERVIEW README* RFC.nroff TODO WARNING.RNG \
+  $PKG/usr/doc/$PRGNAM-$VERSION/nxssh
+cd -
+cp -r nxscripts $PKG/usr/doc/$PRGNAM-$VERSION 
+cp -a $CWD/$(basename $0) $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
+find $PKG/usr/doc -type f -exec chmod 644 {} \;
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+makepkg --linkadd y --chown n $OUTPUT/${PRGNAM}-${VERSION}-${ARCH}-${BUILD}${TAG}.${PKGTYPE:-tgz}
+
