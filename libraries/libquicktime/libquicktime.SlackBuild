@@ -67,6 +67,10 @@ cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# fix for the new gtk in -current
+# http://bugs.gentoo.org/343419
+sed -i -e 's:-DGTK_DISABLE_DEPRECATED::' configure
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -83,10 +87,8 @@ CXXFLAGS="$SLKCFLAGS" \
 make
 make install-strip DESTDIR=$PKG
 
-( cd $PKG/usr/man
-  find . -type f -exec gzip -9 {} \;
-  for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-)
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \

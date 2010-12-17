@@ -27,7 +27,7 @@
 # by Phillip Warner <pc_warner@yahoo.com>
 
 PRGNAM=openbox
-VERSION=${VERSION:-3.4.11}
+VERSION=${VERSION:-3.4.11.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -107,10 +107,8 @@ make install DESTDIR=$PKG
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-( cd $PKG/usr/man
-  find . -type f -exec gzip -9 {} \;
-  for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-)
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 # Add xinitrc.openbox so that openbox will show up as an option in xwmconfig
 install -D -m 0755 $CWD/xinitrc.openbox $PKG/etc/X11/xinit/xinitrc.openbox
