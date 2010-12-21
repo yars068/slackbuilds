@@ -26,6 +26,9 @@ Notes about using this SlackBuild
 
       WWWROOT=/var/www ./cherokee.SlackBuild
 
+   in a similar way you can pass the variables WWWUSER (defining
+   the default user cherokee will run as) and WWWGROUP (the default
+   group): the value of those two variables defaults to "apache".
 2) If you want to enable IPv6 support, pass IPV6=yes to the script.
 3) If you want to disable the Cherokee-admin installation, pass
    ADMIN=no to the script.

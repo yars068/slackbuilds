@@ -48,7 +48,7 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxsession
-VERSION=${VERSION:-0.4.4}
+VERSION=${VERSION:-0.4.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -62,7 +62,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-DOCS="AUTHORS COPYING ChangeLog NEWS README"
+DOCS="AUTHORS COPYING ChangeLog INSTALL README"
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
@@ -97,8 +97,6 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
-
-# sh autogen.sh
 
 CXXFLAGS="$SLKCFLAGS" \
 CFLAGS="$SLKCFLAGS" \

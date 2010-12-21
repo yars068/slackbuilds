@@ -23,12 +23,12 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=fontforge
-VERSION=20100501
+VERSION=20101016
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 ENABLE_BCINT=${ENABLE_BCINT:-no}
-FREETYPE=${FREETYPE:-"2.3.12"}
+FREETYPE=${FREETYPE:-"2.4.3"}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -65,8 +65,8 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION freetype-$FREETYPE
-tar xvf $CWD/${PRGNAM}_full-${VERSION}.tar.bz2
-tar xvf $CWD/freetype-$FREETYPE.tar.xz
+tar xvf $CWD/${PRGNAM}-${VERSION}.tar.xz
+tar xvf $CWD/freetype-$FREETYPE.tar.bz2
 chown -R root:root $PRGNAM-$VERSION freetype-$FREETYPE
 chmod -R u+w,go+r-w,a-s $PRGNAM-$VERSION freetype-$FREETYPE
 cd $PRGNAM-$VERSION

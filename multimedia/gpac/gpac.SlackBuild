@@ -23,10 +23,12 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# modified by ponce <matteo.bernardini@gmail.com>
 
 PRGNAM=gpac
-VERSION=0.4.5
-BUILD=${BUILD:-3}
+VERSION=r2116
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
@@ -70,8 +72,7 @@ mkdir -p $TMP $PKG $OUTPUT
 
 cd $TMP
 tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
-mv $TMP/$PRGNAM $TMP/$PRGNAM-$VERSION
-cd $TMP/$PRGNAM-$VERSION
+cd $PRGNAM-$VERSION
 chown -R root.root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -79,7 +80,8 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-( cd src/media_tools; patch -p0 < $CWD/libpng-infopp-null.patch )
+# add a small patch for the new make in -current
+patch -p0 < $CWD/configure.patch
 
 ### fix configure script perms
 chmod u+x configure
@@ -94,6 +96,8 @@ chmod u+x configure
 
 make -j1 # Parallel build seems to fail
 make install DESTDIR=$PKG
+# install the sdk too
+make install-lib DESTDIR=$PKG
 
 ### remove $PKG/usr/share/gpac directory
 ### only contains gpac.mp4 file which

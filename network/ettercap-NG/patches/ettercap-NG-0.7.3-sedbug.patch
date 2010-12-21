@@ -1,0 +1,11 @@
+--- ./aclocal.m4	2010-10-28 16:59:35.718177488 +0200
++++ ./aclocal.m4	2010-10-28 17:00:00.118180979 +0200
+@@ -246,7 +246,7 @@ if test -z "$ltmain"; then
+   exit 1
+ fi
+ gentoo_lt_version="1.5.18"
+-gentoo_ltmain_version=`grep '^[[:space:]]*VERSION=' $ltmain | sed -e 's|^[[:space:]]*VERSION=||'`
++gentoo_ltmain_version=`grep '^.*VERSION=' $ltmain | sed -e 's|^.*VERSION=||'`
+ if test "$gentoo_lt_version" != "$gentoo_ltmain_version"; then
+   AC_MSG_RESULT(no)
+   echo

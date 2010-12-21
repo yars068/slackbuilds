@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------------|
+pcmanfm-new: pcmanfm-new (PCMan File Manager - udisks capable version)
+pcmanfm-new:
+pcmanfm-new: PCManFM is an extremely fast and lightweight GTK+ based file manager
+pcmanfm-new: which features tabbed browsing and a user-friendly interface.
+pcmanfm-new:
+pcmanfm-new:
+pcmanfm-new:
+pcmanfm-new:
+pcmanfm-new:
+pcmanfm-new: Homepage:  http://pcmanfm.sourceforge.net
+pcmanfm-new:
