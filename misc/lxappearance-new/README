@@ -1,0 +1,5 @@
+LXAppearance is the standard theme switcher of LXDE. Users are able to
+change the theme, icons, and fonts used by applications easily.
+
+this is the new rewrite that don't use obconf directly but instead uses
+a plugin, lxappearance-obconf.

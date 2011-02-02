@@ -35,15 +35,17 @@
 # 20100825_5e1e8e1 12/sep/2010 by ponce <matteo.bernardini@gmail.com>
 #            * Adapted to slackbuilds.org's autotools template.
 #            * updated to git snapshot.
+# 20101206_802f38f 24/gen/2011 by ponce <matteo.bernardini@gmail.com>
+#            * updated to lates git snapshot.
 # 
 # Run 'sh lxmenu-data.SlackBuild' to build a Slackware package.
-# The package is created in /tmp .
+# The package is created in /tmp.
 # Install using 'installpkg'. 
 #
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxmenu-data
-VERSION=${VERSION:-20100825_5e1e8e1}
+VERSION=${VERSION:-20101206_802f38f}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
