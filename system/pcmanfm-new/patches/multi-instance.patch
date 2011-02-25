@@ -1,0 +1,27 @@
+diff -Naur pcmanfm-20110216_6240436.orig/src/pcmanfm.c pcmanfm-20110216_6240436/src/pcmanfm.c
+--- pcmanfm-20110216_6240436.orig/src/pcmanfm.c	2011-02-15 17:47:04.000000000 +0100
++++ pcmanfm-20110216_6240436/src/pcmanfm.c	2011-02-15 22:20:41.000000000 +0100
+@@ -379,16 +379,13 @@
+         }
+         else
+         {
+-            if(!daemon_mode)
+-            {
+-                FmPath* path;
+-                char* cwd = ipc_cwd ? ipc_cwd : g_get_current_dir();
+-                path = fm_path_new_for_path(cwd);
+-                fm_main_win_add_win(NULL, path);
+-                fm_path_unref(path);
+-                g_free(cwd);
+-                ipc_cwd = NULL;
+-            }
++            FmPath* path;
++            char* cwd = ipc_cwd ? ipc_cwd : g_get_current_dir();
++            path = fm_path_new_for_path(cwd);
++            fm_main_win_add_win(NULL, path);
++            fm_path_unref(path);
++            g_free(cwd);
++            ipc_cwd = NULL;
+         }
+     }
+     return ret;
