@@ -27,7 +27,7 @@
 # General script clean-up and minor improvements
 
 PRGNAM=hylafax
-VERSION=${VERSION:-6.0.4}
+VERSION=${VERSION:-6.0.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -74,6 +74,10 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
+
+# http://git.hylafax.org/HylaFAX?a=commit;h=b0d873c950a72aa568d2fcfe7dbc8bb6e981c129
+# add a patch for gcc 4.5
+patch -p1 < $CWD/hylafax-gcc45.patch
 
 # Copy our source for the correct configuration 
 sed "s|@LIBDIRSUFFIX@|${LIBDIRSUFFIX}|g" \
