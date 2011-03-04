@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=lirc
-VERSION=${VERSION:-0.8.6}
+VERSION=${VERSION:-0.8.7}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -76,13 +76,6 @@ find . \
 
 # Disabling lirc_gpio driver as it does no longer work with kernel 2.6.22+
 sed -i -e "s:lirc_gpio\.o::" drivers/lirc_gpio/Makefile.am || exit 1
-
-# Fix building lirc_i2c - thanks to the Gentoo guys
-patch -p1 < $CWD/patches/lirc_i2c.patch
-
-# Fix building on 2.6.33.x kernels - thanks to the Gentoo guys
-patch -p1 < $CWD/patches/2.6.33.patch
-patch -p1 < $CWD/patches/autoconf.patch
 
 autoreconf
 libtoolize

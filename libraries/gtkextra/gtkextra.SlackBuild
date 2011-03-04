@@ -57,10 +57,18 @@ find . \
 
 # Solve a problem with spaces in gtkextra/Makefile.in
 #   (This only breaks with make 3.82 from -current, but won't harm in 13.1)
-patch -p1 < $CWD/make382.patch
+patch -p1 < $CWD/patches/make382.patch
+
+# other make 3.82 fixes, fix build with libtool 2 and an upstream typing error
+# http://bugs.gentoo.org/show_bug.cgi?id=333953
+patch -p0 < $CWD/patches/gtk+extra-2.1.2-build.patch
+
+# fix build with gtk>=2.21.0
+# http://bugs.gentoo.org/show_bug.cgi?id=333953
+patch -p0 < $CWD/patches/gtk+extra-2.1.2-gtk+-2.21.patch
 
 # Resolve a bug in the code (thanks to the Gentoo people for finding it)
-patch -p1 < $CWD/gtkcolorcombo.patch
+patch -p1 < $CWD/patches/gtkcolorcombo.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
