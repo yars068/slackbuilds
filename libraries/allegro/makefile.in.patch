@@ -1,0 +1,54 @@
+--- allegro-4.2.2/makefile.in.orig	2007-07-22 07:55:54.000000000 +0200
++++ allegro-4.2.2/makefile.in	2010-07-30 14:27:36.762944086 +0200
+@@ -400,34 +400,34 @@
+ 
+ clean:
+ 
+-   define RM_OBJ_CLEAN_FILES
+-      $(foreach file, $(OBJ_CLEAN_FILES), rm -f $(file)
+-      )
+-   endef
+-
+-   define RM_OTHER_CLEAN_FILES
+-      $(foreach file, $(OTHER_CLEAN_FILES), rm -f $(file)
+-      )
+-   endef
++	define RM_OBJ_CLEAN_FILES
++		$(foreach file, $(OBJ_CLEAN_FILES), rm -f $(file)
++		)
++	endef
++
++	define RM_OTHER_CLEAN_FILES
++		$(foreach file, $(OTHER_CLEAN_FILES), rm -f $(file)
++		)
++	endef
+ 
+ 	$(RM_OBJ_CLEAN_FILES)
+ 	$(RM_OTHER_CLEAN_FILES)
+ 
+ distclean: clean
+ 
+-   define RM_DISTCLEAN_FILES
+-      $(foreach file, $(DISTCLEAN_FILES) $(ALLEGRO_LIB_X_EXES), rm -f $(file)
+-      )
+-   endef
++	define RM_DISTCLEAN_FILES
++		$(foreach file, $(DISTCLEAN_FILES) $(ALLEGRO_LIB_X_EXES), rm -f $(file)
++		)
++	endef
+ 
+ 	$(RM_DISTCLEAN_FILES)
+ 
+ veryclean: distclean
+ 
+-   define RM_VERYCLEAN_FILES
+-      $(foreach file, $(VERYCLEAN_FILES), rm -f $(file)
+-      )
+-   endef
++	define RM_VERYCLEAN_FILES
++		$(foreach file, $(VERYCLEAN_FILES), rm -f $(file)
++		)
++	endef
+ 
+ 	$(RM_VERYCLEAN_FILES)
+ 	rm -f makefile

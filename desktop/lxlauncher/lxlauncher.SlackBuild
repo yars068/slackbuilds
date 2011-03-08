@@ -37,6 +37,10 @@
 # 20100903_3480629: 12/sep/2010 by ponce <matteo.bernardini@gmail.com>
 #             * Adapted to slackbuilds.org's autotools template.
 #             * updated to git snapshot.
+# 20110104_40ec3ca: 24/gen/2011 by ponce <matteo.bernardini@gmail.com>
+#             * updated to latest git snapshot.
+# 20110227_46274d1: 1/mar/2011 by ponce <matteo.bernardini@gmail.com>
+#             * updated to latest git snapshot.
 # 
 # Run 'sh lxlauncher.SlackBuild' to build a Slackware package.
 # The package is created in /tmp .
@@ -45,16 +49,14 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxlauncher
-VERSION=${VERSION:-20100903_3480629}
+VERSION=${VERSION:-20110227_46274d1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
        *) ARCH=$( uname -m ) ;;
   esac
 fi
