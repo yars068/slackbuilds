@@ -1,0 +1,11 @@
+PCManFM is an extremely fast and lightweight GTK+ based file manager which 
+features tabbed browsing and a user-friendly interface.
+
+This version, supporting udisks, needs libfm-new, available from this same repository.
+
+It also have an added option to disable the warning when using it as root (for slax):
+pass to the script the SLAX=yes parameter to use it.
+
+To view icons on PCMan File Manager, include this line to your $HOME/.gtkrc-2.0
+
+gtk-icon-theme-name="Tango"

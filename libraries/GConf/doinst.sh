@@ -12,4 +12,4 @@ config() {
 }
 
 config etc/gconf/2/path.new
-
+config etc/gconf/2/evoldap.conf.new
