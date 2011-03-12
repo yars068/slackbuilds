@@ -1,0 +1,139 @@
+diff -Naur OpenCV-r3818.orig/CMakeLists.txt OpenCV-r3818/CMakeLists.txt
+--- OpenCV-r3818.orig/CMakeLists.txt	2010-10-22 14:02:39.000000000 +0200
++++ OpenCV-r3818/CMakeLists.txt	2010-10-24 10:14:30.504785501 +0200
+@@ -13,7 +13,7 @@
+ # Add these standard paths to the search paths for FIND_LIBRARY
+ # to find libraries from these locations first
+ if(UNIX)
+-  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /lib /usr/lib)
++  set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /lib${LIB_SUFFIX} /usr/lib${LIB_SUFFIX})
+ endif()
+ # it _must_ go before PROJECT(OpenCV) in order to work
+ if (NOT CMAKE_INSTALL_PREFIX)
+@@ -24,7 +24,7 @@
+     endif()
+ endif()
+ 
+-SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
++SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+ 
+ set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
+@@ -494,8 +494,8 @@
+ 
+     string(REGEX MATCH "[0-9].[0-9]" PYTHON_VERSION_MAJOR_MINOR "${PYTHON_VERSION_FULL}")
+     if(UNIX)
+-        set(PYTHON_PLUGIN_INSTALL_PATH lib/python${PYTHON_VERSION_MAJOR_MINOR}/site-packages/opencv)
+-        set(PYTHON_PACKAGES_PATH lib/python${PYTHON_VERSION_MAJOR_MINOR}/site-packages)
++        set(PYTHON_PLUGIN_INSTALL_PATH lib${LIB_SUFFIX}/python${PYTHON_VERSION_MAJOR_MINOR}/site-packages/opencv)
++        set(PYTHON_PACKAGES_PATH lib${LIB_SUFFIX}/python${PYTHON_VERSION_MAJOR_MINOR}/site-packages)
+     endif()
+     if(WIN32)
+         get_filename_component(PYTHON_PATH "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${PYTHON_VERSION_MAJOR_MINOR}\\InstallPath]" ABSOLUTE CACHE)
+@@ -1014,7 +1014,7 @@
+ #                       PROCESS SUBDIRECTORIES:
+ # ----------------------------------------------------------------------------
+ # Save libs and executables in the same place
+-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib CACHE PATH "Output directory for libraries" )
++set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib${LIB_SUFFIX} CACHE PATH "Output directory for libraries" )
+ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output directory for applications" )
+ 
+ if(WIN32)
+@@ -1054,7 +1054,7 @@
+ set(CMAKE_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/include/opencv" "${CMAKE_INSTALL_PREFIX}/include")
+ set(CMAKE_BASE_INCLUDE_DIRS_CONFIGCMAKE "\"\"")
+ 
+-set(CMAKE_LIB_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/lib")
++set(CMAKE_LIB_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/lib{LIB_SUFFIX}")
+ 
+ #exec_program(${CMAKE_COMMAND} ARGS "-E make_directory \"${CMAKE_BINARY_DIR}/unix-install/\"")
+ exec_program(mkdir ARGS "-p \"${CMAKE_BINARY_DIR}/unix-install/\"")
+@@ -1088,19 +1088,19 @@
+ #  Part 2/2: ${BIN_DIR}/unix-install/opencv.pc -> For use *with* "make install"
+ # prefix=/usr
+ # exec_prefix=${prefix}
+-# libdir=${exec_prefix}/lib
++# libdir=${exec_prefix}/lib${LIB_SUFFIX}
+ # includedir=${prefix}/include/opencv
+ # -------------------------------------------------------------------------------------------
+ set(prefix      ${CMAKE_INSTALL_PREFIX})
+ set(exec_prefix     "\${prefix}")
+-set(libdir      "\${exec_prefix}/lib")
++set(libdir      "\${exec_prefix}/lib${LIB_SUFFIX}")
+ set(includedir      "\${prefix}/include")
+ set(VERSION             ${OPENCV_VERSION})
+ 
+ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/opencv.pc.cmake.in" "${CMAKE_BINARY_DIR}/unix-install/opencv.pc" @ONLY IMMEDIATE)
+ 
+ if(UNIX)
+-    install(FILES ${CMAKE_BINARY_DIR}/unix-install/opencv.pc DESTINATION lib/pkgconfig)
++    install(FILES ${CMAKE_BINARY_DIR}/unix-install/opencv.pc DESTINATION lib${LIB_SUFFIX}/pkgconfig)
+ endif()
+ 
+ 
+diff -Naur OpenCV-r3818.orig/OpenCVModule.cmake OpenCV-r3818/OpenCVModule.cmake
+--- OpenCV-r3818.orig/OpenCVModule.cmake	2010-07-07 17:24:21.000000000 +0200
++++ OpenCV-r3818/OpenCVModule.cmake	2010-10-24 10:24:40.028783048 +0200
+@@ -75,8 +75,8 @@
+ 
+ 	install(TARGETS ${the_target}
+ 	    RUNTIME DESTINATION bin COMPONENT main
+-	    LIBRARY DESTINATION lib COMPONENT main
+-	    ARCHIVE DESTINATION lib COMPONENT main)
++	    LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
++	    ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main)
+ 
+ 	install(FILES ${lib_hdrs}
+ 	    DESTINATION include/opencv2/${name}
+diff -Naur OpenCV-r3818.orig/modules/ffmpeg/CMakeLists.txt OpenCV-r3818/modules/ffmpeg/CMakeLists.txt
+--- OpenCV-r3818.orig/modules/ffmpeg/CMakeLists.txt	2010-08-05 19:24:41.000000000 +0200
++++ OpenCV-r3818/modules/ffmpeg/CMakeLists.txt	2010-10-24 09:25:01.718785911 +0200
+@@ -49,6 +49,6 @@
+ 
+ install(TARGETS ${the_target}
+     RUNTIME DESTINATION bin COMPONENT main
+-    ARCHIVE DESTINATION lib COMPONENT main
+-    LIBRARY DESTINATION lib COMPONENT main
++    ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main
++    LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
+     )
+diff -Naur OpenCV-r3818.orig/modules/gpu/CMakeLists.txt OpenCV-r3818/modules/gpu/CMakeLists.txt
+--- OpenCV-r3818.orig/modules/gpu/CMakeLists.txt	2010-10-06 14:45:31.000000000 +0200
++++ OpenCV-r3818/modules/gpu/CMakeLists.txt	2010-10-24 09:25:01.718785911 +0200
+@@ -122,8 +122,8 @@
+ 
+ install(TARGETS ${the_target}
+ 	RUNTIME DESTINATION bin COMPONENT main
+-	LIBRARY DESTINATION lib COMPONENT main
+-	ARCHIVE DESTINATION lib COMPONENT main)
++	LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
++	ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main)
+ 
+ install(FILES ${lib_hdrs}
+ 	DESTINATION include/opencv2/${name}
+diff -Naur OpenCV-r3818.orig/modules/highgui/CMakeLists.txt OpenCV-r3818/modules/highgui/CMakeLists.txt
+--- OpenCV-r3818.orig/modules/highgui/CMakeLists.txt	2010-09-22 05:36:45.000000000 +0200
++++ OpenCV-r3818/modules/highgui/CMakeLists.txt	2010-10-24 09:25:01.718785911 +0200
+@@ -327,8 +327,8 @@
+ 
+ install(TARGETS ${the_target}
+ 	RUNTIME DESTINATION bin COMPONENT main
+-	LIBRARY DESTINATION lib COMPONENT main
+-	ARCHIVE DESTINATION lib COMPONENT main)
++	LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
++	ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main)
+ 
+ install(FILES ${highgui_ext_hdrs}
+         DESTINATION include/opencv2/highgui
+diff -Naur OpenCV-r3818.orig/tests/cxts/CMakeLists.txt OpenCV-r3818/tests/cxts/CMakeLists.txt
+--- OpenCV-r3818.orig/tests/cxts/CMakeLists.txt	2010-05-11 19:44:00.000000000 +0200
++++ OpenCV-r3818/tests/cxts/CMakeLists.txt	2010-10-24 09:25:01.719785922 +0200
+@@ -64,6 +64,6 @@
+ if(WIN32)
+ install(TARGETS ${the_target}
+     RUNTIME DESTINATION bin COMPONENT main
+-	LIBRARY DESTINATION lib COMPONENT main
+-	ARCHIVE DESTINATION lib COMPONENT main)
++	LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
++	ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main)
+ endif()

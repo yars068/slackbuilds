@@ -1,6 +1,6 @@
-diff -Nur clamav-0.95.2.orig/etc/freshclam.conf clamav-0.95.2/etc/freshclam.conf
---- clamav-0.95.2.orig/etc/freshclam.conf	2009-03-16 13:43:35.000000000 -0500
-+++ clamav-0.95.2/etc/freshclam.conf	2009-08-10 10:53:12.146515711 -0500
+diff -Naur clamav-0.96.5.orig/etc/freshclam.conf clamav-0.96.5/etc/freshclam.conf
+--- clamav-0.96.5.orig/etc/freshclam.conf	2010-11-25 12:15:46.000000000 +0100
++++ clamav-0.96.5/etc/freshclam.conf	2010-12-03 16:57:28.314000014 +0100
 @@ -5,7 +5,7 @@
  
  
@@ -41,16 +41,16 @@ diff -Nur clamav-0.95.2.orig/etc/freshclam.conf clamav-0.95.2/etc/freshclam.conf
  
  # Use DNS to verify virus database version. Freshclam uses DNS TXT records
  # to verify database and software versions. With this directive you can change
-@@ -64,7 +64,7 @@
- 
+@@ -65,7 +65,7 @@
  # Uncomment the following line and replace XY with your country
  # code. See http://www.iana.org/cctld/cctld-whois.htm for the full list.
+ # You can use db.XY.ipv6.clamav.net for IPv6 connections.
 -#DatabaseMirror db.XY.clamav.net
-+#DatabaseMirror db.@COUNTRY@.clamav.net
++DatabaseMirror db.@COUNTRY@.clamav.net
  
  # database.clamav.net is a round-robin record which points to our most 
  # reliable mirrors. It's used as a fall back in case db.XY.clamav.net is 
-@@ -111,7 +111,7 @@
+@@ -118,7 +118,7 @@
  
  # Send the RELOAD command to clamd.
  # Default: no

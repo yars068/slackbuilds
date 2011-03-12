@@ -50,6 +50,10 @@ cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R a-s,u+w,go+r-w .
 
+# fix aclocal warning "underquoted definition of AM_PATH_LIBXOSD"
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=286156
+patch -p1 < $CWD/fix-aclocal-warning.patch
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
