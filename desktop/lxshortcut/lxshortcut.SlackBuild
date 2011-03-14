@@ -35,6 +35,10 @@
 # 20100905_132b97e 12/sep/2010 by ponce <matteo.bernardini@gmail.com>
 #             * Adapted to slackbuilds.org's autotools template.
 #             * updated to git snapshot.
+# 20110105_69ba3cc 24/gen/2011 by ponce <matteo.bernardini@gmail.com>
+#             * updated to latest git snapshot.
+# 20110301_a662afd 1/mar/2011 by ponce <matteo.bernardini@gmail.com>
+#             * updated to latest git snapshot.
 # 
 # Run 'sh lxshortcut.SlackBuild' to build a Slackware package.
 # The package is created in /tmp .
@@ -43,16 +47,14 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxshortcut
-VERSION=${VERSION:-20100905_132b97e}
+VERSION=${VERSION:-20110301_a662afd}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
        *) ARCH=$( uname -m ) ;;
   esac
 fi

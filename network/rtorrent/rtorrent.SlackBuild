@@ -49,6 +49,10 @@ cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# thanks to andrew@andrews-corner.org and ankursinha@fedoraproject.org
+# patch for ncurses in current - http://libtorrent.rakshasa.no/ticket/2518
+patch -p1 < $CWD/rtorrent-0.8.7-canvas-patch-fix-for-ncurses-5-8.patch
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
