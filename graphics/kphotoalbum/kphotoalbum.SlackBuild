@@ -56,6 +56,13 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# add patch for build against kde 4.5 - safe also for 13.1
+# see http://bugs.gentoo.org/show_bug.cgi?id=335023
+zcat $CWD/kphotoalbum-4.1.1-docbook_fix.gz | patch -p1
+
+# add a fix for exiv-0.21
+zcat $CWD/kphotoalbum-r1213128-exiv2-0.21.gz | patch -p4
+
 mkdir build && cd build
   cmake \
     -DCMAKE_C_FLAGS="$SLKCFLAGS" \

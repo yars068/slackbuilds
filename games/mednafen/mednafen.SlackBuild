@@ -69,6 +69,10 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# patch for gcc 4.5 in -current
+# http://bugs.gentoo.org/show_bug.cgi?id=321009
+zcat $CWD/mednafen-0.8.13-gcc45.gz | patch -p0
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
