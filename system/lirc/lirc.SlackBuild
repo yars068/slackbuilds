@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=lirc
-VERSION=${VERSION:-0.8.6}
+VERSION=${VERSION:-20110118_77c9429}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -65,7 +65,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
@@ -74,18 +74,7 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# Disabling lirc_gpio driver as it does no longer work with kernel 2.6.22+
-sed -i -e "s:lirc_gpio\.o::" drivers/lirc_gpio/Makefile.am || exit 1
-
-# Fix building lirc_i2c - thanks to the Gentoo guys
-patch -p1 < $CWD/patches/lirc_i2c.patch
-
-# Fix building on 2.6.33.x kernels - thanks to the Gentoo guys
-patch -p1 < $CWD/patches/2.6.33.patch
-patch -p1 < $CWD/patches/autoconf.patch
-
-autoreconf
-libtoolize
+sh autogen.sh
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -96,17 +85,17 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
+  --enable-shared \
+  --disable-static \
   --enable-sandboxed \
-  --with-driver=all \
+  --with-driver=none \
   --with-transmitter \
   --build=$ARCH-slackware-linux
 
-# Disable parallel and bt829 because of incompatibility with smp systems
-sed -i -e "s:lirc_parallel::" -e "s:lirc_bt829::" \
-     Makefile drivers/Makefile drivers/*/Makefile tools/Makefile
-
 make
 make install DESTDIR=$PKG
+
+( cd doc ; sh release-html.sh )
 
 mkdir -p $PKG/usr/share/$PRGNAM
 cp -a remotes $PKG/usr/share/$PRGNAM 
