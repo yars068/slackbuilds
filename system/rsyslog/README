@@ -1,0 +1,21 @@
+rsyslog (enhanced syslogd)
+
+rsyslog is an enhanced syslogd supporting, among others, MySQL, PostgreSQL,
+failover log destinations, syslog/tcp, fine grain output format control,
+high precision timestamps, queued operations and the ability to filter on
+any message part.
+It is quite compatible to stock sysklogd and can be used as a drop-in
+replacement (remove sysklogd before installing).
+It has a default config taken from the standard slackware sysklogd one and
+is setted up to emulate it.
+
+available build time switches (pass the variables to the build script):
+- MYSQL=yes for mysql support;
+- PGSQL=yes for postgresql support (you'll need postgresql, available on
+slackbuilds.org, installed);
+- LIBDBI=yes for libdbi support (you'll need libdbi and libdbi-drivers,
+available on slackbuilds.org, installed);
+- GNUTLS=yes for gnutls support.
+you can see more options if you run "./configure --help" in the uncompressed
+sources folder.
+
