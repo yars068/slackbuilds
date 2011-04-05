@@ -35,6 +35,16 @@ Notes about using this SlackBuild
    to the script.
 5) If you want to build Cherokee with debugging options, enable trace
    facility by passing TRACE=yes to the script.
+6) The $WWWGROUP group and/or $WWWUSER user account are set to root.
+   To run cherokee as a different user/group specify them passing the options
+   options WWWUSER/WWWGROUP to the slackbuild, like
+
+     WWWUSER=cherokee WWWGROUP=cherokee ./cherokee.SlackBuild
+
+   You may want to create first a dedicated user/group.
+
+     groupadd -g 249 cherokee
+     useradd -u 249 -g cherokee -d /var/www cherokee
 
 Comments, suggestions or bug reports
 ------------------------------------

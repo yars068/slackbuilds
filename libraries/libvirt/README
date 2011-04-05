@@ -2,3 +2,6 @@ libvirt - The virtualization API
 
 libvirt is a toolkit to interact with the virtualization
 capabilities of recent versions of Linux (and other OSes).
+
+you can pass to the build script the qemu group you are
+using with the variable VIRTGROUP (defaults to 'libvirt').
