@@ -1,0 +1,7 @@
+gnomint (gui for certification authorities)
+
+gnomint is a tool for an easy creation and management of Certification
+Authorities. It allows a fancy visualization of all the pieces that
+conform a CA: x509 certificates, CSRs, CRLs...
+
+This requires GConf and ORBit2, available on slackware/extra.

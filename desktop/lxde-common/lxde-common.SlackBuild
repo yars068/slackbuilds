@@ -39,6 +39,8 @@
 #             * fixed lxpanel and xinitrc
 # 20110313_736ded3: 29/mar/2011 by ponce <matteo.bernardini@gmail.com>
 #             * updated to git version.
+# 20110328_87c368d: 05/apr/2011 by ponce <matteo.bernardini@gmail.com>
+#             * small version bump to fix an issue with pcmanfm conf.
 # 
 # Run 'sh lxde-common.SlackBuild' to build a Slackware package.
 # The package is created in /tmp .
@@ -47,7 +49,7 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxde-common
-VERSION=${VERSION:-20110313_736ded3}
+VERSION=${VERSION:-20110328_87c368d}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 

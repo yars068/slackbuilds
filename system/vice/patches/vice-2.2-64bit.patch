@@ -1,7 +1,7 @@
-diff -urpN vice-2.1/configure vice-2.1-64/configure
---- vice-2.1/configure	2008-12-15 21:18:47.000000000 +0100
-+++ vice-2.1-64/configure	2009-10-11 00:02:00.763205494 +0200
-@@ -960,7 +960,7 @@ htmldir='${docdir}'
+diff -Naur vice-2.2.orig/configure vice-2.2/configure
+--- vice-2.2.orig/configure	2010-08-29 22:14:17.444876650 +0200
++++ vice-2.2/configure	2010-08-29 22:15:39.214874952 +0200
+@@ -989,7 +989,7 @@
  dvidir='${docdir}'
  pdfdir='${docdir}'
  psdir='${docdir}'
@@ -10,7 +10,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
  localedir='${datarootdir}/locale'
  mandir='${datarootdir}/man'
  
-@@ -1445,7 +1445,7 @@ Installation directories:
+@@ -1474,7 +1474,7 @@
  			  [PREFIX]
  
  By default, \`make install' will install all the files in
@@ -19,7 +19,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
  an installation prefix other than \`$ac_default_prefix' using \`--prefix',
  for instance \`--prefix=\$HOME'.
  
-@@ -1458,7 +1458,7 @@ Fine tuning of the installation director
+@@ -1487,7 +1487,7 @@
    --sysconfdir=DIR       read-only single-machine data [PREFIX/etc]
    --sharedstatedir=DIR   modifiable architecture-independent data [PREFIX/com]
    --localstatedir=DIR    modifiable single-machine data [PREFIX/var]
@@ -28,7 +28,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
    --includedir=DIR       C header files [PREFIX/include]
    --oldincludedir=DIR    C header files for non-gcc [/usr/include]
    --datarootdir=DIR      read-only arch.-independent data root [PREFIX/share]
-@@ -5583,7 +5583,7 @@ if test -z "$CPP"; then
+@@ -4416,7 +4416,7 @@
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
        # Double quotes because CPP needs to be expanded
@@ -37,7 +37,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
      do
        ac_preproc_ok=false
  for ac_c_preproc_warn_flag in '' yes
-@@ -6369,7 +6369,7 @@ if test -z "$CPP"; then
+@@ -7173,7 +7173,7 @@
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
        # Double quotes because CPP needs to be expanded
@@ -46,7 +46,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
      do
        ac_preproc_ok=false
  for ac_c_preproc_warn_flag in '' yes
-@@ -8652,7 +8652,7 @@ if test -z "$CXXCPP"; then
+@@ -9411,7 +9411,7 @@
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
        # Double quotes because CXXCPP needs to be expanded
@@ -55,7 +55,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
      do
        ac_preproc_ok=false
  for ac_cxx_preproc_warn_flag in '' yes
-@@ -8911,7 +8911,7 @@ _ACEOF
+@@ -9683,7 +9683,7 @@
    else
          no_recursion=yes
  
@@ -64,7 +64,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
      CPPFLAGS="$CPPFLAGS -I$with_resid/include"
  
  
-@@ -9131,7 +9131,7 @@ cat >>confdefs.h <<\_ACEOF
+@@ -9903,7 +9903,7 @@
  _ACEOF
  
      RESID_DIR=
@@ -73,7 +73,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
      RESID_INCLUDES="-I$with_resid/include"
    fi
  
-@@ -23284,7 +23284,7 @@ _ACEOF
+@@ -26810,7 +26810,7 @@
  	*) test -f "$ac_im_incroot/X11/Xos.h" && ac_x_includes=$ac_im_incroot;;
      esac
      case $ac_im_usrlibdir in
@@ -82,7 +82,7 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
  	*) test -d "$ac_im_usrlibdir" && ac_x_libraries=$ac_im_usrlibdir ;;
      esac
    fi
-@@ -28704,7 +28704,7 @@ fi
+@@ -32598,7 +32598,7 @@
  
      ;;
    *)
@@ -91,15 +91,15 @@ diff -urpN vice-2.1/configure vice-2.1-64/configure
  
  
  if false; then
-diff -urpN vice-2.1/src/arch/unix/archdep.h vice-2.1-64/src/arch/unix/archdep.h
---- vice-2.1/src/arch/unix/archdep.h	2008-10-10 21:08:31.000000000 +0200
-+++ vice-2.1-64/src/arch/unix/archdep.h	2009-10-11 00:03:04.366722924 +0200
-@@ -116,7 +116,7 @@ extern const char *archdep_pref_path;
+diff -Naur vice-2.2.orig/src/arch/unix/archdep.h vice-2.2/src/arch/unix/archdep.h
+--- vice-2.2.orig/src/arch/unix/archdep.h	2010-08-29 22:14:17.406871942 +0200
++++ vice-2.2/src/arch/unix/archdep.h	2010-08-29 22:16:37.424874831 +0200
+@@ -123,7 +123,7 @@
  #ifdef __NetBSD__
- #define LIBDIR          PREFIX "/share/vice"
+ #define LIBDIR PREFIX "/share/vice"
  #else
--#define LIBDIR          PREFIX "/lib/vice"
-+#define LIBDIR          PREFIX "/lib64/vice"
+-#define LIBDIR PREFIX "/lib/vice"
++#define LIBDIR PREFIX "/lib64/vice"
  #endif
  
  #if defined(__FreeBSD__) || defined(__NetBSD__)
