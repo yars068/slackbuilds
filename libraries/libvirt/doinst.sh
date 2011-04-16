@@ -15,6 +15,8 @@ config() {
 config etc/libvirt/libvirtd.conf.new
 config etc/libvirt/qemu.conf.new
 config etc/libvirt/qemu/networks/default.xml.new
-config etc/logrotate.d/libvirtd.new
+config etc/logrotate.d/libvirtd.lxc.new
+config etc/logrotate.d/libvirtd.qemu.new
+config etc/logrotate.d/libvirtd.uml.new
 config etc/sasl2/libvirt.conf.new
 
