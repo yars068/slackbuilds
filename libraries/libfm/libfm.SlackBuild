@@ -23,7 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libfm
-VERSION=${VERSION:-20110316_c604674}
+VERSION=${VERSION:-20110412_7915d1f}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -85,6 +85,10 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make
 make install-strip DESTDIR=$PKG
+
+# add handlers for terminal and archiver to the default config
+sed -i -e 's|\[ui\]|terminal=xterm -e %s\narchiver=xarchiver %s\n\n[ui]|' \
+  $PKG/etc/xdg/libfm/libfm.conf
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING README TODO \

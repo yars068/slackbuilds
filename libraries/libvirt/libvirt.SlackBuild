@@ -4,7 +4,7 @@
 # Written by Michal Bialozor <bialyy@o2.pl>
 
 PRGNAM=libvirt
-VERSION=0.7.7
+VERSION=0.9.0
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -35,6 +35,8 @@ else
   LIBDIRSUFFIX=""
 fi
 
+VIRTGROUP=${VIRTGROUP:-libvirt}
+
 set -e
 
 rm -rf $PKG
@@ -59,9 +61,17 @@ CFLAGS="$SLKCFLAGS" \
   --enable-static=no \
   --enable-shared=yes \
   --without-xen \
+  --without-esx \
+  --without-polkit \
+  --without-avahi \
+  --without-openvz \
+  --without-storage-iscsi \
+  --without-hal \
+  --without-udev \
+  --with-qemu-group=$VIRTGROUP \
   --build=$ARCH-slackware-linux
 
-make \
+make -j2 \
   HTML_DIR=/usr/doc/$PRGNAM-$VERSION \
   EXAMPLE_DIR=/usr/doc/$PRGNAM-$VERSION/examples
 make \
@@ -74,7 +84,9 @@ mv $PKG/etc/libvirt/libvirtd.conf $PKG/etc/libvirt/libvirtd.conf.new
 mv $PKG/etc/libvirt/qemu.conf $PKG/etc/libvirt/qemu.conf.new
 mv $PKG/etc/libvirt/qemu/networks/default.xml \
    $PKG/etc/libvirt/qemu/networks/default.xml.new
-mv $PKG/etc/logrotate.d/libvirtd $PKG/etc/logrotate.d/libvirtd.new
+mv $PKG/etc/logrotate.d/libvirtd.lxc $PKG/etc/logrotate.d/libvirtd.lxc.new
+mv $PKG/etc/logrotate.d/libvirtd.qemu $PKG/etc/logrotate.d/libvirtd.qemu.new
+mv $PKG/etc/logrotate.d/libvirtd.uml $PKG/etc/logrotate.d/libvirtd.uml.new
 mv $PKG/etc/sasl2/libvirt.conf $PKG/etc/sasl2/libvirt.conf.new
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;

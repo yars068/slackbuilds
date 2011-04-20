@@ -5,7 +5,7 @@
 # Written by Luis Henrique <lmello.009@gmail.com>
 
 PRGNAM=gvfs
-VERSION=${VERSION:-1.6.7}
+VERSION=${VERSION:-1.8.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -60,6 +60,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
+  --disable-static \
+  --disable-hal \
   --build=$ARCH-slackware-linux
 
 make
@@ -73,6 +75,8 @@ cp -a \
   AUTHORS ChangeLog COPYING INSTALL MAINTAINERS NEWS README* \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
+chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
