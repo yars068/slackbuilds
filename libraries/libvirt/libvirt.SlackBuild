@@ -4,8 +4,8 @@
 # Written by Michal Bialozor <bialyy@o2.pl>
 
 PRGNAM=libvirt
-VERSION=0.7.7
-BUILD=${BUILD:-1}
+VERSION=0.9.0
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -35,6 +35,8 @@ else
   LIBDIRSUFFIX=""
 fi
 
+VIRTGROUP=${VIRTGROUP:-libvirt}
+
 set -e
 
 rm -rf $PKG
@@ -59,9 +61,17 @@ CFLAGS="$SLKCFLAGS" \
   --enable-static=no \
   --enable-shared=yes \
   --without-xen \
+  --without-esx \
+  --without-polkit \
+  --without-avahi \
+  --without-openvz \
+  --without-storage-iscsi \
+  --without-hal \
+  --without-udev \
+  --with-qemu-group=$VIRTGROUP \
   --build=$ARCH-slackware-linux
 
-make \
+make $NUMJOBS \
   HTML_DIR=/usr/doc/$PRGNAM-$VERSION \
   EXAMPLE_DIR=/usr/doc/$PRGNAM-$VERSION/examples
 make \
@@ -69,13 +79,21 @@ make \
   EXAMPLE_DIR=/usr/doc/$PRGNAM-$VERSION/examples \
   install-strip DESTDIR=$PKG
 
+# by default we got no certs
+sed -i -e 's|\#listen_tls\ =\ 0|listen_tls = 0|' $PKG/etc/libvirt/libvirtd.conf
+
 # Don't clobber existing config files on upgrade
 mv $PKG/etc/libvirt/libvirtd.conf $PKG/etc/libvirt/libvirtd.conf.new
 mv $PKG/etc/libvirt/qemu.conf $PKG/etc/libvirt/qemu.conf.new
 mv $PKG/etc/libvirt/qemu/networks/default.xml \
    $PKG/etc/libvirt/qemu/networks/default.xml.new
-mv $PKG/etc/logrotate.d/libvirtd $PKG/etc/logrotate.d/libvirtd.new
+mv $PKG/etc/logrotate.d/libvirtd.lxc $PKG/etc/logrotate.d/libvirtd.lxc.new
+mv $PKG/etc/logrotate.d/libvirtd.qemu $PKG/etc/logrotate.d/libvirtd.qemu.new
+mv $PKG/etc/logrotate.d/libvirtd.uml $PKG/etc/logrotate.d/libvirtd.uml.new
 mv $PKG/etc/sasl2/libvirt.conf $PKG/etc/sasl2/libvirt.conf.new
+
+# add an rc.libvirt to start the daemon
+install -D -m 0755 $CWD/rc.libvirt $PKG/etc/rc.d/rc.libvirt
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
