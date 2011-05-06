@@ -24,9 +24,10 @@
 # Modified to SBo format with the help of Yalla-One
 # Version bump and various other changes by Robby Workman
 # No additional license terms added
+# version bump by ponce <matteo.bernardini@gmail.com>
 
 PRGNAM=clamav
-VERSION=0.95.2
+VERSION=0.97
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
