@@ -1,0 +1,14 @@
+PRGNAM="cgit"
+VERSION="20110326"
+HOMEPAGE="http://hjemli.net/git/cgit/"
+DOWNLOAD="
+http://ponce.cc/slackware/sources/repo/cgit-20110326.tar.xz
+http://www.kernel.org/pub/software/scm/git/git-1.7.4.4.tar.bz2"
+MD5SUM="
+b2bb24e785691238f5ddfdb234099b73
+1313f71d62fa100b32fa313769a85f2a"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+MAINTAINER="ponce"
+EMAIL="matteo.bernardini@gmail.com"
+APPROVED=""

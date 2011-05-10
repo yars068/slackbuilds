@@ -4,7 +4,7 @@
 # Written by Michal Bialozor <bialyy@o2.pl>
 
 PRGNAM=libvirt
-VERSION=0.7.7
+VERSION=${VERSION:-0.9.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -35,6 +35,26 @@ else
   LIBDIRSUFFIX=""
 fi
 
+VIRTGROUP=${VIRTGROUP:-users}
+
+if [ "${XEN:-no}" = "no" ]; then
+  enable_xen="--without-xen"
+else
+  enable_xen="--with-xen"
+fi
+
+if [ "${VMWARE:-no}" = "no" ]; then
+  enable_vmware="--without-vmware"
+else
+  enable_vmware="--with-vmware"
+fi
+
+if [ "${ESX:-no}" = "no" ]; then
+  enable_esx="--without-esx"
+else
+  enable_esx="--with-esx"
+fi
+
 set -e
 
 rm -rf $PKG
@@ -58,10 +78,16 @@ CFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --enable-static=no \
   --enable-shared=yes \
-  --without-xen \
+  --without-polkit \
+  --without-avahi \
+  --without-openvz \
+  --with-qemu-group=$VIRTGROUP \
+  $enable_xen \
+  $enable_vmware \
+  $enable_esx \
   --build=$ARCH-slackware-linux
 
-make \
+make $NUMJOBS \
   HTML_DIR=/usr/doc/$PRGNAM-$VERSION \
   EXAMPLE_DIR=/usr/doc/$PRGNAM-$VERSION/examples
 make \
@@ -69,13 +95,27 @@ make \
   EXAMPLE_DIR=/usr/doc/$PRGNAM-$VERSION/examples \
   install-strip DESTDIR=$PKG
 
+# by default we got no certs
+sed -i -e 's|\#listen_tls\ =\ 0|listen_tls = 0|' $PKG/etc/libvirt/libvirtd.conf
+# we use $VIRTGROUP as our virtualization group
+sed -i -e "s|\#group\ =\ \"root\"|group = \"$VIRTGROUP\"|" $PKG/etc/libvirt/qemu.conf
+sed -i -e "s|\#unix_sock_group\ =\ \"libvirt\"|unix_sock_group = \"$VIRTGROUP\"|" \
+  $PKG/etc/libvirt/libvirtd.conf
+sed -i -e "s|\#unix_sock_rw_perms\ =\ \"0770\"|unix_sock_rw_perms = \"0770\"|" \
+  $PKG/etc/libvirt/libvirtd.conf
+
 # Don't clobber existing config files on upgrade
 mv $PKG/etc/libvirt/libvirtd.conf $PKG/etc/libvirt/libvirtd.conf.new
 mv $PKG/etc/libvirt/qemu.conf $PKG/etc/libvirt/qemu.conf.new
 mv $PKG/etc/libvirt/qemu/networks/default.xml \
    $PKG/etc/libvirt/qemu/networks/default.xml.new
-mv $PKG/etc/logrotate.d/libvirtd $PKG/etc/logrotate.d/libvirtd.new
+mv $PKG/etc/logrotate.d/libvirtd.lxc $PKG/etc/logrotate.d/libvirtd.lxc.new
+mv $PKG/etc/logrotate.d/libvirtd.qemu $PKG/etc/logrotate.d/libvirtd.qemu.new
+mv $PKG/etc/logrotate.d/libvirtd.uml $PKG/etc/logrotate.d/libvirtd.uml.new
 mv $PKG/etc/sasl2/libvirt.conf $PKG/etc/sasl2/libvirt.conf.new
+
+# add an rc.libvirt to start the daemon
+install -D -m 0755 $CWD/rc.libvirt $PKG/etc/rc.d/rc.libvirt
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
