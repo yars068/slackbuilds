@@ -23,7 +23,8 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=lighttpd
-VERSION=1.4.28
+OLDVERSION=1.4.28
+VERSION=r2790
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -78,11 +79,16 @@ set -e # Exit on most errors
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
-cd $PRGNAM-$VERSION
+rm -rf $PRGNAM-$OLDVERSION
+tar xvf $CWD/$PRGNAM-$OLDVERSION.tar.bz2
+cd $PRGNAM-$OLDVERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+
+# update to r2790
+xz -d -c $CWD/lighttpd-1.4.28_r2790.diff.xz | patch -p1
+
+sh autogen.sh
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \

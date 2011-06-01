@@ -37,6 +37,8 @@
 # 20100906_9aaca42 12/sep/2010 by ponce <matteo.bernardini@gmail.com>
 #            * Adapted to slackbuilds.org's autotools template.
 #            * updated to git snapshot.
+# 20110317_0a3a7fc 29/mar/2011 by ponce <matteo.bernardini@gmail.com>
+#            * updated to git snapshot.
 # 
 # Run 'sh lxrandr.SlackBuild --cleanup' to build a Slackware package.
 # The package is created in /tmp .
@@ -45,16 +47,14 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxrandr
-VERSION=${VERSION:-20100906_9aaca42}
+VERSION=${VERSION:-20110317_0a3a7fc}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
        *) ARCH=$( uname -m ) ;;
   esac
 fi
@@ -114,10 +114,8 @@ make install-strip DESTDIR=$PKG
 
 # Add documentation:
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION || true
+cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
-find $PKG/usr/doc -type f -exec chmod 644 {} \;
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
