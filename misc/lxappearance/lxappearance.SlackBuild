@@ -1,11 +1,12 @@
 #!/bin/sh
 
 # Slackware build script for LXAppearance
-
 # Originally by "majk" <majk@konstelacioj.info>
+# submitted by dugan [underscore] c [at] fastmail [dot] fm for 13.1
+# modified by ponce <matteo.bernardini@gmail.com> for the new rewrite
 
 PRGNAM=lxappearance
-VERSION=${VERSION:-0.5.0}
+VERSION=${VERSION:-20110702_4314ad6}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -42,7 +43,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
@@ -51,12 +52,17 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+sh autogen.sh
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
   --mandir=/usr/man \
+  --disable-debug \
   --build=$ARCH-slackware-linux
 
 make

@@ -1,0 +1,96 @@
+diff -Naur vice-2.3.orig/configure vice-2.3/configure
+--- vice-2.3.orig/configure	2011-02-26 19:07:06.000000000 +0100
++++ vice-2.3/configure	2011-06-03 18:07:22.080999838 +0200
+@@ -1049,7 +1049,7 @@
+ dvidir='${docdir}'
+ pdfdir='${docdir}'
+ psdir='${docdir}'
+-libdir='${exec_prefix}/lib'
++libdir='${exec_prefix}/lib64'
+ localedir='${datarootdir}/locale'
+ mandir='${datarootdir}/man'
+ 
+@@ -1572,7 +1572,7 @@
+                           [PREFIX]
+ 
+ By default, \`make install' will install all the files in
+-\`$ac_default_prefix/bin', \`$ac_default_prefix/lib' etc.  You can specify
++\`$ac_default_prefix/bin', \`$ac_default_prefix/lib64' etc.  You can specify
+ an installation prefix other than \`$ac_default_prefix' using \`--prefix',
+ for instance \`--prefix=\$HOME'.
+ 
+@@ -1585,7 +1585,7 @@
+   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
+   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
+   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+-  --libdir=DIR            object code libraries [EPREFIX/lib]
++  --libdir=DIR            object code libraries [EPREFIX/lib64]
+   --includedir=DIR        C header files [PREFIX/include]
+   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
+   --datarootdir=DIR       read-only arch.-independent data root [PREFIX/share]
+@@ -5495,7 +5495,7 @@
+   $as_echo_n "(cached) " >&6
+ else
+       # Double quotes because CPP needs to be expanded
+-    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib/cpp"
++    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib64/cpp"
+     do
+       ac_preproc_ok=false
+ for ac_c_preproc_warn_flag in '' yes
+@@ -7148,7 +7148,7 @@
+   $as_echo_n "(cached) " >&6
+ else
+       # Double quotes because CPP needs to be expanded
+-    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib/cpp"
++    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib64/cpp"
+     do
+       ac_preproc_ok=false
+ for ac_c_preproc_warn_flag in '' yes
+@@ -9368,7 +9368,7 @@
+   $as_echo_n "(cached) " >&6
+ else
+       # Double quotes because CXXCPP needs to be expanded
+-    for CXXCPP in "$CXX -E" "/lib/cpp"
++    for CXXCPP in "$CXX -E" "/lib64/cpp"
+     do
+       ac_preproc_ok=false
+ for ac_cxx_preproc_warn_flag in '' yes
+@@ -9543,7 +9543,7 @@
+   else
+         no_recursion=yes
+ 
+-    LDFLAGS="$LDFLAGS -L$with_resid/lib"
++    LDFLAGS="$LDFLAGS -L$with_resid/lib64"
+     CPPFLAGS="$CPPFLAGS -I$with_resid/include"
+ 
+         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for resid_version_string in -lresid" >&5
+@@ -9607,7 +9607,7 @@
+ $as_echo "#define HAVE_RESID /**/" >>confdefs.h
+ 
+     RESID_DIR=
+-    RESID_LIBS="$with_resid/lib/libresid.a"
++    RESID_LIBS="$with_resid/lib64/libresid.a"
+     RESID_INCLUDES="-I$with_resid/include"
+   fi
+ 
+@@ -19687,7 +19687,7 @@
+ 
+     ;;
+   *)
+-    VICEDIR="$PREFIX/lib/vice";
++    VICEDIR="$PREFIX/lib64/vice";
+      if false; then
+   ALTERNATE_DOCDIR_TRUE=
+   ALTERNATE_DOCDIR_FALSE='#'
+diff -Naur vice-2.3.orig/src/arch/unix/archdep.h vice-2.3/src/arch/unix/archdep.h
+--- vice-2.3.orig/src/arch/unix/archdep.h	2010-10-06 18:17:43.000000000 +0200
++++ vice-2.3/src/arch/unix/archdep.h	2011-06-03 18:03:40.995000012 +0200
+@@ -127,7 +127,7 @@
+ #ifdef __NetBSD__
+ #define LIBDIR PREFIX "/share/vice"
+ #else
+-#define LIBDIR PREFIX "/lib/vice"
++#define LIBDIR PREFIX "/lib64/vice"
+ #endif
+ 
+ #if defined(__FreeBSD__) || defined(__NetBSD__)

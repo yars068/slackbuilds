@@ -46,6 +46,10 @@
 #             * Update.
 # 0.1.9-1:    12/sep/2010 by ponce <matteo.bernardini@gmail.com>
 #             * Update.
+# 20110328_63caa93 1/mar/2011 by ponce <matteo.bernardini@gmail.com>
+#             * Updated to latest git snapshot.
+# 20110702_d6f3732 5/july/2011 by ponce <matteo.bernardini@gmail.com>
+#             * Updated to latest git snapshot.
 # 
 # Run 'sh lxterminal.SlackBuild' to build a Slackware package.
 # The package is created in /tmp .
@@ -56,16 +60,14 @@
 # Set initial variables:
 
 PRGNAM=lxterminal
-VERSION=${VERSION:-0.1.9}
+VERSION=${VERSION:-20110702_d6f3732}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
        *) ARCH=$( uname -m ) ;;
   esac
 fi
@@ -106,6 +108,8 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+sh autogen.sh
+
 CXXFLAGS="$SLKCFLAGS" \
 CFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -114,6 +118,7 @@ CFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --sysconfdir=/etc \
   --enable-man \
+  --disable-debug \
   --mandir=/usr/man \
   --program-prefix= \
   --program-suffix= \
@@ -123,10 +128,8 @@ make install-strip DESTDIR=$PKG
 
 # Add documentation:
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION || true
+cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
-find $PKG/usr/doc -type f -exec chmod 644 {} \;
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done

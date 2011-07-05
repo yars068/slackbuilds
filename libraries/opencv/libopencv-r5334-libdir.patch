@@ -1,0 +1,130 @@
+diff -Naur OpenCV-r5334.orig/CMakeLists.txt OpenCV-r5334/CMakeLists.txt
+--- OpenCV-r5334.orig/CMakeLists.txt	2011-06-01 10:01:04.000000000 +0200
++++ OpenCV-r5334/CMakeLists.txt	2011-06-02 21:05:07.461030630 +0200
+@@ -15,7 +15,7 @@
+ # Add these standard paths to the search paths for FIND_LIBRARY
+ # to find libraries from these locations first
+ if(UNIX)
+-    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /lib /usr/lib)
++    set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /lib${LIB_SUFFIX} /usr/lib${LIB_SUFFIX})
+ endif()
+ 
+ 
+@@ -26,7 +26,7 @@
+     set(CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "Installation Directory")
+ endif()
+ 
+-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
++set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+ 
+ set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
+@@ -546,11 +546,11 @@
+ 
+     string(REGEX MATCH "[0-9].[0-9]" PYTHON_VERSION_MAJOR_MINOR "${PYTHON_VERSION_FULL}")
+     if(UNIX)
+-        set(PYTHON_PLUGIN_INSTALL_PATH lib/python${PYTHON_VERSION_MAJOR_MINOR}/site-packages/opencv)
++        set(PYTHON_PLUGIN_INSTALL_PATH lib${LIB_SUFFIX}/python${PYTHON_VERSION_MAJOR_MINOR}/site-packages/opencv)
+         if(APPLE)
+           set(PYTHON_PACKAGES_PATH lib/python${PYTHON_VERSION_MAJOR_MINOR}/site-packages CACHE PATH "Where to install the python packages.")
+         else() #debian based assumed, install to the dist-packages.
+-          set(PYTHON_PACKAGES_PATH lib/python${PYTHON_VERSION_MAJOR_MINOR}/dist-packages CACHE PATH "Where to install the python packages.")
++          set(PYTHON_PACKAGES_PATH lib${LIB_SUFFIX}/python${PYTHON_VERSION_MAJOR_MINOR}/dist-packages CACHE PATH "Where to install the python packages.")
+         endif()
+     endif()
+     if(WIN32)
+@@ -1117,7 +1117,7 @@
+ #                       PROCESS SUBDIRECTORIES:
+ # ----------------------------------------------------------------------------
+ # Save libs and executables in the same place
+-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib CACHE PATH "Output directory for libraries" )
++set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib${LIB_SUFFIX} CACHE PATH "Output directory for libraries" )
+ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output directory for applications" )
+ 
+ if(WIN32)
+@@ -1168,7 +1168,7 @@
+ set(CMAKE_INCLUDE_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/include/opencv" "${CMAKE_INSTALL_PREFIX}/include")
+ set(CMAKE_BASE_INCLUDE_DIRS_CONFIGCMAKE "\"\"")
+ 
+-set(CMAKE_LIB_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/lib")
++set(CMAKE_LIB_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+ 
+ exec_program(mkdir ARGS "-p \"${CMAKE_BINARY_DIR}/unix-install/\"" OUTPUT_VARIABLE RET_VAL)
+ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/OpenCVConfig.cmake.in" "${CMAKE_BINARY_DIR}/unix-install/OpenCVConfig.cmake" IMMEDIATE @ONLY)
+@@ -1221,19 +1221,19 @@
+ #  Part 2/2: ${BIN_DIR}/unix-install/opencv.pc -> For use *with* "make install"
+ # prefix=/usr
+ # exec_prefix=${prefix}
+-# libdir=${exec_prefix}/lib
++# libdir=${exec_prefix}/lib${LIB_SUFFIX}
+ # includedir=${prefix}/include/opencv
+ # -------------------------------------------------------------------------------------------
+ set(prefix      ${CMAKE_INSTALL_PREFIX})
+ set(exec_prefix     "\${prefix}")
+-set(libdir      "\${exec_prefix}/lib")
++set(libdir      "\${exec_prefix}/lib${LIB_SUFFIX}")
+ set(includedir      "\${prefix}/include")
+ set(VERSION             ${OPENCV_VERSION})
+ 
+ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/opencv.pc.cmake.in" "${CMAKE_BINARY_DIR}/unix-install/opencv.pc" @ONLY IMMEDIATE)
+ 
+ if(UNIX)
+-    install(FILES ${CMAKE_BINARY_DIR}/unix-install/opencv.pc DESTINATION lib/pkgconfig)
++    install(FILES ${CMAKE_BINARY_DIR}/unix-install/opencv.pc DESTINATION lib${LIB_SUFFIX}/pkgconfig)
+ endif()
+ 
+ 
+diff -Naur OpenCV-r5334.orig/OpenCVModule.cmake OpenCV-r5334/OpenCVModule.cmake
+--- OpenCV-r5334.orig/OpenCVModule.cmake	2011-05-31 15:17:59.000000000 +0200
++++ OpenCV-r5334/OpenCVModule.cmake	2011-06-02 21:06:40.819962220 +0200
+@@ -88,8 +88,8 @@
+ 
+     install(TARGETS ${the_target}
+         RUNTIME DESTINATION bin COMPONENT main
+-        LIBRARY DESTINATION lib COMPONENT main
+-        ARCHIVE DESTINATION lib COMPONENT main)
++        LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
++        ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main)
+ 
+     install(FILES ${lib_hdrs}
+         DESTINATION include/opencv2/${name}
+diff -Naur OpenCV-r5334.orig/modules/ffmpeg/CMakeLists.txt OpenCV-r5334/modules/ffmpeg/CMakeLists.txt
+--- OpenCV-r5334.orig/modules/ffmpeg/CMakeLists.txt	2011-05-31 16:35:00.000000000 +0200
++++ OpenCV-r5334/modules/ffmpeg/CMakeLists.txt	2011-06-02 21:07:10.567015044 +0200
+@@ -59,6 +59,6 @@
+ 
+ install(TARGETS ${the_target}
+     RUNTIME DESTINATION bin COMPONENT main
+-    ARCHIVE DESTINATION lib COMPONENT main
+-    LIBRARY DESTINATION lib COMPONENT main
++    ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main
++    LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
+     )
+diff -Naur OpenCV-r5334.orig/modules/gpu/CMakeLists.txt OpenCV-r5334/modules/gpu/CMakeLists.txt
+--- OpenCV-r5334.orig/modules/gpu/CMakeLists.txt	2011-06-01 15:57:14.000000000 +0200
++++ OpenCV-r5334/modules/gpu/CMakeLists.txt	2011-06-02 21:07:49.870999437 +0200
+@@ -149,8 +149,8 @@
+ 
+ install(TARGETS ${the_target}
+ 	RUNTIME DESTINATION bin COMPONENT main
+-	LIBRARY DESTINATION lib COMPONENT main
+-	ARCHIVE DESTINATION lib COMPONENT main)
++	LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
++	ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main)
+ 
+ install(FILES ${lib_hdrs}
+ 	DESTINATION include/opencv2/${name}
+diff -Naur OpenCV-r5334.orig/modules/highgui/CMakeLists.txt OpenCV-r5334/modules/highgui/CMakeLists.txt
+--- OpenCV-r5334.orig/modules/highgui/CMakeLists.txt	2011-06-02 12:02:08.000000000 +0200
++++ OpenCV-r5334/modules/highgui/CMakeLists.txt	2011-06-02 21:08:10.298993046 +0200
+@@ -347,8 +347,8 @@
+ 
+ install(TARGETS ${the_target}
+     RUNTIME DESTINATION bin COMPONENT main
+-    LIBRARY DESTINATION lib COMPONENT main
+-    ARCHIVE DESTINATION lib COMPONENT main)
++    LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT main
++    ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT main)
+ 
+ install(FILES ${highgui_ext_hdrs}
+         DESTINATION include/opencv2/highgui
