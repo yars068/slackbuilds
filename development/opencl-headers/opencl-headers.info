@@ -1,0 +1,24 @@
+PRGNAM="opencl-headers"
+VERSION="1.1"
+HOMEPAGE="http://www.khronos.org/opencl/"
+DOWNLOAD="\
+  http://www.khronos.org/registry/cl/api/1.1/cl.h \
+  http://www.khronos.org/registry/cl/api/1.1/cl.hpp \
+  http://www.khronos.org/registry/cl/api/1.1/cl_ext.h \
+  http://www.khronos.org/registry/cl/api/1.1/cl_gl.h \
+  http://www.khronos.org/registry/cl/api/1.1/cl_gl_ext.h \
+  http://www.khronos.org/registry/cl/api/1.1/cl_platform.h \
+  http://www.khronos.org/registry/cl/api/1.1/opencl.h"
+MD5SUM="\
+  00b0e17089ff618ad727c8e0328c22ca \
+  801cd16dda62704b450865d4e752a9c5 \
+  1e9627453c1760b9d918f63848b4fbea \
+  502d9509e7331c8fef68ee4fe843775f \
+  3a34c61be65bf98a0d5f0cc74237dfd3 \
+  8a7fe4abbcab1b56683b23713da75601 \
+  8bc589e602246900e4435694d5bc4379"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+MAINTAINER="ponce"
+EMAIL="matteo.bernardini@gmail.com"
+APPROVED=""

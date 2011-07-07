@@ -35,6 +35,10 @@
 # 20100905_132b97e 12/sep/2010 by ponce <matteo.bernardini@gmail.com>
 #             * Adapted to slackbuilds.org's autotools template.
 #             * updated to git snapshot.
+# 20110314_d620ca8 29/mar/2011 by ponce <matteo.bernardini@gmail.com>
+#             * updated to latest git snapshot.
+# 20110702_70a02e7 7/july/2011 by ponce <matteo.bernardini@gmail.com>
+#             * updated to latest git snapshot.
 # 
 # Run 'sh lxshortcut.SlackBuild' to build a Slackware package.
 # The package is created in /tmp .
@@ -43,21 +47,19 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxshortcut
-VERSION=${VERSION:-20100905_132b97e}
+VERSION=${VERSION:-20110702_70a02e7}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
     arm*) ARCH=arm ;;
-    # Unless $ARCH is already set, use uname -m for all other archs:
        *) ARCH=$( uname -m ) ;;
   esac
 fi
 
-DOCS="AUTHORS COPYING ChangeLog NEWS README TODO"
+DOCS="AUTHORS COPYING ChangeLog NEWS README"
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
@@ -111,10 +113,8 @@ make install-strip DESTDIR=$PKG
 
 # Add documentation:
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION || true
+cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
-find $PKG/usr/doc -type f -exec chmod 644 {} \;
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

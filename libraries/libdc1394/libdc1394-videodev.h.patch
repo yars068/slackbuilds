@@ -1,0 +1,33 @@
+diff -Naur libdc1394-2.1.2.orig/configure.in libdc1394-2.1.2/configure.in
+--- libdc1394-2.1.2.orig/configure.in	2009-06-11 06:05:47.000000000 +0200
++++ libdc1394-2.1.2/configure.in	2011-06-02 14:19:29.276286673 +0200
+@@ -72,6 +72,8 @@
+ AM_CONDITIONAL(HAVE_WINDOWS, test x$have_windows = xtrue)
+ AM_CONDITIONAL(HAVE_LIBRAW1394, test x$libraw1394 = xtrue)
+ AM_CONDITIONAL(HAVE_LIBUSB, test "x$LIBUSB_LIBS" != "x")
++AC_CHECK_HEADER([linux/videodev.h], [have_videodev=true])
++AM_CONDITIONAL(HAVE_VIDEODEV, test x$have_videodev = xtrue)
+ 
+ AC_ARG_ENABLE([examples], [AS_HELP_STRING([--disable-examples], [don't build example programs])], [build_examples=$enableval], [build_examples=true])
+ 
+diff -Naur libdc1394-2.1.2.orig/examples/Makefile.am libdc1394-2.1.2/examples/Makefile.am
+--- libdc1394-2.1.2.orig/examples/Makefile.am	2009-06-11 06:05:47.000000000 +0200
++++ libdc1394-2.1.2/examples/Makefile.am	2011-06-02 14:21:41.138347947 +0200
+@@ -1,5 +1,5 @@
+ MAINTAINERCLEANFILES = Makefile.in
+-dist_man_MANS = dc1394_multiview.1  dc1394_reset_bus.1  dc1394_vloopback.1  grab_color_image.1  grab_gray_image.1  grab_partial_image.1
++dist_man_MANS = dc1394_multiview.1  dc1394_reset_bus.1  grab_color_image.1  grab_gray_image.1  grab_partial_image.1  
+ AM_CPPFLAGS = -I$(top_srcdir)
+ 
+ A = grab_gray_image grab_partial_image grab_color_image \
+@@ -8,7 +8,10 @@
+ B = dc1394_reset_bus
+ 
+ if HAVE_LINUX
++if HAVE_VIDEODEV
+ B += dc1394_vloopback
++dist_man_MANS += dc1394_vloopback.1
++endif
+ if HAVE_XV
+ A += dc1394_multiview
+ endif

@@ -23,7 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libfm
-VERSION=${VERSION:-20110316_c604674}
+VERSION=${VERSION:-20110628_e2e762a}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -69,7 +69,7 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-sh autogen.sh || true
+sh autogen.sh
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -78,13 +78,22 @@ CXXFLAGS="$SLKCFLAGS" \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
-  --enable-udisks \
-  --disable-debug \
-  --disable-static \
+  --enable-udisks=yes \
+  --enable-static=no \
+  --enable-gtkdoc=yes \
   --build=$ARCH-slackware-linux
 
 make
 make install-strip DESTDIR=$PKG
+
+# add handlers for terminal and archiver from LXDE components to the default config
+sed -i -e 's|\[ui\]|terminal=lxterminal -e %s\narchiver=xarchiver %s\n\n[ui]|' \
+  $PKG/etc/xdg/libfm/libfm.conf
+# add them also for web browser and mail client using those of Slackware
+sed -i -e 's|^WebBrowser=.*|WebBrowser=mozilla-firefox.desktop|' \
+  $PKG/etc/xdg/libfm/pref-apps.conf
+sed -i -e 's|^MailClient=.*|MailClient=mozilla-thunderbird.desktop|' \
+  $PKG/etc/xdg/libfm/pref-apps.conf
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING README TODO \

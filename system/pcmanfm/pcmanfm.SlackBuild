@@ -24,7 +24,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=pcmanfm
-VERSION=20110316_9c4603d
+VERSION=${VERSION:-20110704_827be20}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -73,11 +73,6 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# if you want disable root use warning
-if [ "$BEND_ME_OVER" = "kthxbai" ]; then
-  patch -p1 < $CWD/norootwarning.patch
-fi
-
 sh autogen.sh
 
 CFLAGS="$SLKCFLAGS" \
@@ -87,7 +82,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
-  --disable-debug \
+  --enable-static=no \
   --build=$ARCH-slackware-linux
 
 make
@@ -95,9 +90,6 @@ make install-strip DESTDIR=$PKG
 
 # A minor polish
 sed -i 's/Name=File\ Manager/Name=PCMan\ File\ Manager/' $PKG/usr/share/applications/pcmanfm.desktop
-
-find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
-  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION
