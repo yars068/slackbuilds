@@ -1,3 +1,10 @@
 lxpolkit (policykit agent for LXDE)
 
 LXPolkit is a minimalized policykit authentication agent for the LXDE desktop.
+This is an alternative to polkit-gnome in stock slackware and disables it
+under LXDE during install. If, after having installed this version, a rollback to
+polkit-gnome for LXDE is preferred, remove lxpolkit and run this sed command
+that re-enables polkit-gnome for LXDE (reverting doinst.sh):
+
+sed -i -e 's|KDE;LXDE;|KDE;|' \
+  /etc/xdg/autostart/polkit-gnome-authentication-agent-1.desktop
