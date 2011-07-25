@@ -39,6 +39,9 @@
 #             * fixed lxpanel and xinitrc
 # 20110313_736ded3: 29/mar/2011 by ponce <matteo.bernardini@gmail.com>
 #             * updated to git version.
+# 20110328_87c368d: 05/apr/2011 by ponce <matteo.bernardini@gmail.com>
+#             * small version bump to fix an issue with pcmanfm conf.
+#             * su_cmd defaults to gksu-polkit. 
 # 
 # Run 'sh lxde-common.SlackBuild' to build a Slackware package.
 # The package is created in /tmp .
@@ -47,7 +50,7 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxde-common
-VERSION=${VERSION:-20110313_736ded3}
+VERSION=${VERSION:-20110328_87c368d}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -136,6 +139,9 @@ mkdir -p $PKG/usr/share/apps/kdm/sessions
 
 # Patch desktop.conf to use the Tango icon theme
 sed -i -e 's#nuoveXT2#Tango#' $PKG/etc/xdg/lxsession/LXDE/desktop.conf
+
+# Patch pcmanfm.conf to use gksu-polkit instead of xdg-su
+sed -i -e "s|su_cmd.*|su_cmd=gksu-polkit '%s'|" $PKG/etc/xdg/pcmanfm/LXDE/pcmanfm.conf
 
 # Add documentation:
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION

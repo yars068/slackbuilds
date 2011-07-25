@@ -1,3 +1,6 @@
+Sat 12 Mar 2011 - ponce (matteo.bernardini@gmail.com)
+- SlackBuild script for Cherokee 1.2.1
+
 Mon 07 Sep 2009 - Pablo Hernan Saro (pablosaro@gmail.com)
 - SlackBuild script for Cherokee 0.99.24
 - Cherokee rc script updated

@@ -1,0 +1,5 @@
+libffi (portable foreign function interface library)
+
+The libffi library provides a portable, high level programming
+interface to various calling conventions allowing calls to any
+function specified by a call interface description at run-time.

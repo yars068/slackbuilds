@@ -1,0 +1,25 @@
+From 62c77fa920e0314597e5329e6638cf451edf3659 Mon Sep 17 00:00:00 2001
+From: Andrea Florio <andrea@opensuse.org>
+Date: Mon, 25 Jul 2011 00:55:40 +0200
+Subject: [PATCH] fixed compiler warning
+
+---
+ src/plugins/cpufreq/cpufreq.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/plugins/cpufreq/cpufreq.c b/src/plugins/cpufreq/cpufreq.c
+index 9748ae1..4aff07b 100644
+--- a/src/plugins/cpufreq/cpufreq.c
++++ b/src/plugins/cpufreq/cpufreq.c
+@@ -157,7 +157,7 @@ frequency_menu(cpufreq *cf){
+ 
+     if (!(fp = fopen( sstmp, "r"))) {
+         printf("cpufreq: cannot open %s\n",sstmp);
+-        return;
++        return 0;
+     }
+ 
+     GtkMenu* menu = GTK_MENU(gtk_menu_new());
+-- 
+1.7.0.1
+
