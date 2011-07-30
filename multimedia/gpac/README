@@ -4,7 +4,7 @@ various audio and video codecs into mp4 container
 
 Dependencies:
 REQUIRED: ffmpeg xvidcore faad2 a52dec
-OPTIONAL: wxGTK
+OPTIONAL: wxGTK xulrunner
 
-wxGTK is disabled by default, can be turned on by passing WX_SUPPORT=yes 
-to the script
+wxGTK and xulrunner support are disabled by default, can be turned on by
+passing WX_SUPPORT=yes and XULRUNNER=yes to the script
