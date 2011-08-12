@@ -26,7 +26,7 @@
 # No additional license terms added
 
 PRGNAM=clamav
-VERSION=0.95.2
+VERSION=${VERSION:-0.97.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -95,6 +95,31 @@ cd $PRGNAM-$VERSION || exit 1
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# Specify the desired mirror in the update config file
+# http://www.iana.org/cctld/cctld-whois.htm
+sed -i "s/^\#DatabaseMirror.*/DatabaseMirror db.${COUNTRY}.clamav.net/" etc/freshclam.conf
+
+# and patch the configuration files (still with sed)
+sed -i "s/^Example/#Example/" etc/freshclam.conf
+sed -i "s/^\#LogSyslog/LogSyslog/" etc/freshclam.conf
+sed -i "s/^\#LogFacility/LogFacility/" etc/freshclam.conf
+sed -i "s/^\#PidFile.*/PidFile \/var\/run\/clamav\/freshclam.pid/" etc/freshclam.conf
+sed -i "s/^\#UpdateLogFile.*/UpdateLogFile \/var\/log\/clamav\/freshclam.log/" etc/freshclam.conf
+sed -i "s/^\#AllowSupplementaryGroups.*/AllowSupplementaryGroups yes/" etc/freshclam.conf
+sed -i "s/^\#DatabaseOwner.*/DatabaseOwner ${CLAMUSR}/" etc/freshclam.conf
+sed -i "s/^\#NotifyClamd.*/NotifyClamd \/etc\/clamd.conf/" etc/freshclam.conf
+sed -i "s/^Example/#Example/" etc/clamd.conf
+sed -i "s/^\#LogSyslog/LogSyslog/" etc/clamd.conf
+sed -i "s/^\#LogFacility/LogFacility/" etc/clamd.conf
+sed -i "s/^\#PidFile.*/PidFile \/var\/run\/clamav\/clamd.pid/" etc/clamd.conf
+sed -i "s/^\#LocalSocket\ .*/LocalSocket \/var\/run\/clamav\/clamd.socket/" etc/clamd.conf
+sed -i "s/^\#LocalSocketGroup.*/LocalSocketGroup ${CLAMGRP}/" etc/clamd.conf
+sed -i "s/^\#LocalSocketMode/LocalSocketMode/" etc/clamd.conf
+sed -i "s/^\#FixStaleSocket/FixStaleSocket/" etc/clamd.conf
+sed -i "s/^\#User.*/User ${CLAMUSR}/" etc/clamd.conf
+sed -i "s/^\#AllowSupplementaryGroups.*/AllowSupplementaryGroups yes/" etc/clamd.conf
+sed -i "s/^\#ExitOnOOM/ExitOnOOM/" etc/clamd.conf
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -113,23 +138,15 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make
 
-# Patch the configuration files
-patch -p1 < $CWD/config/clamd.conf.patch
-patch -p1 < $CWD/config/freshclam.conf.patch
-
 make install DESTDIR=$PKG
 
 # Prepare the config files:
 mv $PKG/etc/clamd.conf $PKG/etc/clamd.conf.new
 mv $PKG/etc/freshclam.conf $PKG/etc/freshclam.conf.new
 
-# Specify the desired mirror in the update config file
-# http://www.iana.org/cctld/cctld-whois.htm
-sed -i "s/@COUNTRY@/${COUNTRY}/g" $PKG/etc/freshclam.conf.new
-
 # Our rc script:
 mkdir -p $PKG/etc/rc.d/
-cp $CWD/config/rc.clamav $PKG/etc/rc.d/rc.clamav.new
+cp $CWD/rc.clamav $PKG/etc/rc.d/rc.clamav.new
 chown root:root $PKG/etc/rc.d/rc.clamav.new
 chmod 0755 $PKG/etc/rc.d/rc.clamav.new
 
@@ -142,18 +159,15 @@ chown -R ${CLAMUSR}:${CLAMGRP} $PKG/var/lib/clamav
 chmod 0770 $PKG/var/lib/clamav
 chmod 0660 $PKG/var/lib/clamav/*
 
-# Create pid and socket directory
-mkdir -p $PKG/var/run/clamav
-chown -R ${CLAMUSR}:${CLAMGRP} $PKG/var/run/clamav
-chmod 771 $PKG/var/run/clamav
+# Create pid and socket directory and a log one too
+mkdir -p $PKG/var/{log,run}/clamav
+chown -R ${CLAMUSR}:${CLAMGRP} $PKG/var/{log,run}/clamav
+chmod 771 $PKG/var/{log,run}/clamav
 
 # Create log files in such a way that they won't clobber existing ones
-mkdir -p $PKG/var/log
-touch $PKG/var/log/{clamd,freshclam}.log.new
-chown ${CLAMUSR}:${CLAMGRP} $PKG/var/log/clamd.log.new
-chmod 660 $PKG/var/log/clamd.log.new
-chown ${CLAMUSR}:${CLAMGRP} $PKG/var/log/freshclam.log.new
-chmod 660 $PKG/var/log/freshclam.log.new
+touch $PKG/var/log/clamav/{clamd,freshclam}.log.new
+chown ${CLAMUSR}:${CLAMGRP} $PKG/var/log/clamav/{clamd,freshclam}.log.new
+chmod 660 $PKG/var/log/clamav/{clamd,freshclam}.log.new
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
