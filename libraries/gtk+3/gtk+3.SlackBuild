@@ -1,0 +1,180 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2011  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# modified for gtk+3 by ponce <matteo.bernardini@gmail.com>
+# many thank to steve kennedy for the missing parts hinted in gnomeslackbuild.
+
+VERSION=${VERSION:-3.0.11}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_SBo}
+
+NUMJOBS=${NUMJOBS:-" -j2 "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i486 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+OUTPUT=${OUTPUT:-/tmp}
+PKG=$TMP/package-gtk3
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/usr
+cd $TMP
+rm -rf gtk+-$VERSION
+tar xvf $CWD/gtk+-$VERSION.tar.?z* || exit 1
+cd gtk+-$VERSION
+
+# Use /etc/gtk-3.0/$ARCH-slackware-linux instead of /etc/gtk-3.0/
+sed -i "s/GTK_SYSCONFDIR, \\\"gtk-3\\.0\\\"/GTK_SYSCONFDIR, \\\"gtk-3\\.0\\\", HOST/g" ./gtk/gtkrc.c
+sed -i 's/sysconfdir)\\"/&      \\\n\t-DHOST=\\\"$(host_triplet)\\\"/g' \
+gtk/Makefile.am \
+modules/input/Makefile.am
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Regenerate ./configure:
+libtoolize --force
+autoreconf -vif
+
+# Autoconf changes linux to linux-gnu.
+# Our host is $ARCH-slackware-linux not $ARCH-slackware-linux-gnu:
+sed -i -e 's#linux|linux-gnu|#linux|linux|#' config.sub
+
+CFLAGS="$SLKCFLAGS -DHOST='"'"${ARCH}-slackware-linux"'"'" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --enable-xinput \
+  --enable-xkb \
+  --enable-gtk-doc-html=no \
+  --enable-introspection=no \
+  --build=$ARCH-slackware-linux
+
+make $NUMJOBS || make || exit 1
+
+# Check the host value that is passed to the compile to the one in this script:
+host="$ARCH-slackware-linux"
+compile_host=$(grep 'host_triplet =' gtk/Makefile | sed -e "s/.* = //")
+if [ "x$compile_host" != "x$host" ]; then
+  echo "Host mismatch: compile='$compile_host', SlackBuild='$host'" && exit 1
+fi
+
+make install \
+  RUN_QUERY_IMMODULES_TEST=false RUN_QUERY_LOADER_TEST=false \
+  DESTDIR=$PKG \
+  || exit 1
+
+# I'm spamming your root partition because /etc/gtk-3.0 won't install to $DESTDIR
+make install || exit 1
+cp -a /etc/gtk-3.0/* $PKG/etc/gtk-3.0/
+rm -rf $PKG/etc/gtk-3.0/$host
+mkdir -p $PKG/etc/gtk-3.0/$host
+mv $PKG/etc/gtk-3.0/im-multipress.conf $PKG/etc/gtk-3.0/$host/im-multipress.conf.new
+ 
+# Install a "starter" gtkrc
+echo 'gtk-theme-name="GTK+"' > $PKG/etc/gtk-3.0/$host/gtkrc.new
+
+# We need to have separate 32-bit and 64-bit binaries
+# for places where we have two copies of the GTK+ package installed.
+# (we might have x86_64 and i486 packages on the same system, for example.)
+case "$host" in
+  s390x*|x86_64*)
+   mv $PKG/usr/bin/gtk-query-immodules-3.0{,-64}
+   ( cd $PKG/usr/bin
+     ln -sf gtk-query-immodules-3.0-64 gtk-query-immodules-3.0
+   )
+   ;;
+  *)
+   mv $PKG/usr/bin/gtk-query-immodules-.0{,-32}
+   ( cd $PKG/usr/bin
+     ln -sf gtk-query-immodules-2.0-32 gtk-query-immodules-3.0
+   )
+   ;;
+esac
+
+# Install wrappers for the binaries
+# this is the pristine steve kennedy's gsb version
+install -m 0755 $CWD/update-gtk-immodules-3.0 $PKG/usr/bin/update-gtk-immodules-3.0
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
+mkdir -p $PKG/usr/doc/gtk+-$VERSION
+cp -a \
+  AUTHORS COPYING* NEWS README* \
+  $PKG/usr/doc/gtk+-$VERSION
+( cd $PKG/usr/doc/gtk+-$VERSION
+  ln -s ../../share/gtk-doc/html/gail-libgail-util .
+  ln -s ../../share/gtk-doc/html/gdk .
+  ln -s ../../share/gtk-doc/html/gtk .
+)
+find $PKG/usr/doc/gtk+-$VERSION/ -type f -exec chmod 644 {} \;
+chown -R root:root $PKG/usr/doc/gtk+-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+# this is the pristine steve kennedy's gsb version
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/gtk+3-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+
