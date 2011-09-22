@@ -7,8 +7,8 @@
 # Modified by Heinz Wiesinger <pprkut@liwjatan.org>
 
 PRGNAM=ffmpeg
-VERSION=${VERSION:-0.6.1}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-0.8.3}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -42,6 +42,8 @@ fi
 # has no influence on the other parts of ffmpeg so there's
 # not really a point in bothering
 PKGARCH=$(uname -m)_custom
+
+NUMJOBS=${NUMJOBS:--j2}
 
 # Configure ffmpeg features not autodetected by default
 # Unfortunately ffmpeg's configure doesn't support --enable-feature=yes
@@ -133,6 +135,36 @@ else
   libxvid="--enable-libxvid"
 fi
 
+if [ "${FREI0R:-no}" = "no" ]; then
+  frei0r=""
+else
+  frei0r="--enable-frei0r"
+fi
+
+if [ "${OPENCV:-no}" = "no" ]; then
+  libopencv=""
+else
+  libopencv="--enable-libopencv"
+fi
+
+if [ "${VAAPI:-no}" = "no" ]; then
+  libvaapi=""
+else
+  libvaapi="--enable-vaapi"
+fi
+
+if [ "${VDPAU:-no}" = "no" ]; then
+  libvdpau=""
+else
+  libvdpau="--enable-vdpau"
+fi
+
+if [ "${CELT:-no}" = "no" ]; then
+  libcelt=""
+else
+  libcelt="--enable-libcelt"
+fi
+
 set -e
 
 rm -rf $PKG
@@ -163,7 +195,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-swscale \
   --enable-x11grab \
   --enable-avfilter \
-  --enable-avfilter-lavf \
   --arch=$ARCH \
   $openjpeg \
   $libdc1394 \
@@ -179,9 +210,14 @@ CXXFLAGS="$SLKCFLAGS" \
   $libgsm \
   $libvpx \
   $librtmp \
+  $frei0r \
+  $libopencv \
+  $libvaapi \
+  $libvdpau \
+  $libcelt \
   $opencore_amr
 
-make
+make $NUMJOBS
 make install DESTDIR=$PKG
 make install-man DESTDIR=$PKG
 
@@ -191,7 +227,7 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a Changelog* COPYING* CREDITS* INSTALL* MAINTAINERS* \
+cp -a COPYING* CREDITS* INSTALL* MAINTAINERS* \
   README* doc/TODO* doc/*.txt $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a doc/*.html $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
