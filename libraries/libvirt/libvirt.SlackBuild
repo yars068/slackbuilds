@@ -4,8 +4,8 @@
 # Written by Michal Bialozor <bialyy@o2.pl>
 
 PRGNAM=libvirt
-VERSION=0.9.4
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-0.9.4}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -35,6 +35,26 @@ else
   LIBDIRSUFFIX=""
 fi
 
+VIRTGROUP=${VIRTGROUP:-users}
+
+if [ "${XEN:-no}" = "no" ]; then
+  enable_xen="--without-xen"
+else
+  enable_xen="--with-xen"
+fi
+
+if [ "${VMWARE:-no}" = "no" ]; then
+  enable_vmware="--without-vmware"
+else
+  enable_vmware="--with-vmware"
+fi
+
+if [ "${ESX:-no}" = "no" ]; then
+  enable_esx="--without-esx"
+else
+  enable_esx="--with-esx"
+fi
+
 set -e
 
 rm -rf $PKG
@@ -58,7 +78,11 @@ CFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --enable-static=no \
   --enable-shared=yes \
-  --without-xen \
+  --without-openvz \
+  --with-qemu-group=$VIRTGROUP \
+  $enable_xen \
+  $enable_vmware \
+  $enable_esx \
   --build=$ARCH-slackware-linux
 
 make \
@@ -68,6 +92,18 @@ make \
   HTML_DIR=/usr/doc/$PRGNAM-$VERSION \
   EXAMPLE_DIR=/usr/doc/$PRGNAM-$VERSION/examples \
   install-strip DESTDIR=$PKG
+
+# add an rc.libvirt to start the daemon
+install -D -m 0755 $CWD/rc.libvirt $PKG/etc/rc.d/rc.libvirt.new
+
+# by default we got no certs
+sed -i -e 's|\#listen_tls\ =\ 0|listen_tls = 0|' $PKG/etc/libvirt/libvirtd.conf
+# we use $VIRTGROUP as our virtualization group
+sed -i -e "s|\#group\ =\ \"root\"|group = \"$VIRTGROUP\"|" $PKG/etc/libvirt/qemu.conf
+sed -i -e "s|\#unix_sock_group\ =\ \"libvirt\"|unix_sock_group = \"$VIRTGROUP\"|" \
+  $PKG/etc/libvirt/libvirtd.conf
+sed -i -e "s|\#unix_sock_rw_perms\ =\ \"0770\"|unix_sock_rw_perms = \"0770\"|" \
+  $PKG/etc/libvirt/libvirtd.conf
 
 mv $PKG/etc/libvirt/qemu.conf \
    $PKG/etc/libvirt/qemu.conf.new
