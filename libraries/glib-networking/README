@@ -1,0 +1,4 @@
+glib-networking (glib network extensions)
+
+glib-networking provides network-related giomodules for glib such as
+a proxy resolver and a gnutls gtlsconnection implementation.
