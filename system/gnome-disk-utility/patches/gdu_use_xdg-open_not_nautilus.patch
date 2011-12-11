@@ -1,0 +1,25 @@
+diff -Nur gnome-disk-utility-2.32.0.orig//src/palimpsest/gdu-section-volumes.c gnome-disk-utility-2.32.0/src/palimpsest/gdu-section-volumes.c
+--- gnome-disk-utility-2.32.0.orig//src/palimpsest/gdu-section-volumes.c	2010-08-05 12:03:58.000000000 -0500
++++ gnome-disk-utility-2.32.0/src/palimpsest/gdu-section-volumes.c	2011-01-17 14:07:57.960802673 -0600
+@@ -1375,16 +1375,19 @@
+         /* We want to use nautilus instead of gtk_show_uri() because
+          * the latter doesn't handle automatically mounting the mount
+          * - maybe gtk_show_uri() should do that though...
++         * 
++         * Well, then there's this: 
++         * https://bugzilla.gnome.org/show_bug.cgi?id=638938#c1 
+          */
+ 
+-        s = g_strdup_printf ("nautilus \"%s\"", uri);
++        s = g_strdup_printf ("xdg-open \"%s\"", uri);
+ 
+         error = NULL;
+         if (!g_spawn_command_line_async (s, &error)) {
+                 GtkWidget *dialog;
+                 dialog = gdu_error_dialog_new (GTK_WINDOW (gdu_shell_get_toplevel (gdu_section_get_shell (GDU_SECTION (section)))),
+                                                gdu_section_get_presentable (GDU_SECTION (section)),
+-                                               _("Error spawning nautilus: %s"),
++                                               _("Error spawning file manager: %s"),
+                                                error);
+                 gtk_widget_show_all (dialog);
+                 gtk_window_present (GTK_WINDOW (dialog));

@@ -3,9 +3,10 @@
 # Slackware build script for gvfs
 
 # Written by Luis Henrique <lmello.009@gmail.com>
+# Thanks from ponce <matteo.bernardini@gmail.com> to Steve Kennedy for the hints :)
 
 PRGNAM=gvfs
-VERSION=${VERSION:-1.6.7}
+VERSION=${VERSION:-1.8.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -60,6 +61,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
+  --disable-static \
+  --disable-hal \
   --build=$ARCH-slackware-linux
 
 make
@@ -73,9 +76,17 @@ cp -a \
   AUTHORS ChangeLog COPYING INSTALL MAINTAINERS NEWS README* \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
+chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat <<EOF > $PKG/install/doinst.sh
+# create the gio module cache during postinstall
+if [ -x /usr/bin/gio-querymodules ]; then
+  chroot . /usr/bin/gio-querymodules /usr/lib${LIBDIRSUFFIX}/gio/modules/ >/dev/null 2>&1
+fi
+EOF
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

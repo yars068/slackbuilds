@@ -25,7 +25,7 @@
 #   SUCH DAMAGE.
 
 PRGNAM=menu-cache
-VERSION=${VERSION:-0.3.2}
+VERSION=${VERSION:-20110702_b368b5d}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -61,7 +61,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
@@ -69,6 +69,8 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
+
+sh autogen.sh
 
 LDFLAGS="$SLKLDFLAGS" \
 CFLAGS="$SLKCFLAGS" \
@@ -79,16 +81,13 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --sysconfdir=/etc \
   --mandir=/usr/man \
-  --disable-static \
+  --enable-static=no \
   --program-prefix= \
   --program-suffix= \
   --build=$ARCH-slackware-linux \
   
 make
-make install DESTDIR=$PKG
-
-find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
-  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+make install-strip DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \

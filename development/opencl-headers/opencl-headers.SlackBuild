@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Slackware build script for opencl-headers
+# Written by ponce <matteo.bernardini@gmail.com>
+
+PRGNAM=opencl-headers
+VERSION=${VERSION:-1.1}
+BUILD=${BUILD:-1}
+TAG=${TAG:-_SBo}
+ARCH=noarch
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/usr/include/CL $OUTPUT
+cd $PKG/usr/include/CL
+for HEADER in cl.h cl.hpp cl_ext.h cl_gl.h cl_gl_ext.h cl_platform.h opencl.h; do
+  install -m 0644 $CWD/$HEADER $PKG/usr/include/CL/
+done
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

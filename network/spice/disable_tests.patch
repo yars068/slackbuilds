@@ -1,0 +1,30 @@
+--- spice-0.10.0/configure.orig	2011-11-10 16:02:17.000000000 +0100
++++ spice-0.10.0/configure	2011-11-25 07:17:16.775848497 +0100
+@@ -18468,7 +18468,7 @@
+ AM_BACKSLASH='\'
+ 
+ 
+-ac_config_files="$ac_config_files Makefile spice-server.pc common/Makefile common/win/Makefile common/win/my_getopt-1.5/Makefile python_modules/Makefile server/Makefile server/tests/Makefile client/Makefile"
++ac_config_files="$ac_config_files Makefile spice-server.pc common/Makefile common/win/Makefile common/win/my_getopt-1.5/Makefile python_modules/Makefile server/Makefile client/Makefile"
+ 
+ cat >confcache <<\_ACEOF
+ # This file is a shell script that caches the results of configure
+@@ -19639,7 +19639,6 @@
+     "common/win/my_getopt-1.5/Makefile") CONFIG_FILES="$CONFIG_FILES common/win/my_getopt-1.5/Makefile" ;;
+     "python_modules/Makefile") CONFIG_FILES="$CONFIG_FILES python_modules/Makefile" ;;
+     "server/Makefile") CONFIG_FILES="$CONFIG_FILES server/Makefile" ;;
+-    "server/tests/Makefile") CONFIG_FILES="$CONFIG_FILES server/tests/Makefile" ;;
+     "client/Makefile") CONFIG_FILES="$CONFIG_FILES client/Makefile" ;;
+ 
+   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
+--- spice-0.10.0/server/Makefile.in.orig	2011-11-10 16:02:16.000000000 +0100
++++ spice-0.10.0/server/Makefile.in	2011-11-25 07:18:44.733749237 +0100
+@@ -375,7 +375,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = . tests
++SUBDIRS = .
+ NULL = 
+ INCLUDES = \
+ 	-I$(top_srcdir)				\
