@@ -1,0 +1,7 @@
+gnome-disk-utility (storage device library and toolset)
+
+gnome-disk-utility provides libraries and
+applications for dealing with storage devices.
+
+To enable avahi support (needs avahi) pass the parameter
+AVAHI=yes when launching the script.

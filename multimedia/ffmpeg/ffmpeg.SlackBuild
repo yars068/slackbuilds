@@ -7,7 +7,7 @@
 # Modified by Heinz Wiesinger <pprkut@liwjatan.org>
 
 PRGNAM=ffmpeg
-VERSION=${VERSION:-0.8.7}
+VERSION=${VERSION:-0.9}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -65,6 +65,8 @@ libopencv=""  ; [ "${OPENCV:-no}" != "no" ]       && libopencv="--enable-libopen
 librtmp=""    ; [ "${RTMP:-no}" != "no" ]         && librtmp="--enable-librtmp"
 dirac_fast="" ; [ "${SCHROEDINGER:-no}" != "no" ] && dirac_fast="--enable-libschroedinger"
 libspeex=""   ; [ "${SPEEX:-no}" != "no" ]        && libspeex="--enable-libspeex"
+vaapi=""      ; [ "${VAAPI:-no}" != "no" ]        && vaapi="--enable-vaapi"
+libvdpau=""   ; [ "${VDPAU:-no}" != "no" ]        && libvdpau="--enable-vdpau"
 libvpx=""     ; [ "${VPX:-no}" != "no" ]          && libvpx="--enable-libvpx"
 libxvid=""    ; [ "${XVID:-no}" != "no" ]         && libxvid="--enable-libxvid"
 
@@ -126,6 +128,8 @@ CXXFLAGS="$SLKCFLAGS" \
   $opencore_amr \
   $libopencv \
   $libfrei0r \
+  $libvdpau \
+  $vaapi \
   $libcelt
 
 make

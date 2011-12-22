@@ -23,7 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=soundtouch
-VERSION=1.5.0
+VERSION=${VERSION:-1.6.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -70,6 +70,8 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
+
+./bootstrap
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \

@@ -1,0 +1,31 @@
+diff -Naur libtirpc-20110620.orig/src/Makefile.am libtirpc-20110620/src/Makefile.am
+--- libtirpc-20110620.orig/src/Makefile.am	2011-06-20 19:52:14.000000000 +0200
++++ libtirpc-20110620/src/Makefile.am	2011-12-12 13:11:02.963068900 +0100
+@@ -50,7 +50,7 @@
+         rpc_callmsg.c rpc_generic.c rpc_soc.c rpcb_clnt.c rpcb_prot.c \
+         rpcb_st_xdr.c svc.c svc_auth.c svc_dg.c svc_auth_unix.c svc_generic.c \
+         svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c \
+-        auth_time.c auth_des.c authdes_prot.c
++        auth_time.c
+ 
+ ## XDR
+ libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c
+diff -Naur libtirpc-20110620.orig/src/rpc_soc.c libtirpc-20110620/src/rpc_soc.c
+--- libtirpc-20110620.orig/src/rpc_soc.c	2011-06-20 19:52:14.000000000 +0200
++++ libtirpc-20110620/src/rpc_soc.c	2011-12-12 13:07:55.208069705 +0100
+@@ -519,6 +519,7 @@
+  * Create the client des authentication object. Obsoleted by
+  * authdes_seccreate().
+  */
++#if 0
+ AUTH *
+ authdes_create(servername, window, syncaddr, ckey)
+ 	char *servername;		/* network name of server */
+@@ -546,6 +547,7 @@
+ 	dummy = authdes_seccreate(servername, window, NULL, ckey);
+ 	return (dummy);
+ }
++#endif
+ 
+ /*
+  * Create a client handle for a unix connection. Obsoleted by clnt_vc_create()
