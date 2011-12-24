@@ -59,9 +59,10 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION~release-1.9.x~bzr2720
+rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/$PRGNAM-$VERSION-src.tar.gz
-cd $PRGNAM-$VERSION~release-1.9.x~bzr2720
+mv $PRGNAM-$VERSION* $PRGNAM-$VERSION
+cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -74,7 +75,9 @@ patch -p0 < $CWD/desktop.diff
 
 CFLAGS="$SLKCFLAGS" \
 QTDIR=/usr/lib$LIBDIRSUFFIX/qt \
+# it seems libshout isn't detected :(
 scons \
+  shoutcast=0 \
   prefix=/usr
 
 QTDIR=/usr/lib$LIBDIRSUFFIX/qt \

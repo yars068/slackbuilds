@@ -24,7 +24,7 @@
 # Modified by Robby Workman <rworkman@slackbuilds.org>
 
 PRGNAM=gnome-keyring
-VERSION=${VERSION:-2.32.1}
+VERSION=${VERSION:-3.0.3}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -61,7 +61,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
@@ -82,9 +82,10 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-shared \
   --enable-nls \
   --disable-debug \
-  --enable-acl-prompts \
   --enable-ssh-agent \
   --with-root-certs=/etc/ssl/certs \
+  --with-gtk=2 \
+  --with-pam-dir=/lib${LIBDIRSUFFIX}/security \
   --build=$ARCH-slackware-linux
 
 make
@@ -101,7 +102,9 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat <<EOF > $PKG/install/doinst.sh
+chroot . /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas/
+EOF
 
 cd $PKG
 /sbin/makepkg -p -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
