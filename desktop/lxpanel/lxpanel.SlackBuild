@@ -24,7 +24,7 @@
 # Modified by ponce <matteo.bernardini@gmail.com>
 
 PRGNAM=lxpanel
-VERSION=${VERSION:-20111223_ef3cf14}
+VERSION=${VERSION:-20111230_9acb4d2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
