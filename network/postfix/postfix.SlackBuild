@@ -23,7 +23,7 @@
 # Updates by mario@slackverse.org, 2010-2011
 
 PRGNAM=postfix
-VERSION=${VERSION:-2.8.3}
+VERSION=${VERSION:-2.8.7}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -137,6 +137,9 @@ mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
+
+# on current we don't have glibc rpc headers so no nis here
+patch -p1 < $CWD/no_nis.patch
 
 # TLS, and SASL support
 # Postfix unfortunately does not use a handy ./configure script so you

@@ -1,3 +1,10 @@
+Check https://github.com/Ponce/slackbuilds/wiki for additional informations.
+
+See https://github.com/Ponce/slackbuilds/wiki/configuring-the-current-repository-with-sbopkg
+for instructions on how to use this repository with sbopkg.
+
+original README from slackbuilds.org follow:
+--------------------------------------------
 
 See http://slackbuilds.org/howto/ for instructions on 
 how to use the contents of this directory.
@@ -7,3 +14,4 @@ Access is also available via:
  git://slackbuilds.org/slackbuilds
  http://slackbuilds.org/gitweb/
  ftp://slackbuilds.org/
+

@@ -27,3 +27,6 @@ be using plain "qemu" for the others (since they can't use the KVM stuff
 anyway.  The default "x86_64" value works fine for for 32-bit or 64-bit 
 QEMU-KVM hosts providing full system emulation supporting Linux, BSD, and 
 Windows guests. 
+
+If you want to enable spice remote desktop support you need spice, then
+you can pass the script the variable SPICE=yes

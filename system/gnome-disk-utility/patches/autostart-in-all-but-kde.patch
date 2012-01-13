@@ -1,0 +1,24 @@
+diff -Nur gnome-disk-utility-2.32.0.orig//data/gdu-notification-daemon.desktop.in gnome-disk-utility-2.32.0//data/gdu-notification-daemon.desktop.in
+--- gnome-disk-utility-2.32.0.orig//data/gdu-notification-daemon.desktop.in	2010-09-15 10:30:28.000000000 -0500
++++ gnome-disk-utility-2.32.0//data/gdu-notification-daemon.desktop.in	2010-12-19 22:41:07.448844795 -0600
+@@ -6,7 +6,7 @@
+ Terminal=false
+ Type=Application
+ Categories=
+-OnlyShowIn=GNOME;
++NotShowIn=KDE;
+ X-GNOME-Bugzilla-Bugzilla=GNOME
+ X-GNOME-Bugzilla-Product=gnome-disk-utility
+ X-GNOME-Bugzilla-Component=notifications
+diff -Nur gnome-disk-utility-2.32.0.orig//data/gdu-notification-daemon.desktop.in.in.in gnome-disk-utility-2.32.0//data/gdu-notification-daemon.desktop.in.in.in
+--- gnome-disk-utility-2.32.0.orig//data/gdu-notification-daemon.desktop.in.in.in	2010-08-05 12:03:57.000000000 -0500
++++ gnome-disk-utility-2.32.0//data/gdu-notification-daemon.desktop.in.in.in	2010-12-19 22:40:47.961099327 -0600
+@@ -6,7 +6,7 @@
+ Terminal=false
+ Type=Application
+ Categories=
+-OnlyShowIn=GNOME;
++NotShowIn=KDE;
+ X-GNOME-Bugzilla-Bugzilla=GNOME
+ X-GNOME-Bugzilla-Product=gnome-disk-utility
+ X-GNOME-Bugzilla-Component=notifications

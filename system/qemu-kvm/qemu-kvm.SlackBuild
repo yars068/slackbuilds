@@ -70,6 +70,13 @@ elif [ "$ARCH" = "x86_64" ]; then
   LIBDIRSUFFIX="64"
 fi
 
+if [ "${SPICE:-no}" = "no" ]; then
+  with_spice=""
+else
+  with_spice="--enable-spice"
+  EXTRACFLAGS="-I/usr/include/spice-server -I/usr/include/spice-1"
+fi
+
 # Needed to build man pages if build is ran from su
 export PATH=$PATH:/usr/share/texmf/bin
 
@@ -95,6 +102,7 @@ patch -p1 < $CWD/fixup_udev_rules.patch
 # This translates the possible targets into the correct format for configure
 TARGETS="$(for i in $BUILD_ARCH ; do printf "$i-softmmu " ; done)"
 
+LDFLAGS="-L/usr/lib${LIBDIRSUFFIX} -lz" \
 CFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
@@ -102,6 +110,7 @@ CFLAGS="$SLKCFLAGS" \
   --enable-mixemu \
   --audio-drv-list=oss,alsa,sdl,esd \
   --enable-system \
+  $with_spice \
   --target-list="$TARGETS"
 
 make V=1 \

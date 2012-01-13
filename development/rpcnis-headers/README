@@ -1,0 +1,10 @@
+rpcnis-headers (RPC NIS header files)
+
+RPC NIS headers no more in glibc >= 2.14.
+
+In the intentions of Ulrich Drepper you shouldn't
+need these headers at all and use instead the
+headers provided by libtirpc in /usr/include/tirpc
+for software that requires rpc.
+In practice it doesn't always work like that and
+this might be needed.
