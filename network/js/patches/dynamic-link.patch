@@ -1,0 +1,14 @@
+diff -Naur js.orig/src/Makefile.ref js/src/Makefile.ref
+--- js.orig/src/Makefile.ref	2011-03-31 21:08:36.000000000 +0200
++++ js/src/Makefile.ref	2012-02-12 07:45:27.838982991 +0100
+@@ -419,8 +419,8 @@
+ $(PROGRAM): $(PROG_OBJS) $(LIBRARY)
+ 	link.exe -out:"$@" $(EXE_LINK_FLAGS) $^
+ else
+-$(PROGRAM): $(PROG_OBJS) $(LIBRARY)
+-	$(CXX) -o $@ $(CFLAGS) $(PROG_OBJS) $(LIBRARY) $(LDFLAGS) $(OTHER_LIBS) \
++$(PROGRAM): $(PROG_OBJS) $(SHARED_LIBRARY)
++	$(CXX) -o $@ $(CFLAGS) $(PROG_OBJS) $(LIBRARY) $(LDFLAGS) -L$(OBJDIR) -ljs $(OTHER_LIBS) \
+ 	    $(PROG_LIBS)
+ endif
+ 

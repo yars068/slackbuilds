@@ -4,7 +4,8 @@
 # Written by kuroi_kenshi <kuroi_kenshi96@yahoo.com>
 
 PRGNAM=redis
-VERSION=${VERSION:-1.02}
+SRC_VERSION=2.2.105-scripting
+VERSION=$(echo $SRC_VERSION | tr - _)
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -42,18 +43,15 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
-cd $PRGNAM-$VERSION
+rm -rf $PRGNAM-$SRC_VERSION
+tar xvf $CWD/$PRGNAM-$SRC_VERSION.tar.gz
+cd $PRGNAM-$SRC_VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
 # No ./configure necessary
-CFLAGS="$SLKCFLAGS" make
-
-# move binaries to /usr/bin/ 
-mkdir -p $PKG/usr/bin
-install -m 0755 redis-server redis-cli redis-benchmark $PKG/usr/bin
+CFLAGS="$SLKCFLAGS" make PREFIX=/usr
+make PREFIX=$PKG/usr install
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
@@ -63,7 +61,7 @@ install -D -m 644 redis.conf $PKG/etc/redis.conf.new
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  00-RELEASENOTES BETATESTING.txt BUGS Changelog COPYING README TODO \
+  00-RELEASENOTES BUGS CONTRIBUTING Changelog COPYING README TODO \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 

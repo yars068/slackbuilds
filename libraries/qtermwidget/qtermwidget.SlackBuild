@@ -4,7 +4,7 @@
 # Written by ponce <matteo.bernardini@gmail.com>
 
 PRGNAM=qtermwidget
-VERSION=${VERSION:-20111212_ccb7b88}
+VERSION=${VERSION:-20120131_33f68bc}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
