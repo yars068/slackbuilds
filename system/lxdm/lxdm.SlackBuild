@@ -23,8 +23,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=lxdm
-VERSION=${VERSION:-0.3.0}
-BUILD=${BUILD:-1}
+VERSION=${VERSION:-0.4.1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -69,6 +69,10 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# patch lxdm.conf.in to avoid a wrong libexec path - must go deep on
+# why the build system gets it wrong
+sed -i "s/@FULL_LIBEXECDIR@/\/usr\/libexec/" data/lxdm.conf.in
+
 # Patch the Xsession file to source /etc/profile and xprofile on session start
 patch -p1 < $CWD/patches/source_profile_in_Xsession.diff
 
@@ -91,6 +95,9 @@ patch -p1 < $CWD/patches/lxdm-0.3.0-without_pam.diff
 # to maintain ; let's hope I don't eat those words.  --rworkman
 patch -p1 < $CWD/patches/lxdm-0.3.0-set_DESKTOP_SESSION_in_env.diff 
 
+# from git, fix null pointer dereference
+patch -p1 < $CWD/patches/null_pointer_dereference.patch
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -108,6 +115,10 @@ make install DESTDIR=$PKG
 
 # We said --without-pam
 rm -rf $PKG/etc/pam.d
+
+# change default non-existent background image to an lxde one and theme accordingly :P
+sed -i -e "s|^bg=.*|bg=/usr/share/lxde/wallpapers/lxde_green.jpg|" $PKG/etc/lxdm/lxdm.conf
+sed -i -e "s|Clearlooks|Clearlooks-Olive|" $PKG/etc/lxdm/lxdm.conf
 
 # Install a to-be-customized-if-needed /etc/lxdm/xinitrc
 cat $CWD/xinitrc > $PKG/etc/lxdm/xinitrc.new

@@ -24,7 +24,7 @@
 
 PRGNAM=neverball
 BONUS=neverputt
-VERSION=${VERSION:-1.5.1}
+VERSION=${VERSION:-1.5.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 

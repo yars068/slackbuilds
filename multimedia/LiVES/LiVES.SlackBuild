@@ -8,7 +8,7 @@
 # at slackbuilds.org
 
 PRGNAM=LiVES
-VERSION=1.3.4
+VERSION=${VERSION:-1.4.9}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -51,6 +51,12 @@ cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R a-s,u+w,g-w+r,o-w+r  .
 
+# https://sf.net/tracker/index.php?func=detail&aid=3460799&group_id=64341&atid=507139
+patch -p1 < $CWD/patches/weed_palettes.patch
+
+# Drop Python3 version of multiencoder plugin
+patch -p1 < $CWD/patches/drop_py3_multiencoder.patch
+
 CFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
@@ -58,10 +64,18 @@ CFLAGS="$SLKCFLAGS" \
   --sysconfdir=/etc \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --program-prefix="" \
+  --disable-static \
   --build=$ARCH-slackware-linux
 
 make docdir=/usr/doc/$PRGNAM-$VERSION
 make install-strip docdir=/usr/doc/$PRGNAM-$VERSION DESTDIR=$PKG
+
+# fix link to lives exec
+( cd $PKG/usr/bin ; rm lives ; ln -s lives-exe lives )
+
+# remove static stuff
+find $PKG/usr -name '*.la' -exec rm -f {} +
+rm -f $PKG/usr/lib*/libweed-*.a
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a COPYING INSTALL NEWS $PKG/usr/doc/$PRGNAM-$VERSION
@@ -69,6 +83,11 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat <<EOF > $PKG/install/doinst.sh
+if [ -x /usr/bin/update-desktop-database ]; then
+  /usr/bin/update-desktop-database -q usr/share/applications >/dev/null 2>&1
+fi
+EOF
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

@@ -1,0 +1,172 @@
+diff -Naur vice-2.3.11.orig/INSTALL vice-2.3.11/INSTALL
+--- vice-2.3.11.orig/INSTALL	2011-01-29 14:17:50.000000000 +0100
++++ vice-2.3.11/INSTALL	2011-11-13 17:25:38.893851034 +0100
+@@ -301,7 +301,7 @@
+ 
+       make install
+ 
+-    The binaries and support files will all go under PREFIX/lib/vice.
++    The binaries and support files will all go under PREFIX/lib64/vice.
+     You must of course have write permissions for the directories where
+     VICE is to be installed. Normally only the system administrator
+     has write access to /usr/local, the default PREFIX. Either ask
+diff -Naur vice-2.3.11.orig/configure.in vice-2.3.11/configure.in
+--- vice-2.3.11.orig/configure.in	2011-11-13 17:13:57.022625860 +0100
++++ vice-2.3.11/configure.in	2011-11-13 17:18:31.794194727 +0100
+@@ -1623,7 +1623,7 @@
+   fi
+ else
+   if test x"$enable_ethernet" = "xyes"; then
+-  dnl /usr/lib/libpcap.a
++  dnl /usr/lib64/libpcap.a
+     AC_CHECK_LIB(pcap, pcap_inject,[
+       AC_DEFINE(HAVE_TFE,,[Support for The Final Ethernet])
+       AC_DEFINE(HAVE_PCAP_INJECT,,[A libpcap version with pcap_inject is available])
+@@ -1634,8 +1634,8 @@
+       AC_DEFINE(HAVE_PCAP_SENDPACKET,,[A libpcap version with pcap_sendpacket is available])
+       TFE_LIBS="-lpcap"
+     ],,$LIBS)
+-  dnl /usr/lib/libpcap.a
+-  dnl /usr/lib/libnet.a
++  dnl /usr/lib64/libpcap.a
++  dnl /usr/lib64/libnet.a
+     AC_CHECK_LIB(pcap, pcap_open_live,[
+       AC_CHECK_LIB(net, libnet_init,[
+         AC_DEFINE(HAVE_TFE,,[Support for The Final Ethernet])
+@@ -1643,8 +1643,8 @@
+         TFE_LIBS="-lpcap `libnet-config --libs`"
+         CFLAGS="$CFLAGS `libnet-config --defines`"
+     ],,$LIBS)],,$LIBS)
+-  dnl /usr/lib/libpcap.a
+-  dnl /usr/lib/libnet.a
++  dnl /usr/lib64/libpcap.a
++  dnl /usr/lib64/libnet.a
+     AC_CHECK_LIB(pcap, pcap_open_live,[
+       AC_CHECK_LIB(net, libnet_write_link_layer,[
+         AC_DEFINE(HAVE_TFE,,[Support for The Final Ethernet])
+@@ -3393,7 +3393,7 @@
+     AM_CONDITIONAL(ALTERNATE_DOCDIR, true)
+     ;;
+   *)
+-    VICEDIR="$PREFIX/lib/vice";
++    VICEDIR="$PREFIX/lib64/vice";
+     AM_CONDITIONAL(ALTERNATE_DOCDIR, false)
+     ;;  
+ esac
+diff -Naur vice-2.3.11.orig/doc/vice.guide vice-2.3.11/doc/vice.guide
+--- vice-2.3.11.orig/doc/vice.guide	2011-11-09 21:43:11.000000000 +0100
++++ vice-2.3.11/doc/vice.guide	2011-11-13 17:22:30.764203218 +0100
+@@ -1269,7 +1269,7 @@
+ `Directory' resource, which is a colon (`:')-separated search path
+ list, like the UNIX `PATH' environment variable.  The default value is
+ 
+-     PREFIX/lib/vice/EMU:$HOME/.vice/EMU:BOOTPATH/EMU
++     PREFIX/lib64/vice/EMU:$HOME/.vice/EMU:BOOTPATH/EMU
+ 
+    Where `PREFIX' is the installation prefix (usually `/usr/local'),
+ `EMU' is the name of the emulated machine (`C64', `C128', `PET',
+@@ -1283,12 +1283,12 @@
+ 
+    then the value will be
+ 
+-     /usr/local/lib/vice/C64:$HOME/.vice/C64:/usr/local/bin/C64
++     /usr/local/lib64/vice/C64:$HOME/.vice/C64:/usr/local/bin/C64
+ 
+    And system files will be searched for under the following
+ directories, in the specified order:
+ 
+-  1. `/usr/local/lib/VICE/C64'
++  1. `/usr/local/lib64/VICE/C64'
+ 
+   2. `$HOME/.vice/C64'
+ 
+@@ -3613,7 +3613,7 @@
+      where:
+ 
+         * `LIBDIR' is the VICE installation directory (usually
+-          `/usr/local/lib/vice', `/usr/lib/vice' or `/opt/vice/lib');
++          `/usr/local/lib64/vice', `/usr/lib64/vice' or `/opt/vice/lib');
+ 
+         * `EMUID' is the emulation identification string (`C64',
+           `C128', `VIC20' or `PET');
+diff -Naur vice-2.3.11.orig/doc/vice.texi vice-2.3.11/doc/vice.texi
+--- vice-2.3.11.orig/doc/vice.texi	2011-10-01 20:47:03.000000000 +0200
++++ vice-2.3.11/doc/vice.texi	2011-11-13 17:24:01.295071440 +0100
+@@ -1320,7 +1320,7 @@
+ default value is
+ 
+ @example
+-PREFIX/lib/vice/EMU:$HOME/.vice/EMU:BOOTPATH/EMU
++PREFIX/lib64/vice/EMU:$HOME/.vice/EMU:BOOTPATH/EMU
+ @end example
+ 
+ Where @code{PREFIX} is the installation prefix (usually
+@@ -1339,7 +1339,7 @@
+ then the value will be
+ 
+ @example
+-/usr/local/lib/vice/C64:$HOME/.vice/C64:/usr/local/bin/C64
++/usr/local/lib64/vice/C64:$HOME/.vice/C64:/usr/local/bin/C64
+ @end example
+ 
+ And system files will be searched for under the following directories,
+@@ -1347,7 +1347,7 @@
+ 
+ @enumerate 1
+ @item
+-@code{/usr/local/lib/VICE/C64}
++@code{/usr/local/lib64/VICE/C64}
+ @item
+ @code{$HOME/.vice/C64}
+ @item
+diff -Naur vice-2.3.11.orig/doc/vice.txt vice-2.3.11/doc/vice.txt
+--- vice-2.3.11.orig/doc/vice.txt	2011-11-09 21:43:11.000000000 +0100
++++ vice-2.3.11/doc/vice.txt	2011-11-13 17:23:30.295458977 +0100
+@@ -1035,7 +1035,7 @@
+ `Directory' resource, which is a colon (`:')-separated search path
+ list, like the UNIX `PATH' environment variable.  The default value is
+ 
+-PREFIX/lib/vice/EMU:$HOME/.vice/EMU:BOOTPATH/EMU
++PREFIX/lib64/vice/EMU:$HOME/.vice/EMU:BOOTPATH/EMU
+ 
+ Where `PREFIX' is the installation prefix (usually `/usr/local'),
+ `EMU' is the name of the emulated machine (`C64', `C128', `PET',
+@@ -1049,12 +1049,12 @@
+ 
+ then the value will be
+ 
+-/usr/local/lib/vice/C64:$HOME/.vice/C64:/usr/local/bin/C64
++/usr/local/lib64/vice/C64:$HOME/.vice/C64:/usr/local/bin/C64
+ 
+ And system files will be searched for under the following
+ directories, in the specified order:
+ 
+-1. `/usr/local/lib/VICE/C64'
++1. `/usr/local/lib64/VICE/C64'
+ 
+ 2. `$HOME/.vice/C64'
+ 
+diff -Naur vice-2.3.11.orig/src/arch/sdl/archdep_unix.h vice-2.3.11/src/arch/sdl/archdep_unix.h
+--- vice-2.3.11.orig/src/arch/sdl/archdep_unix.h	2011-07-21 05:10:28.000000000 +0200
++++ vice-2.3.11/src/arch/sdl/archdep_unix.h	2011-11-13 17:24:58.039361758 +0100
+@@ -88,7 +88,7 @@
+ #ifdef __NetBSD__
+ #define LIBDIR PREFIX "/share/vice"
+ #else
+-#define LIBDIR PREFIX "/lib/vice"
++#define LIBDIR PREFIX "/lib64/vice"
+ #endif
+ 
+ #if defined(__FreeBSD__) || defined(__NetBSD__)
+diff -Naur vice-2.3.11.orig/src/arch/unix/archdep.h vice-2.3.11/src/arch/unix/archdep.h
+--- vice-2.3.11.orig/src/arch/unix/archdep.h	2010-10-06 18:17:43.000000000 +0200
++++ vice-2.3.11/src/arch/unix/archdep.h	2011-11-13 17:24:36.677629192 +0100
+@@ -127,7 +127,7 @@
+ #ifdef __NetBSD__
+ #define LIBDIR PREFIX "/share/vice"
+ #else
+-#define LIBDIR PREFIX "/lib/vice"
++#define LIBDIR PREFIX "/lib64/vice"
+ #endif
+ 
+ #if defined(__FreeBSD__) || defined(__NetBSD__)
