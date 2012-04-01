@@ -1,0 +1,14 @@
+PRGNAM="lighttpd"
+VERSION="20120313_8d709f8"
+HOMEPAGE="http://www.lighttpd.net/"
+DOWNLOAD="\
+http://ponce.cc/slackware/sources/repo/lighttpd2-20120313_8d709f8.tar.xz \
+http://ponce.cc/slackware/sources/repo/spawn-fcgi-r57.tar.xz"
+MD5SUM="\
+6d11870c0eeb3b7f17e9aa5b95a37d39 \
+547b7d5a18aad3e5bedc27cfe45d950c"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+MAINTAINER="ponce"
+EMAIL="matteo.bernardini@gmail.com"
+APPROVED=""

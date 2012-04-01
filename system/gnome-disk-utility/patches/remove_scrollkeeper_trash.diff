@@ -1,0 +1,60 @@
+diff -Nur gnome-disk-utility-2.32.0.orig//configure gnome-disk-utility-2.32.0/configure
+--- gnome-disk-utility-2.32.0.orig//configure	2010-09-15 10:27:20.000000000 -0500
++++ gnome-disk-utility-2.32.0/configure	2010-11-04 20:39:07.922165358 -0500
+@@ -12676,56 +12676,6 @@
+ fi
+ 
+ 
+-# *************
+-# Documentation
+-# *************
+-
+-# Extract the first word of "scrollkeeper-config", so it can be a program name with args.
+-set dummy scrollkeeper-config; ac_word=$2
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+-$as_echo_n "checking for $ac_word... " >&6; }
+-if test "${ac_cv_path_SCROLLKEEPER_CONFIG+set}" = set; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-  case $SCROLLKEEPER_CONFIG in
+-  [\\/]* | ?:[\\/]*)
+-  ac_cv_path_SCROLLKEEPER_CONFIG="$SCROLLKEEPER_CONFIG" # Let the user override the test with a path.
+-  ;;
+-  *)
+-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+-for as_dir in $PATH
+-do
+-  IFS=$as_save_IFS
+-  test -z "$as_dir" && as_dir=.
+-    for ac_exec_ext in '' $ac_executable_extensions; do
+-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+-    ac_cv_path_SCROLLKEEPER_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+-    break 2
+-  fi
+-done
+-  done
+-IFS=$as_save_IFS
+-
+-  test -z "$ac_cv_path_SCROLLKEEPER_CONFIG" && ac_cv_path_SCROLLKEEPER_CONFIG="no"
+-  ;;
+-esac
+-fi
+-SCROLLKEEPER_CONFIG=$ac_cv_path_SCROLLKEEPER_CONFIG
+-if test -n "$SCROLLKEEPER_CONFIG"; then
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SCROLLKEEPER_CONFIG" >&5
+-$as_echo "$SCROLLKEEPER_CONFIG" >&6; }
+-else
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+-$as_echo "no" >&6; }
+-fi
+-
+-
+-if test x$SCROLLKEEPER_CONFIG = xno; then
+-  { as_fn_set_status please install the scrollkeeper package
+-as_fn_error "Couldn't find scrollkeeper-config" "$LINENO" 5; }
+-fi
+-
+ # ********************
+ # Internationalization
+ # ********************

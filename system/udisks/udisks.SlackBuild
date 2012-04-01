@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=udisks
-VERSION=${VERSION:-1.0.2}
+VERSION=${VERSION:-1.0.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -69,6 +69,9 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# oversight
+sed -i "s/^\+#/#/" configure
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -90,6 +93,11 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 mkdir -p $PKG/etc/bash_completion.d
 mv $PKG/etc/profile.d/udisks-bash-completion.sh \
    $PKG/etc/bash_completion.d/udisks
+
+# use ntfs-3g by default
+mkdir -p $PKG/etc/udev/rules.d
+echo "ENV{ID_FS_TYPE}==\"ntfs\", ENV{ID_FS_TYPE}=\"ntfs-3g\"" \ 
+  > $PKG/etc/udev/rules.d/99-udisks-ntfs3g.rules
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done

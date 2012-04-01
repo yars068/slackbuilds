@@ -4,7 +4,7 @@
 
 PRGNAM=zziplib
 VERSION=0.13.60
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -48,6 +48,14 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
+
+# fix for gcc-4.6
+sed -i "s|--export-dynamic||" configure
+# workaround AX_CREATE_PKGCONFIG_INFO gentoo bug #353195
+sed -i \
+  -e '/ax_create_pkgconfig_ldflags/s:$LDFLAGS::' \
+  -e '/ax_create_pkgconfig_cppflags/s:$CPPFLAGS::' \
+  configure
 
 CFLAGS="$SLKCFLAGS" \
 ./configure \

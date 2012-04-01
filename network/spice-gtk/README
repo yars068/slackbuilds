@@ -1,0 +1,8 @@
+spice-gtk (spice gtk client/libraries)
+
+A Gtk client and libraries for spice remote desktop servers.
+
+This requires celt051, spice-protocol and spice, available
+at slackbuilds.org.
+vala is an optional dependency and can be enabled with the
+parameter VALA=yes.

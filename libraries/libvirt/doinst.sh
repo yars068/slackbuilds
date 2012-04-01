@@ -36,3 +36,4 @@ config etc/logrotate.d/libvirtd.lxc.new
 config etc/logrotate.d/libvirtd.qemu.new
 config etc/logrotate.d/libvirtd.uml.new
 config etc/sasl2/libvirt.conf.new
+config etc/rc.d/rc.libvirt.new

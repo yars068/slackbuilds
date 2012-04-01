@@ -1,0 +1,36 @@
+Submitted By: Andrew Benton <andy@benton.eu.com>
+Date: 2012-03-18
+Initial Package Version: 1.6.3
+Upstream Status: From upstream
+Origin: https://bugs.webkit.org/show_bug.cgi?id=47799
+Description: Fixes compiling webkit-1.6.3 with gcc-4.7
+
+--- webkit-1.6.3/Source/WebCore/plugins/gtk/PluginViewGtk.cpp~	2012-03-18 12:37:03.920894509 +0000
++++ webkit-1.6.3/Source/WebCore/plugins/gtk/PluginViewGtk.cpp	2012-03-18 12:37:18.470660619 +0000
+@@ -71,6 +71,7 @@
+ #include <gtk/gtk.h>
+ 
+ #if defined(XP_UNIX)
++#define String XtStringType
+ #include "RefPtrCairo.h"
+ #include "gtk2xtbin.h"
+ #define Bool int // this got undefined somewhere
+@@ -81,6 +82,7 @@
+ #elif defined(GDK_WINDOWING_WIN32)
+ #include "PluginMessageThrottlerWin.h"
+ #include <gdk/gdkwin32.h>
++#undef String
+ #endif
+ 
+ using JSC::ExecState;
+--- webkit-1.6.3/Tools/DumpRenderTree/TestNetscapePlugIn/PluginTest.cpp~	2011-09-17 08:11:57.000000000 +0100
++++ webkit-1.6.3/Tools/DumpRenderTree/TestNetscapePlugIn/PluginTest.cpp	2012-03-18 13:07:18.360078362 +0000
+@@ -28,7 +28,7 @@
+ #include "PluginObject.h"
+ #include <assert.h>
+ #include <string.h>
+-
++#include <unistd.h>
+ using namespace std;
+ extern NPNetscapeFuncs *browser;
+ 
