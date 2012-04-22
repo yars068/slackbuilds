@@ -1,0 +1,3 @@
+trac-gitplugin (git plugin for trac)
+
+This is a plugin for trac that enables git to be used instead of subversion for the trac:VersioningSystemBackend.

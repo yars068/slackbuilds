@@ -1,0 +1,22 @@
+diff -Naur andromeda-20120329_499af6c.orig/src/libs/io/qdrivecontroller_linux.cpp andromeda-20120329_499af6c/src/libs/io/qdrivecontroller_linux.cpp
+--- andromeda-20120329_499af6c.orig/src/libs/io/qdrivecontroller_linux.cpp	2012-03-29 12:44:34.000000000 +0200
++++ andromeda-20120329_499af6c/src/libs/io/qdrivecontroller_linux.cpp	2012-03-30 18:23:35.986999990 +0200
+@@ -15,6 +15,7 @@
+ #include <fcntl.h>
+ #include <mntent.h>
+ #include <linux/cdrom.h>
++#include <unistd.h>
+ 
+ #include  "qdriveinfo.h"
+ 
+diff -Naur andromeda-20120329_499af6c.orig/src/shared/qtsingleapplication/qtlocalpeer.cpp andromeda-20120329_499af6c/src/shared/qtsingleapplication/qtlocalpeer.cpp
+--- andromeda-20120329_499af6c.orig/src/shared/qtsingleapplication/qtlocalpeer.cpp	2012-03-29 12:44:34.000000000 +0200
++++ andromeda-20120329_499af6c/src/shared/qtsingleapplication/qtlocalpeer.cpp	2012-03-30 18:23:20.762999991 +0200
+@@ -57,6 +57,7 @@
+ #endif
+ #if defined(Q_OS_UNIX)
+ #include <time.h>
++#include <unistd.h>
+ #endif
+ 
+ //namespace QtLP_Private {

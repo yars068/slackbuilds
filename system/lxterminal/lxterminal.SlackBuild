@@ -46,7 +46,7 @@
 #             * Update.
 # 0.1.9-1:    12/sep/2010 by ponce <matteo.bernardini@gmail.com>
 #             * Update.
-# 20111215_3144cf2: 26/dec/2011 by ponce <matteo.bernardini@gmail.com>
+# 20120208_731c595: 11/feb/2011 by ponce <matteo.bernardini@gmail.com>
 #             * Update.
 #
 # Run 'sh lxterminal.SlackBuild' to build a Slackware package.
@@ -58,7 +58,7 @@
 # Set initial variables:
 
 PRGNAM=lxterminal
-VERSION=${VERSION:-20111215_3144cf2}
+VERSION=${VERSION:-20120208_731c595}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 

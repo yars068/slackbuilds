@@ -1,0 +1,5 @@
+perl-switch (a switch statement for Perl)
+
+The Switch.pm module implements a generalized case mechanism that
+covers a lot of the numerous possible combinations of switch and case
+values.
