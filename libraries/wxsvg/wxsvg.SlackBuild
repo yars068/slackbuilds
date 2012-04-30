@@ -5,7 +5,7 @@
 # Written by ponce <matteo.bernardini@gmail.com>
 
 PRGNAM=wxsvg
-VERSION=1.1.5
+VERSION=1.1.6
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 

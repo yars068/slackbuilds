@@ -1,0 +1,14 @@
+diff -Naur lives-1.4.9.orig/lives-plugins/plugins/decoders/mkv_decoder.c lives-1.4.9/lives-plugins/plugins/decoders/mkv_decoder.c
+--- lives-1.4.9.orig/lives-plugins/plugins/decoders/mkv_decoder.c	2011-12-08 06:33:19.000000000 +0100
++++ lives-1.4.9/lives-plugins/plugins/decoders/mkv_decoder.c	2011-12-23 13:12:12.772897712 +0100
+@@ -50,6 +50,10 @@
+ 
+ #define HAVE_AVCODEC
+ 
++#ifndef HAVE_SYSTEM_WEED
++#include "../../../libweed/weed-palettes.h"
++#endif
++
+ #ifdef HAVE_SYSTEM_WEED_COMPAT
+ #include "weed/weed-compat.h"
+ #else

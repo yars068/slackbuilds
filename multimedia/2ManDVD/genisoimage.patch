@@ -1,0 +1,86 @@
+Upstream 5a55a41c4c4d66aff157348596c7e3d6e93d5a28 and 551968b04fcd30c16ccdbce9a9972d884c1fe118
+migration to genisoimage: we don't have it on slack, so we have to revert it.
+
+diff --git a/mainfrm.cpp b/mainfrm.cpp
+index 3bb3e21..36e103e 100644
+--- a/mainfrm.cpp
++++ b/mainfrm.cpp
+@@ -1312,7 +1312,6 @@ mainfrm::mainfrm(QWidget *parent) : QMainWindow(parent)
+ 
+ 	wmyficext.setFileName(homeDir.path() + "/.mdvdep.sh");
+ 	wmyficext.open( QIODevice::WriteOnly );
+-        //outext << "notify-send" << endl;
+ 	outext << "mplex" << endl;
+ 	outext << "ffmpeg" << endl;
+ 	outext << "mencoder" << endl;
+@@ -1339,15 +1338,7 @@ mainfrm::mainfrm(QWidget *parent) : QMainWindow(parent)
+ 	QByteArray buffer(proc_ffmpeg.readAllStandardOutput());
+ 	wg_string_003 = wg_string_003 + buffer;
+ 
+-        /*wg_int_002 = wg_string_003.lastIndexOf( "summary" );
+-	if (wg_int_002 != -1)
+-	{
+-		isnotify = 1;
+-	}
+-	else
+-        {*/
+-		isnotify = 0;
+-        //}
++    isnotify = 0;
+ 
+ 	wg_string_002 = "";
+ 
+diff --git a/rendering.cpp b/rendering.cpp
+index 3a45693..814876c 100644
+--- a/rendering.cpp
++++ b/rendering.cpp
+@@ -3897,7 +3897,6 @@ void mainfrm::f_create_iso()
+ 			logstring = "";
+ 
+ 			QTextStream out(&wmyfic);
+-            //out << "mkisofs -dvd-video -o \"" + wmyprj + "\" \"" + path_project + "/RESULT/\"" << endl;
+             out << "genisoimage -o \"" + wmyprj + "\" -dvd-video \"" + path_project + "/RESULT/\"" << endl;
+             //out << "rm -f " + path_project + "/DVD/GENE/geniso.sh" << endl;
+ 			out << "exit" << endl;
+diff --git a/mainfrm.cpp b/mainfrm.cpp
+index 5a00518..3bb3e21 100644
+--- a/mainfrm.cpp
++++ b/mainfrm.cpp
+@@ -1319,7 +1319,7 @@ mainfrm::mainfrm(QWidget *parent) : QMainWindow(parent)
+ 	outext << "ffmpegthumbnailer" << endl;
+         outext << "sox -h" << endl;
+ 	outext << "dvdauthor" << endl;
+-	outext << "mkisofs" << endl;
++    outext << "genisoimage" << endl;
+         outext << "exif" << endl;
+ 	outext << "growisofs" << endl;
+ 	outext << "mpeg2enc" << endl;
+@@ -1423,6 +1423,12 @@ mainfrm::mainfrm(QWidget *parent) : QMainWindow(parent)
+ 		wg_string_002 = wg_string_002 + "mpeg2enc (Bad MJPEGTOOLS)\n";
+ 	}
+ 
++    wg_int_002 = wg_string_003.lastIndexOf( "genisoimage:" );
++    if (wg_int_002 == -1)
++    {
++        wg_string_002 = wg_string_002 + "genisoimage\n";
++    }
++
+ 	wg_int_002 = wg_string_003.lastIndexOf( "growisofs:" );
+ 	if (wg_int_002 == -1)
+ 	{
+diff --git a/rendering.cpp b/rendering.cpp
+index 186c1fc..3a45693 100644
+--- a/rendering.cpp
++++ b/rendering.cpp
+@@ -3897,8 +3897,9 @@ void mainfrm::f_create_iso()
+ 			logstring = "";
+ 
+ 			QTextStream out(&wmyfic);
+-			out << "mkisofs -dvd-video -o \"" + wmyprj + "\" \"" + path_project + "/RESULT/\"" << endl;
+-			out << "rm -f " + path_project + "/DVD/GENE/geniso.sh" << endl;
++            //out << "mkisofs -dvd-video -o \"" + wmyprj + "\" \"" + path_project + "/RESULT/\"" << endl;
++            out << "genisoimage -o \"" + wmyprj + "\" -dvd-video \"" + path_project + "/RESULT/\"" << endl;
++            //out << "rm -f " + path_project + "/DVD/GENE/geniso.sh" << endl;
+ 			out << "exit" << endl;
+ 			wmyfic.close();
+ 

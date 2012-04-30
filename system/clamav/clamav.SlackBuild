@@ -88,6 +88,8 @@ cd $PRGNAM-$VERSION || exit 1
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+patch -p1 < $CWD/gcc47.patch
+
 # Specify the desired mirror in the update config file
 # http://www.iana.org/cctld/cctld-whois.htm
 sed -i "s/^\#DatabaseMirror.*/DatabaseMirror db.${COUNTRY}.clamav.net/" etc/freshclam.conf
