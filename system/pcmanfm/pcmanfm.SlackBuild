@@ -24,7 +24,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=pcmanfm
-VERSION=${VERSION:-0.9.10}
+VERSION=${VERSION:-20120512_3e04c35}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -73,8 +73,8 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-# a small fix from git
-patch -p1 < $CWD/window-resize.patch
+# revert a fix from git because causes segfaults on mouse right button clicks
+patch -p1 -R < $CWD/window-resize.patch
 
 sh autogen.sh || true
 
@@ -92,11 +92,11 @@ CXXFLAGS="$SLKCFLAGS" \
 make
 make install-strip DESTDIR=$PKG
 
-# A minor polish
-sed -i 's/Name=File\ Manager/Name=PCMan\ File\ Manager/' $PKG/usr/share/applications/pcmanfm.desktop
-
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+# A minor polish
+sed -i 's/Name=File\ Manager/Name=PCMan\ File\ Manager/' $PKG/usr/share/applications/pcmanfm.desktop
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION

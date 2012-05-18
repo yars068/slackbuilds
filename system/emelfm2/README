@@ -3,3 +3,7 @@ a simple and efficient interface pioneered by Norton Commander in
 the 1980's.  It features a two pane window located side-by-side
 to show the contents of the selected filesystem directories, and
 a third pane at the bottom that shows the output of commands.
+
+Command line switches are:
+UDISKS=no (default yes): use hal instead of udisks
+GTK3=yes (default no): use gtk3 instead of gtk2
