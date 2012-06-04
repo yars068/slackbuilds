@@ -1,0 +1,11 @@
+diff -Naur qutim-20120209_f0758e7.orig/plugins/plugman/3rdparty/quasar/lib/savefile.cpp qutim-20120209_f0758e7/plugins/plugman/3rdparty/quasar/lib/savefile.cpp
+--- qutim-20120209_f0758e7.orig/plugins/plugman/3rdparty/quasar/lib/savefile.cpp	2012-02-12 21:44:05.000000000 +0100
++++ qutim-20120209_f0758e7/plugins/plugman/3rdparty/quasar/lib/savefile.cpp	2012-03-30 19:07:42.632022491 +0200
+@@ -36,6 +36,7 @@
+ 
+ #include <stdlib.h>
+ #include <errno.h>
++#include <unistd.h>
+ 
+ namespace Quasar {
+ 

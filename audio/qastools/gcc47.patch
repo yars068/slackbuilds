@@ -1,0 +1,22 @@
+diff -Naur qastools_0.17.1.orig/shared/src/single_application.cpp qastools_0.17.1/shared/src/single_application.cpp
+--- qastools_0.17.1.orig/shared/src/single_application.cpp	2012-01-16 16:51:27.000000000 +0100
++++ qastools_0.17.1/shared/src/single_application.cpp	2012-03-30 18:31:27.518999990 +0200
+@@ -17,6 +17,7 @@
+ 
+ #include <stdlib.h>
+ #include <pwd.h>
++#include <unistd.h>
+ #include "unix_signal_handler.hpp"
+ 
+ 
+diff -Naur qastools_0.17.1.orig/shared/src/unix_signal_handler.cpp qastools_0.17.1/shared/src/unix_signal_handler.cpp
+--- qastools_0.17.1.orig/shared/src/unix_signal_handler.cpp	2012-01-16 16:51:27.000000000 +0100
++++ qastools_0.17.1/shared/src/unix_signal_handler.cpp	2012-03-30 18:25:31.938999991 +0200
+@@ -12,6 +12,7 @@
+ #include <signal.h>
+ #include <QSocketNotifier>
+ #include <iostream>
++#include <unistd.h>
+ 
+ 
+ int Unix_Signal_Handler::_sig_int_fds[2];
