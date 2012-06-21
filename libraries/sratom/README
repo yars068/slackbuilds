@@ -1,0 +1,5 @@
+sratom (RDF atom serializer library)
+
+Sratom is a library for serialising LV2 atoms to/from RDF.
+
+This needs serd, sord and lv2.

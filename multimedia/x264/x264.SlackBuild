@@ -6,7 +6,7 @@
 # Modified by Heinz Wiesinger <pprkut@liwjatan.at>
 
 PRGNAM=x264
-VERSION=20111105
+VERSION=${VERSION:-20120504}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -42,11 +42,14 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-snapshot-$VERSION-2245-stable
-tar xvf $CWD/$PRGNAM-snapshot-$VERSION-2245-stable.tar.bz2
-cd $PRGNAM-snapshot-$VERSION-2245-stable
+rm -rf $PRGNAM-snapshot-$VERSION-2245
+tar xvf $CWD/$PRGNAM-snapshot-$VERSION-2245.tar.bz2
+cd $PRGNAM-snapshot-$VERSION-2245
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+
+# don't overlap our CFLAGS, pls
+sed -i "s|-O3 -ffast-math|-ffast-math|" configure
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
