@@ -25,7 +25,7 @@
 # slightly modified by ponce <matteo.bernardini@gmail.com>
 
 PRGNAM=libfm
-VERSION=${VERSION:-0.1.17}
+VERSION=${VERSION:-20120601_d473178}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -82,10 +82,14 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --enable-udisks=yes \
   --enable-static=no \
+  --enable-gtk-doc \
   --build=$ARCH-slackware-linux
 
 make
 make install-strip DESTDIR=$PKG
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 # add handlers for terminal and archiver from LXDE components to the default config
 sed -i -e 's|\[ui\]|terminal=lxterminal -e %s\narchiver=xarchiver %s\n\n[ui]|' \

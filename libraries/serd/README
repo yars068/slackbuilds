@@ -1,0 +1,4 @@
+serd (RDF syntax library)
+
+Serd is a lightweight C library for RDF syntax which supports reading
+and writing Turtle and NTriples.
