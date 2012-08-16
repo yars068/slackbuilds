@@ -1,0 +1,6 @@
+suil (lv2 plugins UI library)
+
+Suil is a lightweight C library for loading and wrapping LV2 plugin
+UIs.
+
+This needs lv2.

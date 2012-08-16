@@ -1,0 +1,15 @@
+# SpaceFM Session File
+
+# THIS FILE IS NOT DESIGNED TO BE EDITED - it will be read and OVERWRITTEN
+
+# If you delete all session* files, SpaceFM will be reset to factory defaults.
+
+[MOD]
+main_terminal-s=xterm
+dev_root_mount-z=/usr/bin/udevil --mount %v --mount-options %o
+dev_root_unmount-z=/usr/bin/udevil --unmount %v
+su_command-s=/bin/su
+gsu_command-s=/usr/bin/ktsuss
+editor-s=/usr/bin/leafpad %f
+root_editor-s=/usr/bin/leafpad %f
+

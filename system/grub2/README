@@ -9,5 +9,13 @@ The default size is 19.
 If you want to install grub2 on GPT,
 you need to put a BIOS boot partition on GPT.
 
+To install it in the MBR replacing lilo, generate
+a config file in /boot/grub and launch grub-install,
+like
+
+mkdir /boot/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+grub-install /dev/sda
+
 This requires os-prober, gnu-unifont, and help2man.
 

@@ -23,7 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=subtitleeditor
-VERSION=${VERSION:-0.38.0}
+VERSION=${VERSION:-0.40.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -64,6 +64,9 @@ tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+
+# Fix building with glib >= 2.31
+patch -p1 < $CWD/subtitleeditor-0.40.0-glib-2.31.patch
 
 CFLAGS="$SLKCFLAGS" \
 ./configure \

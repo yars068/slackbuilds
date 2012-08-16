@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=spacefm
-VERSION=${VERSION:-0.7.7}
+VERSION=${VERSION:-0.7.10}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -79,6 +79,7 @@ CFLAGS="$SLKCFLAGS" \
   --infodir=/usr/info \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --localedir=/usr/share/locale \
+  --disable-pixmaps \
   --build=$ARCH-slackware-linux
 
 make
@@ -86,6 +87,11 @@ make install DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+# Create the settings folder and some default configuration
+mkdir -p $PKG/etc/{spacefm,xdg/spacefm}
+echo "tmp_dir=/dev/shm" > $PKG/etc/spacefm/spacefm.conf
+install -m 0644 $CWD/default-session $PKG/etc/xdg/spacefm/session
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING* ChangeLog NEWS README TRANSLATE $PKG/usr/doc/$PRGNAM-$VERSION

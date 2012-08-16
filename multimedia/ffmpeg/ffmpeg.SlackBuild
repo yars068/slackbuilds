@@ -7,7 +7,7 @@
 # Modified by Heinz Wiesinger <pprkut@liwjatan.org>
 
 PRGNAM=ffmpeg
-VERSION=${VERSION:-0.8.7}
+VERSION=${VERSION:-0.10.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -65,6 +65,8 @@ libopencv=""  ; [ "${OPENCV:-no}" != "no" ]       && libopencv="--enable-libopen
 librtmp=""    ; [ "${RTMP:-no}" != "no" ]         && librtmp="--enable-librtmp"
 dirac_fast="" ; [ "${SCHROEDINGER:-no}" != "no" ] && dirac_fast="--enable-libschroedinger"
 libspeex=""   ; [ "${SPEEX:-no}" != "no" ]        && libspeex="--enable-libspeex"
+vaapi=""      ; [ "${VAAPI:-no}" != "no" ]        && vaapi="--enable-vaapi"
+libvdpau=""   ; [ "${VDPAU:-no}" != "no" ]        && libvdpau="--enable-vdpau"
 libvpx=""     ; [ "${VPX:-no}" != "no" ]          && libvpx="--enable-libvpx"
 libxvid=""    ; [ "${XVID:-no}" != "no" ]         && libxvid="--enable-libxvid"
 
@@ -126,6 +128,8 @@ CXXFLAGS="$SLKCFLAGS" \
   $opencore_amr \
   $libopencv \
   $libfrei0r \
+  $libvdpau \
+  $vaapi \
   $libcelt
 
 make
@@ -137,10 +141,10 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | \
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 
-mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION/html
 cp -a COPYING* CREDITS INSTALL LICENSE MAINTAINERS README RELEASE \
-  VERSION doc/TODO* doc/*.txt $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a doc/*.html $PKG/usr/doc/$PRGNAM-$VERSION
+  VERSION doc/*.txt $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a doc/*.html $PKG/usr/doc/$PRGNAM-$VERSION/html
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

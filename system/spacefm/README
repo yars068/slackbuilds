@@ -2,4 +2,20 @@ SpaceFM is a multi-panel tabbed file manager for Linux
 with built-in VFS, udev-based device manager,
 customizable menu system, and bash integration.
 
-This requires udisks (optional) to mount as non-root.
+udevil is the optional preconfigured dependency to mount
+as non-root, but it can alternatively use the already
+available udisks. ktsuss and leafpad are the
+preconfigured helper apps for graphical su and editor,
+but still you can set what you prefeer as alternatives.
+You can do this also editing the default-session file
+before building the package.
+
+If you want to use it as the default file and desktop
+manager in your installed LXDE, you can avoid building
+pcmanfm and deps, install this instead, and run these
+two sed commands
+
+sed -i "s|pcmanfm|spacefm|" \
+  /etc/xdg/lxsession/LXDE/autostart
+sed -i "s|pcmanfm|spacefm|" \
+  /usr/share/lxpanel/profile/LXDE/panels/panel

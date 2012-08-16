@@ -24,7 +24,7 @@
 
 PRGNAM=webkitgtk
 SRCNAM=webkit
-VERSION=1.3.4
+VERSION=1.8.2
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -61,10 +61,17 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $SRCNAM-$VERSION
-tar xvf $CWD/$SRCNAM-$VERSION.tar.gz
+tar xvf $CWD/$SRCNAM-$VERSION.tar.?z*
 cd $SRCNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
+
+# Check if geoclue is there
+if pkg-config --exists geoclue ; then
+  with_geoclue=""
+else
+  with_geoclue="--enable-geolocation=no"
+fi
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -73,6 +80,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-static \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --with-font-backend=pango \
+  --with-gtk=2.0 \
+  $with_geoclue \
   --build=$ARCH-slackware-linux
 
 make
