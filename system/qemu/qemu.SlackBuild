@@ -23,9 +23,12 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Modified by the SlackBuilds.org project
+# Merged with qemu-kvm by Matteo Bernardini <ponce@slackbuilds.org>
 
 PRGNAM=qemu
 VERSION=${VERSION:-1.2.0}
+KPRGNAM=qemu-kvm
+KVERSION=${KVERSION:-1.2.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -56,31 +59,49 @@ else
   LIBDIRSUFFIX=""
 fi
 
+# Enable only x86* and arm emulation for qemu: if you want to build
+# all the targets available use TARGETS=all
+if [ "${TARGETS:-}" = "all" ]; then
+  targets=""
+else
+  targets="--target-list=x86_64-softmmu,x86_64-linux-user,arm-softmmu,arm-linux-user,armeb-linux-user"
+fi
+
+# Build also qemu-kvm by default, disable it if you don't have
+# virtualization extensions available.
+# Give permissions to the users group by default for /dev/kvm.
+KVM=${KVM:-yes}
+KVMGROUP=${KVMGROUP:-users}
+
+# Needed to build man pages if build with plain "su"
+export PATH=$PATH:/usr/share/texmf/bin
+
 set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
-# To get the stable-1.0 patches, do this in git checkout of qemu:
-# git format-patch v1.0.1..origin/stable-1.0
-#for i in $CWD/patches/*.patch ; do patch -p1 < $i ; done
-
-# Disable debug (hardcoded) and remove double CFLAGS
-sed -i "s|^CFLAGS=\"-g\ |CFLAGS=\"|" configure
-sed -i "s|^LDFLAGS=\"-g\ |LDFLAGS=\"|" configure
+# Remove double CFLAGS
 sed -i "s|^\ \ CFLAGS=\"-O2\ |  CFLAGS=\"|" configure
 
-# check if spice support is enabled
+# check if spice is there
 if pkg-config --exists spice-server ; then
   with_spice="--enable-spice"
 else
   with_spice="--disable-spice"
+fi
+
+# check if usbredir is there
+if pkg-config --exists libusbredirhost ; then
+  with_usbredir="--enable-usb-redir"
+else
+  with_usbredir="--disable-usb-redir"
 fi
 
 # --libdir isn't recognized and isn't needed anyway
@@ -88,12 +109,87 @@ CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
-  --enable-system \
   --sysconfdir=/etc \
+  --enable-system \
+  --disable-kvm \
+  --disable-debug-info \
   --audio-drv-list=alsa,oss,sdl,esd \
-  $with_spice
+  $targets \
+  $with_spice \
+  $with_usbredir
 
 make OS_CFLAGS="$SLKCFLAGS"
+
+if [ "$KVM" = "yes" ]; then
+# build qemu-kvm
+
+( cd $TMP
+rm -rf $KPRGNAM-$KVERSION
+tar xvf $CWD/$KPRGNAM-$KVERSION.tar.?z*
+cd $KPRGNAM-$KVERSION
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# Remove double CFLAGS
+sed -i "s|^\ \ CFLAGS=\"-O2\ |  CFLAGS=\"|" configure
+
+# The script builds only the 32/64 bit x86 compatible Linux Target CPU emulator.
+# This version of the emulator will only be useful for x86 architectures that
+# can make use of KVM-KMOD kernel modules which are the kvm-intel, kvm-amd,
+# and kvm modules.
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --enable-system \
+  --with-confsuffix=/qemu-kvm \
+  --enable-mixemu \
+  --target-list="x86_64-softmmu" \
+  --disable-debug-info \
+  --audio-drv-list=alsa,oss,sdl,esd \
+  $with_spice \
+  $with_usbredir
+
+make V=1 \
+  OS_CFLAGS="$SLKCFLAGS" \
+  mandir=/usr/man \
+  docdir=/usr/doc/$KPRGNAM-$KVERSION
+make install \
+  mandir=/usr/man \
+  docdir=/usr/doc/$KPRGNAM-$KVERSION \
+  DESTDIR=$PKG
+
+# Rename the primary binary from "qemu-system-x86_64" to "qemu-kvm" so that the
+# regular "qemu" package won't overwrite it.
+mv $PKG/usr/bin/qemu-system-x86_64 $PKG/usr/bin/qemu-kvm
+
+# Copy some missed binaries
+cp -a scripts/kvm/{kvm_stat,kvm_flightrecorder,vmxcap} $PKG/usr/bin/
+
+# install some udev rules for /dev/kvm
+mkdir -p $PKG/lib/udev/rules.d/
+sed "s/@GROUP@/$KVMGROUP/" $CWD/patches-kvm/65-kvm.rules \
+  > $PKG/lib/udev/rules.d/65-kvm.rules
+
+# Remove man pages, we will use the qemu ones
+rm -fR $PKG/usr/man
+
+mkdir -p $PKG/usr/doc/$KPRGNAM-$KVERSION
+mv $PKG/usr/share/doc/qemu/* $PKG/usr/doc/$KPRGNAM-$KVERSION
+rm -fR $PKG/usr/share/doc
+cp -a Changelog COPYING* HACKING LICENSE README TODO docs/* \
+   $PKG/usr/doc/$KPRGNAM-$KVERSION/
+
+)
+# end qemu-kvm build
+fi
+
+# We install qemu stuff now so that eventual duplicates of this version are used
 make install DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
