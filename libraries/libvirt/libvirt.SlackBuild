@@ -4,7 +4,7 @@
 # Written by Michal Bialozor <bialyy@o2.pl>
 
 PRGNAM=libvirt
-VERSION=${VERSION:-0.10.2}
+VERSION=${VERSION:-20121209}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -75,7 +75,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION $PRGNAM-doinst-additions
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
