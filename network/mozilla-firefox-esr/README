@@ -1,0 +1,10 @@
+Mozilla Firefox ESR (Extended Support Release) is meant for 
+organizations that manage their client desktops, including schools,
+businesses and other institutions that want to offer Firefox.
+
+Note: this package is not compatible/substitutes Slackware's
+mozilla-firefox package: install only one of the two.
+
+Also note that the package generated from this SlackBuild will be
+branded like an official Mozilla.org Slackware package, so
+it cannot be redistributed.
