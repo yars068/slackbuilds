@@ -4,7 +4,7 @@
 # Written by Michal Bialozor <bialyy@o2.pl>
 
 PRGNAM=libvirt
-VERSION=${VERSION:-0.10.2}
+VERSION=${VERSION:-1.0.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -75,7 +75,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION $PRGNAM-doinst-additions
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
@@ -113,7 +113,8 @@ make \
   install-strip DESTDIR=$PKG
 
 # don't clobber existing configuration files
-for i in etc/libvirt{,/nwfilter,/qemu/networks} etc/{logrotate.d,sasl2,sysctl.d}; do
+for i in etc/libvirt etc/libvirt/nwfilter etc/libvirt/qemu/networks \
+  etc/logrotate.d etc/sasl2 etc/sysctl.d; do
   for j in $(ls -1 $PKG/$i); do
     if [ ! -d $PKG/$i/$j ]; then
       mv $PKG/$i/$j{,.new}
