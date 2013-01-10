@@ -10,10 +10,10 @@ qemu: qemu (open source processor emulator)
 qemu:
 qemu: QEMU is a generic and open source processor emulator which achieves
 qemu: a good emulation speed by using dynamic translation.
+qemu: KVM (Kernel-based Virtual Machine) is a full virtualization solution
+qemu: for Linux on x86 hardware containing virtualization extensions
+qemu: (Intel VT or AMD-V).
 qemu:
-qemu:
-qemu:
-qemu:
-qemu:
+qemu: homepage: http://qemu.org - http://www.linux-kvm.org
 qemu:
 qemu:
