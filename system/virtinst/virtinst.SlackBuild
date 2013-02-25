@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PRGNAM=virtinst
-VERSION=${VERSION:-0.600.3}
+VERSION=${VERSION:-20130114_0ac0616}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -59,7 +59,7 @@ for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; r
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  AUTHORS ChangeLog COPYING HACKING INSTALL NEWS PKG-INFO README \
+  AUTHORS ChangeLog COPYING HACKING INSTALL NEWS README \
     $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 

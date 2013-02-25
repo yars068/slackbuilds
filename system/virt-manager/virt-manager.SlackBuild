@@ -10,7 +10,7 @@
 # Modified by Zoran Stojakovic
 
 PRGNAM=virt-manager		
-VERSION=${VERSION:-0.9.4}	
+VERSION=${VERSION:-20130106_0ca8cf6}	
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}	 
 
@@ -47,7 +47,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find . \
@@ -55,6 +55,8 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
+
+sh autogen.sh || true
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
