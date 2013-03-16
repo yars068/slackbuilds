@@ -5,8 +5,8 @@
 # Written by Ash Wiren   ash@spooksoftware.com
 
 PRGNAM=gtk-vnc
-VERSION=${VERSION:-0.5.1}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-0.5.2}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
@@ -38,11 +38,6 @@ else
   LIBDIRSUFFIX=""
 fi
 
-# These might be useful when all needed headers will be there
-# in that case add also --enable-plugin=yes
-#export MOZILLA_PLUGIN_CFLAGS="-I/usr/include/nspr -I/usr/include/nss -I/usr/include/seamonkey"
-#export MOZILLA_PLUGIN_LIBS="-L/usr/lib$LIBDIRSUFFIX -L/usr/lib$LIBDIRSUFFIX/seamonkey"
-
 set -e
 
 rm -rf $PKG
@@ -64,7 +59,7 @@ MAKEFLAGS=$(echo "$MAKEFLAGS" | sed "s/-j[0-999]//g")
 # To avoid building the gtk3 version, pass GTK3=no to the script
 if [ "${GTK3:-yes}" = "yes" ]; then
 (
-cp -a $PRGNAM-$VERSION{,-3}
+cp -a $PRGNAM-$VERSION $PRGNAM-$VERSION-3
 cd $PRGNAM-$VERSION-3
 
 CFLAGS="$SLKCFLAGS" \

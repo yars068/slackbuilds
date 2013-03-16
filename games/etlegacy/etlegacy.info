@@ -1,0 +1,14 @@
+PRGNAM="etlegacy"
+VERSION="20130126_d701f2f"
+HOMEPAGE="http://www.etlegacy.com"
+DOWNLOAD="\
+          http://ponce.cc/slackware/sources/repo/etlegacy-20130126_d701f2f.tar.xz \
+          http://mirror.etlegacy.com/omnibot/OmniBot_ETLegacy_Linux_r2497.zip"
+MD5SUM="\
+        75ef90214d0300370a5a52a725f0fdd3 \
+        0cd658290b8dadf6503f5db0864246f8"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+REQUIRES="%README% etlegacy-data lua"
+MAINTAINER="Matteo Bernardini"
+EMAIL="ponce@slackbuilds.org"
