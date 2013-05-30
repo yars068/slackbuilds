@@ -1,0 +1,27 @@
+From bad265cbf199778639cf4fa8d2bbf71360fb773a Mon Sep 17 00:00:00 2001
+From: Kjartan Maraas <kmaraas@gnome.org>
+Date: Tue, 14 May 2013 13:32:23 +0200
+Subject: [PATCH 12/14] Some updates
+
+---
+ NEWS | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/NEWS b/NEWS
+index bddfdff..7734385 100644
+--- a/NEWS
++++ b/NEWS
+@@ -1,3 +1,10 @@
++ORBit2-2.14.20
++
++	- build fixes
++		+ Stop using -DG_DISABLE_DEPRECATED since it doesn't build
++		+ Use AM_CPPFLAGS instead of INCLUDES
++		+ Move configure.in to configure.ac
++
+ ORBit2-2.14.19
+ 
+ 	- bug fixes
+-- 
+1.8.3
+

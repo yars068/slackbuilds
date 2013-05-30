@@ -1,0 +1,26 @@
+From 4480b0d98ab618c5fd507ae17065e58e79e630d2 Mon Sep 17 00:00:00 2001
+From: Kjartan Maraas <kmaraas@gnome.org>
+Date: Tue, 14 May 2013 13:18:31 +0200
+Subject: [PATCH 07/14] Remove -DG_DISABLE_DEPRECATED to build with newer GLib
+ releases
+
+---
+ configure.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index 0879051..5185ce0 100644
+--- a/configure.in
++++ b/configure.in
+@@ -262,7 +262,7 @@ AC_SUBST(pkglibdir)
+ 
+ if test "$enable_maintainer_mode" = "yes"; then
+ 	DISABLE_DEPRECATED_CFLAGS=" \
+-		-DG_DISABLE_DEPRECATED -DG_DISABLE_SINGLE_INCLUDES"
++		-DG_DISABLE_SINGLE_INCLUDES"
+ 	AC_SUBST(DISABLE_DEPRECATED_CFLAGS)
+ fi
+ 
+-- 
+1.8.3
+

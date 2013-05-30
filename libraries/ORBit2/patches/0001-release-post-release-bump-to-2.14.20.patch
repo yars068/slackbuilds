@@ -1,0 +1,24 @@
+From d7691c49818ea4c801b6555b50914ff0bd025dff Mon Sep 17 00:00:00 2001
+From: Vincent Untz <vuntz@gnome.org>
+Date: Tue, 28 Sep 2010 13:21:25 +0200
+Subject: [PATCH 01/14] release: post-release bump to 2.14.20
+
+---
+ configure.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index 04d4b2a..0fd0850 100644
+--- a/configure.in
++++ b/configure.in
+@@ -1,6 +1,6 @@
+ m4_define([orbit_major_version],[2])
+ m4_define([orbit_minor_version],[14])
+-m4_define([orbit_micro_version],[19])
++m4_define([orbit_micro_version],[20])
+ m4_define([orbit_version],[orbit_major_version.orbit_minor_version.orbit_micro_version])
+ 
+ dnl Process this file with autoconf to produce a configure script.
+-- 
+1.8.3
+

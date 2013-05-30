@@ -1,0 +1,107 @@
+From f4fd676c4864155bad10cf5a49ea5d9a0f3c1e9a Mon Sep 17 00:00:00 2001
+From: Kjartan Maraas <kmaraas@gnome.org>
+Date: Tue, 11 Jan 2011 23:48:59 +0100
+Subject: [PATCH 03/14] Support for custom GMainContext from Ke Wang
+
+---
+ include/orbit/GIOP/giop.h          |  1 +
+ include/orbit/orb-core/corba-orb.h |  2 ++
+ src/orb/GIOP/giop.c                | 14 +++++++++++---
+ src/orb/orb-core/corba-orb.c       |  6 ++++++
+ 4 files changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/include/orbit/GIOP/giop.h b/include/orbit/GIOP/giop.h
+index 20a3a32..8d1dd7a 100644
+--- a/include/orbit/GIOP/giop.h
++++ b/include/orbit/GIOP/giop.h
+@@ -14,6 +14,7 @@ G_BEGIN_DECLS
+ 
+ #ifdef ORBIT2_INTERNAL_API
+ 
++void        giop_set_main_context  (GMainContext *context);
+ void        giop_init              (gboolean thread_safe,
+ 				    gboolean blank_wire_data);
+ void        giop_main_run          (void);
+diff --git a/include/orbit/orb-core/corba-orb.h b/include/orbit/orb-core/corba-orb.h
+index 2fc409b..3cc5087 100644
+--- a/include/orbit/orb-core/corba-orb.h
++++ b/include/orbit/orb-core/corba-orb.h
+@@ -32,6 +32,8 @@ gboolean  ORBit_proto_use (const char *name);
+  */
+ glong ORBit_get_giop_recv_limit (void);
+ 
++void ORBit_set_giop_main_context (GMainContext *context);
++
+ #ifdef ORBIT2_INTERNAL_API
+ 
+ void      ORBit_ORB_forw_bind (CORBA_ORB                   orb,
+diff --git a/src/orb/GIOP/giop.c b/src/orb/GIOP/giop.c
+index f287733..3109d1f 100644
+--- a/src/orb/GIOP/giop.c
++++ b/src/orb/GIOP/giop.c
+@@ -21,6 +21,7 @@
+ static int      corba_wakeup_fds[2];
+ #define WAKEUP_POLL  corba_wakeup_fds [0]
+ #define WAKEUP_WRITE corba_wakeup_fds [1]
++static GMainContext *giop_main_context = NULL;
+ static GSource *giop_main_source = NULL;
+ static GIOPThread *giop_main_thread = NULL;
+ 
+@@ -530,19 +531,26 @@ ORBit_get_safe_tmp (void)
+ }
+ 
+ void
++giop_set_main_context (GMainContext *context)
++{
++	giop_main_context = context;
++}
++
++void
+ giop_init (gboolean thread_safe, gboolean blank_wire_data)
+ {
+ 	link_init (thread_safe);
+ 
+ 	if (giop_thread_safe ()) {
+ 		GIOPThread *tdata;
++		if (!giop_main_context)
++			giop_main_context = g_main_context_default();
+ 
+ 		/* We need a destructor to clean up if giopthreads are used
+ 		 * outside of ORBit controlled threads */
+ 		giop_tdata_private = g_private_new ((GDestroyNotify)giop_thread_free);
+ 
+-		giop_main_thread = tdata = giop_thread_new (
+-			g_main_context_default ()); /* main thread */
++		giop_main_thread = tdata = giop_thread_new (giop_main_context); /* main thread */
+ 
+ 		if (link_pipe (corba_wakeup_fds) < 0) /* cf. g_main_context_init_pipe */
+ 			g_error ("Can't create CORBA main-thread wakeup pipe");
+@@ -556,7 +564,7 @@ giop_init (gboolean thread_safe, gboolean blank_wire_data)
+ 		fcntl (WAKEUP_WRITE, F_SETFL, O_NONBLOCK);
+ #endif
+ 		giop_main_source = link_source_create_watch (
+-			g_main_context_default (), WAKEUP_POLL,
++			giop_main_context, WAKEUP_POLL,
+ 			NULL, (G_IO_IN | G_IO_PRI),
+ 			giop_mainloop_handle_input, NULL);
+ 		
+diff --git a/src/orb/orb-core/corba-orb.c b/src/orb/orb-core/corba-orb.c
+index 908535d..2b2229a 100644
+--- a/src/orb/orb-core/corba-orb.c
++++ b/src/orb/orb-core/corba-orb.c
+@@ -1442,6 +1442,12 @@ ORBit_get_giop_recv_limit (void)
+ 	return giop_recv_get_limit ();
+ }
+ 
++void
++ORBit_set_giop_main_context (GMainContext *context)
++{
++	giop_set_main_context (context);
++}
++
+ const ORBit_option orbit_supported_options[] = {
+ 	{ "ORBid",              ORBIT_OPTION_STRING,  NULL }, /* FIXME: unimplemented */
+ 	{ "ORBImplRepoIOR",     ORBIT_OPTION_STRING,  NULL }, /* FIXME: unimplemented */
+-- 
+1.8.3
+

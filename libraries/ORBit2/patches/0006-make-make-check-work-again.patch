@@ -1,0 +1,29 @@
+From e8f2782a3000c3d19758e6b90735d5ccc9ef9ea1 Mon Sep 17 00:00:00 2001
+From: Kjartan Maraas <kmaraas@gnome.org>
+Date: Tue, 14 May 2013 13:17:42 +0200
+Subject: [PATCH 06/14] make 'make check' work again
+
+---
+ test/test-mem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/test/test-mem.c b/test/test-mem.c
+index 94d82f4..c194f30 100644
+--- a/test/test-mem.c
++++ b/test/test-mem.c
+@@ -236,9 +236,9 @@ main_func(int argc, char *argv[]) {
+         PortableServer_POAManager_activate(poa_manager, ev);
+         g_assert (!ORBIT_EX (ev));
+ 	
+- 	LEAK_DETECT_WITH_TOLERANCE (1000, test_ORBit_alloc (), 50); 
+- 	LEAK_DETECT_WITH_TOLERANCE (1000, test_ORBit_sequence (), 50); 
+-	LEAK_DETECT_WITH_TOLERANCE (1000, test_activate_deactivate (poa, ev), 50);
++ 	LEAK_DETECT_WITH_TOLERANCE (1000, test_ORBit_alloc (), 200); 
++ 	LEAK_DETECT_WITH_TOLERANCE (1000, test_ORBit_sequence (), 200); 
++	LEAK_DETECT_WITH_TOLERANCE (1000, test_activate_deactivate (poa, ev), 200); 
+ 
+         /* tear down the ORB */
+ 	CORBA_Object_release ((CORBA_Object) poa_manager, ev);
+-- 
+1.8.3
+

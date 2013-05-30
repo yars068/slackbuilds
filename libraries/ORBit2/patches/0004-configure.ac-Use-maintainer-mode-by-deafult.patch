@@ -1,0 +1,27 @@
+From d4b5febc044a8e750010a23dc43f9b5f4494e108 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Javier=20Jard=C3=B3n?= <jjardon@gnome.org>
+Date: Sun, 11 Sep 2011 01:18:30 +0100
+Subject: [PATCH 04/14] configure.ac: Use maintainer mode by deafult
+
+See
+https://mail.gnome.org/archives/desktop-devel-list/2011-September/msg00064.html
+---
+ configure.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index 0fd0850..0879051 100644
+--- a/configure.in
++++ b/configure.in
+@@ -85,7 +85,7 @@ AC_PROG_INSTALL
+ AC_LIBTOOL_DLOPEN
+ AC_LIBTOOL_WIN32_DLL
+ AM_PROG_LIBTOOL
+-AM_MAINTAINER_MODE
++AM_MAINTAINER_MODE([enable])
+ 
+ dnl Useful for automating stuff
+ AC_CACHE_CHECK([for aclocal flags], ac_cv_orbit_aclocal_flags,[
+-- 
+1.8.3
+

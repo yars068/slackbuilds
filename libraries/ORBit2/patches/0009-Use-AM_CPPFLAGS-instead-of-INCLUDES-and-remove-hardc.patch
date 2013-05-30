@@ -1,0 +1,37 @@
+From 63d576530ecab63099918d4e83def1495baae0c9 Mon Sep 17 00:00:00 2001
+From: Kjartan Maraas <kmaraas@gnome.org>
+Date: Tue, 14 May 2013 13:28:13 +0200
+Subject: [PATCH 09/14] Use AM_CPPFLAGS instead of INCLUDES and remove
+ hardcoded -DG_DISABLE_DEPRECATED to make it build with newer GLib
+
+---
+ linc2/src/Makefile.am | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/linc2/src/Makefile.am b/linc2/src/Makefile.am
+index 357a2dd..17024b5 100644
+--- a/linc2/src/Makefile.am
++++ b/linc2/src/Makefile.am
+@@ -8,16 +8,16 @@ endif
+ 
+ #	-I$(top_builddir)/include  
+ #	-I$(top_srcdir)/include    
+-INCLUDES =                         \
++AM_CPPFLAGS =                         \
+ 	-I$(top_builddir)/linc2/include  \
+ 	-I$(top_srcdir)/linc2/include    \
+ 	$(LINC_CFLAGS)             \
+ 	$(WARN_CFLAGS)             \
+-	-DG_DISABLE_DEPRECATED
++	$(DISABLE_DEPRECATED_CFLAGS)
+ 
+ if OS_WIN32
+ else
+-INCLUDES += -D_GNU_SOURCE
++AM_CPPFLAGS += -D_GNU_SOURCE
+ endif
+ 
+ liblinc_la_SOURCES =		\
+-- 
+1.8.3
+
