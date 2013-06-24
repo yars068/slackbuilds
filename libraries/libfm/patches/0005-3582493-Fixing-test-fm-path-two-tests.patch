@@ -1,7 +1,7 @@
 From ea6d673d84b447b81b54c2cb825bdf8284952aea Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Mon, 12 Nov 2012 23:25:39 +0200
-Subject: [PATCH 05/22] [#3582493]Fixing test-fm-path two tests.
+Subject: [PATCH 05/37] [#3582493]Fixing test-fm-path two tests.
 
 ---
  src/tests/test-fm-path.c | 7 ++++++-
@@ -35,5 +35,5 @@ index a4a3a6c..72c340f 100644
      TEST_PARSING(fm_path_new_for_uri, "mailto:test",
          "mailto:test");
 -- 
-1.8.0.1
+1.8.3
 

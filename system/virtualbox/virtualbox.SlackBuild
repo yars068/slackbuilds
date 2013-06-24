@@ -25,7 +25,7 @@
 
 PRGNAM=virtualbox
 SRCNAM=VirtualBox
-VERSION=4.2.10
+VERSION=4.2.12
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -43,7 +43,7 @@ PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
 # kmk doesn't support MAKEFLAGS, so we use JOBS here
-JOBS=${JOBS:-3}
+JOBS=${JOBS:-8}
 
 # Define Variable Names
 gui=""
@@ -125,6 +125,9 @@ fi
 # Do not require makeself. We don't plan on building an automatic installer
 # Patch taken from gentoo
 patch -p1 -i $CWD/virtualbox-4-makeself-check.patch
+
+# Cheat to support gcc-4.8.x
+sed -i '417s:7:8:' configure
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \

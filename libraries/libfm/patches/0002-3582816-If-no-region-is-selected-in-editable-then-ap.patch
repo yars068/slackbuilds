@@ -1,7 +1,7 @@
 From 74901d717fefaf239bf7d8b6f5b14ea146170663 Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Sat, 3 Nov 2012 16:05:31 +0200
-Subject: [PATCH 02/22] [#3582816]If no region is selected in editable then
+Subject: [PATCH 02/37] [#3582816]If no region is selected in editable then
  apply 'Delete' to char next to cursor.
 
 ---
@@ -29,5 +29,5 @@ index 153ed48..fe65e9f 100644
  
  static void on_rm(GtkAction* act, FmFolderView* fv)
 -- 
-1.8.0.1
+1.8.3
 

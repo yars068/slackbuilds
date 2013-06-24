@@ -1,7 +1,7 @@
 From 7b83548b43e2af014873655c850f580b16d24d57 Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Mon, 19 Nov 2012 23:33:40 +0200
-Subject: [PATCH 16/22] Fix: file owner/group should be properly disabled in
+Subject: [PATCH 16/37] Fix: file owner/group should be properly disabled in
  dialog.
 
 Currently if owner and group cannot be changed by user those fields
@@ -30,5 +30,5 @@ index 3d79cdf..a87b546 100644
  
      /* read access chooser */
 -- 
-1.8.0.1
+1.8.3
 

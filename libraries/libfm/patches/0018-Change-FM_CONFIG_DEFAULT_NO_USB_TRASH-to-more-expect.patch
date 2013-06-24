@@ -1,7 +1,7 @@
 From 70ff12a694a85184775740fcb501342c75fd551b Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Tue, 20 Nov 2012 23:53:16 +0200
-Subject: [PATCH 18/22] Change FM_CONFIG_DEFAULT_NO_USB_TRASH to more expecting
+Subject: [PATCH 18/37] Change FM_CONFIG_DEFAULT_NO_USB_TRASH to more expecting
  TRUE.
 
 The most expected for users used to Windows behavior for that option
@@ -30,5 +30,5 @@ index 313db7c..cd41399 100644
  #define     FM_CONFIG_DEFAULT_BIG_ICON_SIZE     48
  #define     FM_CONFIG_DEFAULT_SMALL_ICON_SIZE   16
 -- 
-1.8.0.1
+1.8.3
 

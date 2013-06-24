@@ -1,0 +1,3 @@
+A Gtk+3 client and libraries for spice remote desktop servers.
+
+libcacard and usbredir are optional dependencies.

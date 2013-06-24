@@ -1,7 +1,7 @@
 From 924208952dbd8408b20b9357d7154f7aa5081b3e Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Sat, 17 Nov 2012 04:36:58 +0200
-Subject: [PATCH 12/22] Fix for localizations of Detailed List View headers.
+Subject: [PATCH 12/37] Fix for localizations of Detailed List View headers.
 
 Detailed List View headers appeared untranslated, macro _() should be added.
 ---
@@ -22,5 +22,5 @@ index 36f0d00..6072b3e 100644
  
  /**
 -- 
-1.8.0.1
+1.8.3
 

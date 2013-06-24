@@ -1,7 +1,7 @@
 From afbe7e29106f9126c53a0c533ab007aae1f81139 Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Sat, 17 Nov 2012 15:02:15 +0200
-Subject: [PATCH 13/22] [#3587571]Ctrl+A should select all depending on focus.
+Subject: [PATCH 13/37] [#3587571]Ctrl+A should select all depending on focus.
 
 The commit changes bahavior of Ctrl+A: it does not select all files in
 the active view anymore but does it only if focus in in the view.
@@ -32,5 +32,5 @@ index fe65e9f..d7fa53e 100644
  
  static void on_invert_select(GtkAction* act, FmFolderView* fv)
 -- 
-1.8.0.1
+1.8.3
 

@@ -1,7 +1,7 @@
 From 3cea23d685c92dff892aebff01bd1908c4b7e169 Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Mon, 19 Nov 2012 23:41:10 +0200
-Subject: [PATCH 15/22] Adding tooltips for file name and location in file
+Subject: [PATCH 15/37] Adding tooltips for file name and location in file
  properties.
 
 In case when file name is too long to be shown in the field it will be
@@ -35,5 +35,5 @@ index ec672b7..3d79cdf 100644
          }
          else
 -- 
-1.8.0.1
+1.8.3
 

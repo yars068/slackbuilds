@@ -1,7 +1,7 @@
 From a10573226a21c1ff3be24efdf7f57be3a3108c76 Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Mon, 19 Nov 2012 23:38:34 +0200
-Subject: [PATCH 14/22] Disabling input for file name in properties dialog
+Subject: [PATCH 14/37] Disabling input for file name in properties dialog
  window.
 
 Changing file name in file properties dialog isn't implemented yet even
@@ -24,5 +24,5 @@ index ec486f7..ec672b7 100644
      else
      {
 -- 
-1.8.0.1
+1.8.3
 

@@ -1,0 +1,32 @@
+From 63ff747c4ccbb3ec32b83f59ff0125f68f9cbd80 Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Thu, 6 Jun 2013 00:45:02 +0300
+Subject: [PATCH 36/37] [#3599638]Not escape chars such as '[' from path bar
+ when make an URI.
+
+The previous assumption that allow G_URI_RESERVED_CHARS_ALLOWED_IN_PATH
+(i.e. "!$&'()*+,;=:@/") is enough seems to be wrong one. Another chars
+such as '[' should be allowed as well so commit adds "?#[]" to the list
+using G_URI_RESERVED_CHARS_GENERIC_DELIMITERS together with
+G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS.
+---
+ src/base/fm-path.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/base/fm-path.c b/src/base/fm-path.c
+index e4a0251..0c0eef5 100644
+--- a/src/base/fm-path.c
++++ b/src/base/fm-path.c
+@@ -589,7 +589,8 @@ FmPath* fm_path_new_for_str(const char* path_str)
+     /* FIXME: add a support for relative path from FmPathEntry */
+     /* UTF-8 should be allowed, I think. */
+     escaped = g_uri_escape_string(path_str,
+-                                  G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
++                                  G_URI_RESERVED_CHARS_GENERIC_DELIMITERS
++                                  G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS,
+                                   TRUE);
+     path = fm_path_new_for_uri(escaped);
+     g_free(escaped);
+-- 
+1.8.3
+

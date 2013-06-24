@@ -1,0 +1,33 @@
+From 04cd9381f1d9de7c4723821a368b804466169740 Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Sat, 20 Apr 2013 00:07:00 +0300
+Subject: [PATCH 25/37] Eliminate assertion on adding a column while
+ FmFolderModel wasn't initialized.
+
+The array column_infos isn't initialized at first so if the first folder
+view of new instance is Detailed List View then we get few G_CRITICAL
+messages about title is NULL. Hopefully this may fix #3596550 - the actual
+source of that issue isn't known yet, I cannot reproduce it.
+---
+ src/gtk/fm-standard-view.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/gtk/fm-standard-view.c b/src/gtk/fm-standard-view.c
+index 175cced..fc8d1a0 100644
+--- a/src/gtk/fm-standard-view.c
++++ b/src/gtk/fm-standard-view.c
+@@ -1385,6 +1385,11 @@ gboolean _fm_standard_view_set_columns(FmFolderView* fv, const GSList* cols)
+             old_cols[i].info = NULL; /* don't try to use it again */
+             /* TODO: update all other data - width for example */
+         }
++        else if(!fm_folder_model_col_is_valid(0))
++            /* workaround for case when there is no model init yet, the most
++               probably bug #3596550 is about this (it creates column with
++               empty title), can g_return_val_if_fail() not fail somehow? */
++            continue;
+         else
+         {
+             /* if not found then append new one */
+-- 
+1.8.3
+

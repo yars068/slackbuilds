@@ -1,7 +1,7 @@
 From 80c568c277a5b8aa43d553d7d71f7ea404b41ab4 Mon Sep 17 00:00:00 2001
 From: galtgendo <galt_gendo@sourceforge.net>
 Date: Tue, 13 Nov 2012 00:03:54 +0200
-Subject: [PATCH 06/22] [#3586178]doc build wasn't updated for '--with-gtk=3'
+Subject: [PATCH 06/37] [#3586178]doc build wasn't updated for '--with-gtk=3'
  case
 
 ---
@@ -22,5 +22,5 @@ index 4650c71..8537cec 100644
  	$(NULL)
  
 -- 
-1.8.0.1
+1.8.3
 

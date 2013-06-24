@@ -1,0 +1,29 @@
+From 0f7f9ce88df99cbee523045000bd457ff11a6b92 Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Wed, 22 May 2013 03:09:59 +0300
+Subject: [PATCH 30/37] [#3613685]FmDndDest "drag-drop" handler should use
+ fm_dnd_dest_find_target().
+
+If we use gtk_drag_dest_find_target() and have some target by child
+widget with higher priority then we cannot handle own targets since
+we will get unsupported target always. This is invalid behavior.
+---
+ src/gtk/fm-dnd-dest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gtk/fm-dnd-dest.c b/src/gtk/fm-dnd-dest.c
+index 371e5f6..d900876 100644
+--- a/src/gtk/fm-dnd-dest.c
++++ b/src/gtk/fm-dnd-dest.c
+@@ -743,7 +743,7 @@ gboolean fm_dnd_dest_drag_drop(FmDndDest* dd, GdkDragContext *drag_context,
+ static gboolean on_drag_drop(GtkWidget *widget, GdkDragContext *drag_context,
+                              gint x, gint y, guint time, FmDndDest* dd)
+ {
+-    GdkAtom target = gtk_drag_dest_find_target(widget, drag_context, NULL);
++    GdkAtom target = fm_dnd_dest_find_target(dd, drag_context);
+     if(G_UNLIKELY(target == GDK_NONE))
+         return FALSE;
+     return _on_drag_drop(dd, drag_context, target, x, y, time);
+-- 
+1.8.3
+

@@ -1,7 +1,7 @@
 From 01c1de235d7bdf702f8d1dfc99645b57afe3deec Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Sat, 24 Nov 2012 19:34:44 +0200
-Subject: [PATCH 21/22] Fix over previous commit: it leaded to crash.
+Subject: [PATCH 21/37] Fix over previous commit: it leaded to crash.
 
 The last fix was incorrect since it updated selection after the
 model was actually unset in FmStandardView but still in ExoIconView
@@ -42,5 +42,5 @@ index 1ff55ae..175cced 100644
  }
  
 -- 
-1.8.0.1
+1.8.3
 

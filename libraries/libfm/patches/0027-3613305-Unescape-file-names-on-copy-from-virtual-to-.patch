@@ -1,0 +1,87 @@
+From bdac966ca3349eb4037f811a0a1ed057829d70d0 Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Wed, 15 May 2013 00:43:34 +0300
+Subject: [PATCH 27/37] [#3613305]Unescape file names on copy from virtual to
+ native FS.
+
+File names in URIs may have some chars escaped (into such as %20) so
+when such files are copied to native path we have to unescape those
+chars before copying.
+The odd enough thing is that opposite copying doesn't require escaping
+since GVFS keeps paths not escaped internally.
+---
+ src/job/fm-file-ops-job-xfer.c | 44 +++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
+
+diff --git a/src/job/fm-file-ops-job-xfer.c b/src/job/fm-file-ops-job-xfer.c
+index 4c96c35..1fd6b56 100644
+--- a/src/job/fm-file-ops-job-xfer.c
++++ b/src/job/fm-file-ops-job-xfer.c
+@@ -254,7 +254,19 @@ _retry_enum_children:
+                                 gboolean ret2;
+                                 GFileMonitor* old_dest_mon = job->dest_folder_mon;
+                                 GFile* sub = g_file_get_child(src, g_file_info_get_name(inf));
+-                                GFile* sub_dest = g_file_get_child(dest, g_file_info_get_name(inf));
++                                GFile* sub_dest;
++                                char* tmp_basename;
++
++                                if(g_file_is_native(src) == g_file_is_native(dest))
++                                    /* both are native or both are virtual */
++                                    tmp_basename = NULL;
++                                else if(g_file_is_native(src)) /* copy from native to virtual */
++                                    tmp_basename = NULL; /* gvfs escapes it itself */
++                                else /* copy from virtual to native */
++                                    tmp_basename = g_uri_unescape_string(g_file_info_get_name(inf), NULL);
++                                sub_dest = g_file_get_child(dest,
++                                        tmp_basename ? tmp_basename : g_file_info_get_name(inf));
++                                g_free(tmp_basename);
+ 
+                                 if(g_file_is_native(dest))
+                                     job->dest_folder_mon = NULL;
+@@ -678,8 +690,19 @@ gboolean _fm_file_ops_job_copy_run(FmFileOpsJob* job)
+     {
+         FmPath* path = FM_PATH(l->data);
+         GFile* src = fm_path_to_gfile(path);
+-        GFile* dest = g_file_get_child(dest_dir, fm_path_get_basename(path));
+-
++        GFile* dest;
++        char* tmp_basename;
++
++        if(g_file_is_native(src) == g_file_is_native(dest_dir))
++            /* both are native or both are virtual */
++            tmp_basename = NULL;
++        else if(g_file_is_native(src)) /* copy from native to virtual */
++            tmp_basename = NULL; /* gvfs escapes it itself */
++        else /* copy from virtual to native */
++            tmp_basename = g_uri_unescape_string(fm_path_get_basename(path), NULL);
++        dest = g_file_get_child(dest_dir,
++                        tmp_basename ? tmp_basename : fm_path_get_basename(path));
++        g_free(tmp_basename);
+         if(!_fm_file_ops_job_copy_file(job, src, NULL, dest))
+             ret = FALSE;
+         g_object_unref(src);
+@@ -775,8 +798,19 @@ _retry_query_dest_info:
+     {
+         FmPath* path = FM_PATH(l->data);
+         GFile* src = fm_path_to_gfile(path);
+-        GFile* dest = g_file_get_child(dest_dir, fm_path_get_basename(path));
+-
++        GFile* dest;
++        char* tmp_basename;
++
++        if(g_file_is_native(src) == g_file_is_native(dest_dir))
++            /* both are native or both are virtual */
++            tmp_basename = NULL;
++        else if(g_file_is_native(src)) /* move from native to virtual */
++            tmp_basename = NULL; /* gvfs escapes it itself */
++        else /* move from virtual to native */
++            tmp_basename = g_uri_unescape_string(fm_path_get_basename(path), NULL);
++        dest = g_file_get_child(dest_dir,
++                        tmp_basename ? tmp_basename : fm_path_get_basename(path));
++        g_free(tmp_basename);
+         /* get dummy file monitors for non-native filesystems */
+         job->src_folder_mon = NULL;
+         if(!g_file_is_native(src))
+-- 
+1.8.3
+

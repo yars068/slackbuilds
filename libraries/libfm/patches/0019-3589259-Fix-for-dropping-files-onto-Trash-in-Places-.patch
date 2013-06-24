@@ -1,7 +1,7 @@
 From 0beaa4830244ab72eeece67bb99802c3aa04f81c Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Sat, 24 Nov 2012 00:56:34 +0200
-Subject: [PATCH 19/22] [#3589259]Fix for dropping files onto Trash in Places
+Subject: [PATCH 19/37] [#3589259]Fix for dropping files onto Trash in Places
  sidebar.
 
 The Trash item in Places sidebar has incomplete file info and
@@ -30,5 +30,5 @@ index f5d6927..b637089 100644
      g_signal_connect(model->trash_monitor, "changed", G_CALLBACK(on_trash_changed), model);
      g_object_unref(gf);
 -- 
-1.8.0.1
+1.8.3
 

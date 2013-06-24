@@ -1,7 +1,7 @@
 From 86717c497dcd07e4ba417a4236ee01bf3fb61594 Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Mon, 12 Nov 2012 23:14:46 +0200
-Subject: [PATCH 04/22] [#3582493]Fix for SIGSEGV in fm_path_new_child() with
+Subject: [PATCH 04/37] [#3582493]Fix for SIGSEGV in fm_path_new_child() with
  parent=NULL.
 
 ---
@@ -82,5 +82,5 @@ index 9cf3088..b90aeab 100644
   * unescaped URI (can contain non-ASCII characters and spaces).
   * The function will try to figure out what to do.
 -- 
-1.8.0.1
+1.8.3
 

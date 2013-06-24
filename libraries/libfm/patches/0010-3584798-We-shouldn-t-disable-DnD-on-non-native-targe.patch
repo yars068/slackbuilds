@@ -1,7 +1,7 @@
 From 40aa4a6ae1531b189a25d373d642f5c7a1f7023d Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Thu, 15 Nov 2012 05:50:44 +0200
-Subject: [PATCH 10/22] [#3584798]We shouldn't disable DnD on non-native
+Subject: [PATCH 10/37] [#3584798]We shouldn't disable DnD on non-native
  targets completely.
 
 The handling dropping on non-native target should have some check
@@ -33,5 +33,5 @@ index 21cf2c0..371e5f6 100644
          {
              /* determine if the dragged files are on the same device as destination file */
 -- 
-1.8.0.1
+1.8.3
 

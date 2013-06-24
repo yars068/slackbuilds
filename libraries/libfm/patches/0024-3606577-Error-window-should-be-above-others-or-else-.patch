@@ -1,0 +1,30 @@
+From 415d247523b72e2b8d17bebf228781890d589321 Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Fri, 19 Apr 2013 22:01:49 +0300
+Subject: [PATCH 24/37] [#3606577]Error window should be above others or else
+ it may be invisible.
+
+If user starts something like 'pcmanfm %s' which have no sense from shell prompt,
+pcmanfm fails to open non-existent folder but error window has desktop (root window)
+as parent and the error window is below all other windows so isn't visible to user.
+To solve that problem we should simply raise error window to top layer.
+---
+ src/gtk/fm-gtk-utils.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/gtk/fm-gtk-utils.c b/src/gtk/fm-gtk-utils.c
+index bfac72a..e79e3b7 100644
+--- a/src/gtk/fm-gtk-utils.c
++++ b/src/gtk/fm-gtk-utils.c
+@@ -67,6 +67,8 @@ void fm_show_error(GtkWindow* parent, const char* title, const char* msg)
+                                             GTK_MESSAGE_ERROR,
+                                             GTK_BUTTONS_OK, "%s", msg);
+     gtk_window_set_title(GTK_WINDOW(dlg), title ? title : _("Error"));
++    /* #3606577: error window if parent is desktop is below other windows */
++    gtk_window_set_keep_above(GTK_WINDOW(dlg), TRUE);
+     gtk_dialog_run(GTK_DIALOG(dlg));
+     gtk_widget_destroy(dlg);
+ }
+-- 
+1.8.3
+

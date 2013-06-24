@@ -1,7 +1,7 @@
 From e098be34aa96bbcddb786a09b13da877d2d709ad Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Tue, 6 Nov 2012 05:49:19 +0200
-Subject: [PATCH 03/22] [#3584608]Fix for rarely broken DnD due to FmDndDest
+Subject: [PATCH 03/37] [#3584608]Fix for rarely broken DnD due to FmDndDest
  source caching.
 
 The previous behavior was to cache data and reset cache when drag leaves
@@ -135,5 +135,5 @@ index 37686ce..21cf2c0 100644
 -        dd->idle = g_idle_add_full(G_PRIORITY_LOW, clear_src_cache_on_idle, dd, NULL);
  }
 -- 
-1.8.0.1
+1.8.3
 

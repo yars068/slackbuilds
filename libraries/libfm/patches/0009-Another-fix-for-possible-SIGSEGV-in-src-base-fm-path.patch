@@ -1,7 +1,7 @@
 From 195e18e90abf1e641037b84a0e44dbf5c6aa8265 Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Tue, 13 Nov 2012 04:04:24 +0200
-Subject: [PATCH 09/22] Another fix for possible SIGSEGV in src/base/fm-path.c.
+Subject: [PATCH 09/37] Another fix for possible SIGSEGV in src/base/fm-path.c.
 
 ---
  src/base/fm-path.c | 4 +++-
@@ -30,5 +30,5 @@ index b90aeab..e4a0251 100644
  
  /**
 -- 
-1.8.0.1
+1.8.3
 

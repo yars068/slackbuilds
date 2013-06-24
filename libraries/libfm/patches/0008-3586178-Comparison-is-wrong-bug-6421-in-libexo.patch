@@ -1,7 +1,7 @@
 From 19801e7f3d906ebb4470de0818945e9686dcdf66 Mon Sep 17 00:00:00 2001
 From: galtgendo <galt_gendo@sourceforge.net>
 Date: Tue, 13 Nov 2012 00:12:42 +0200
-Subject: [PATCH 08/22] [#3586178]Comparison is wrong (bug #6421 in libexo).
+Subject: [PATCH 08/37] [#3586178]Comparison is wrong (bug #6421 in libexo).
 
 http://git.xfce.org/xfce/exo/commit/?id=97b9c443baf879580ed851525a3150913c89ec10
 ---
@@ -22,5 +22,5 @@ index b572cb0..11bd0cf 100644
        && gtk_tree_path_get_indices (path)[0] == 0)
      {
 -- 
-1.8.0.1
+1.8.3
 

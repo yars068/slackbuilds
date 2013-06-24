@@ -1,7 +1,7 @@
 From 690e15ba4367784f3ac2134c5e68d52ee05e6cbb Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Thu, 15 Nov 2012 21:08:51 +0200
-Subject: [PATCH 11/22] smb:// symlinked locations cannot be launched from
+Subject: [PATCH 11/37] smb:// symlinked locations cannot be launched from
  folder view.
 
 This is because we don't assume each symlink is a folder anymore
@@ -53,5 +53,5 @@ index 19acb1b..69eb37d 100644
              g_object_unref(gf);
          }
 -- 
-1.8.0.1
+1.8.3
 

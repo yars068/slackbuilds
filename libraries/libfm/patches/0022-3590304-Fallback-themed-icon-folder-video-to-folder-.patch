@@ -1,7 +1,7 @@
 From 552d91d59d32c0ed9fec958bf4f3c99a9caccedd Mon Sep 17 00:00:00 2001
 From: Andriy Grytsenko <andrej@rep.kiev.ua>
 Date: Tue, 27 Nov 2012 21:23:15 +0200
-Subject: [PATCH 22/22] [#3590304]Fallback themed icon "folder-video" to
+Subject: [PATCH 22/37] [#3590304]Fallback themed icon "folder-video" to
  "folder" not to gnome.
 
 GTK fallbacks missing themed icon "folder-video" to GNOME
@@ -46,5 +46,5 @@ index b30d7c7..8b1c276 100644
                      size, GTK_ICON_LOOKUP_USE_BUILTIN|GTK_ICON_LOOKUP_FORCE_SIZE, NULL);
          if(G_LIKELY(pix))
 -- 
-1.8.0.1
+1.8.3
 

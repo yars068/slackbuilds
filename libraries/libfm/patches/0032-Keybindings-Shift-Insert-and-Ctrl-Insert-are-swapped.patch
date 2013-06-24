@@ -1,0 +1,30 @@
+From b8dafba4867f349c5c20057930de4e71e30f6adf Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Thu, 30 May 2013 21:46:49 +0300
+Subject: [PATCH 32/37] Keybindings Shift+Insert and Ctrl+Insert are swapped
+ out.
+
+Ctrl+Insert should do Copy and Shift+Insert should do Paste instead.
+---
+ src/gtk/fm-folder-view.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gtk/fm-folder-view.c b/src/gtk/fm-folder-view.c
+index 240f0e3..8a2d922 100644
+--- a/src/gtk/fm-folder-view.c
++++ b/src/gtk/fm-folder-view.c
+@@ -172,9 +172,9 @@ static const GtkActionEntry folder_popup_actions[]=
+     {"NewShortcut", "system-run", N_("Shortcut"), NULL, NULL, G_CALLBACK(on_create_new)},
+     {"Cut", GTK_STOCK_CUT, NULL, "<Ctrl>X", NULL, G_CALLBACK(on_cut)},
+     {"Copy", GTK_STOCK_COPY, NULL, "<Ctrl>C", NULL, G_CALLBACK(on_copy)},
+-    {"Copy2", NULL, NULL, "<Shift>Insert", NULL, G_CALLBACK(on_copy)},
++    {"Copy2", NULL, NULL, "<Ctrl>Insert", NULL, G_CALLBACK(on_copy)},
+     {"Paste", GTK_STOCK_PASTE, NULL, "<Ctrl>V", NULL, G_CALLBACK(on_paste)},
+-    {"Paste2", NULL, NULL, "<Ctrl>Insert", NULL, G_CALLBACK(on_paste)},
++    {"Paste2", NULL, NULL, "<Shift>Insert", NULL, G_CALLBACK(on_paste)},
+     {"Del", GTK_STOCK_DELETE, NULL, "Delete", NULL, G_CALLBACK(on_trash)},
+     {"Del2", NULL, NULL, "KP_Delete", NULL, G_CALLBACK(on_trash)},
+     {"Remove", GTK_STOCK_REMOVE, NULL, "<Shift>Delete", NULL, G_CALLBACK(on_rm)},
+-- 
+1.8.3
+

@@ -1,0 +1,51 @@
+From 169491ab0f2fbd9d55d669e22ea6a1e18bc6ba3d Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Thu, 30 May 2013 20:01:32 +0300
+Subject: [PATCH 31/37] [#3589641]scripts are ran from $HOME instead of current
+ dir.
+
+GIO launcher is kinda ugly - it has no means to set working directory
+for the GAppInfo so we do a workaround - change directory to the path
+of executable before launch and then return back after launch.
+---
+ src/base/fm-file-launcher.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/src/base/fm-file-launcher.c b/src/base/fm-file-launcher.c
+index 0b5a2b9..eaaa366 100644
+--- a/src/base/fm-file-launcher.c
++++ b/src/base/fm-file-launcher.c
+@@ -228,6 +228,18 @@ gboolean fm_launch_files(GAppLaunchContext* ctx, GList* file_infos, FmFileLaunch
+                                 g_free(quoted);
+                                 if(app)
+                                 {
++                                    char* run_path = g_path_get_dirname(filename);
++                                    char* cwd = NULL;
++                                    /* bug #3589641: scripts are ran from $HOME.
++                                       since GIO launcher is kinda ugly - it has
++                                       no means to set running directory so we
++                                       do workaround - change directory to it */
++                                    if(run_path && strcmp(run_path, "."))
++                                    {
++                                        cwd = g_get_current_dir();
++                                        chdir(run_path);
++                                    }
++                                    g_free(run_path);
+                                     if(!fm_app_info_launch(app, NULL, ctx, &err))
+                                     {
+                                         if(launcher->error)
+@@ -235,6 +247,11 @@ gboolean fm_launch_files(GAppLaunchContext* ctx, GList* file_infos, FmFileLaunch
+                                         g_error_free(err);
+                                         err = NULL;
+                                     }
++                                    if(cwd) /* return back */
++                                    {
++                                        chdir(cwd);
++                                        g_free(cwd);
++                                    }
+                                     g_object_unref(app);
+                                     continue;
+                                 }
+-- 
+1.8.3
+

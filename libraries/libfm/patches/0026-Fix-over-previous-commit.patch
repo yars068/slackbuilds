@@ -1,0 +1,27 @@
+From 9de8c022a8d94361e8bd1026f92e55f7f281de50 Mon Sep 17 00:00:00 2001
+From: Andriy Grytsenko <andrej@rep.kiev.ua>
+Date: Mon, 29 Apr 2013 18:07:06 +0300
+Subject: [PATCH 26/37] Fix over previous commit.
+
+Commit 04cd9381f1d9de7c4723821a368b804466169740 is incorrect since
+cherry-picked function which was only in 1.2 version.
+---
+ src/gtk/fm-standard-view.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gtk/fm-standard-view.c b/src/gtk/fm-standard-view.c
+index fc8d1a0..e4feec0 100644
+--- a/src/gtk/fm-standard-view.c
++++ b/src/gtk/fm-standard-view.c
+@@ -1385,7 +1385,7 @@ gboolean _fm_standard_view_set_columns(FmFolderView* fv, const GSList* cols)
+             old_cols[i].info = NULL; /* don't try to use it again */
+             /* TODO: update all other data - width for example */
+         }
+-        else if(!fm_folder_model_col_is_valid(0))
++        else if(!fm_folder_model_col_get_name(FM_FOLDER_MODEL_COL_NAME))
+             /* workaround for case when there is no model init yet, the most
+                probably bug #3596550 is about this (it creates column with
+                empty title), can g_return_val_if_fail() not fail somehow? */
+-- 
+1.8.3
+

@@ -1,7 +1,7 @@
 From 83f0300a130f9c2ec83bbd5af138b0c5633fc608 Mon Sep 17 00:00:00 2001
 From: galtgendo <galt_gendo@sourceforge.net>
 Date: Tue, 13 Nov 2012 00:04:56 +0200
-Subject: [PATCH 07/22] [#3586178]gtk3 css strings have significantly different
+Subject: [PATCH 07/37] [#3586178]gtk3 css strings have significantly different
  syntax from gtk2 rc strings
 
 ---
@@ -40,5 +40,5 @@ index 12c78ca..3bae9d4 100644
  
  /* FIXME: add g_object_unref (provider); on class destroy? */
 -- 
-1.8.0.1
+1.8.3
 
