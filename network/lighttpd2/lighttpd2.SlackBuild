@@ -25,7 +25,7 @@
 # twisted for lighttpd2 by Matteo Bernardini <ponce@slackbuilds.org>
 
 PRGNAM=lighttpd2
-VERSION=${VERSION:-20121206_01abf70}
+VERSION=${VERSION:-20130822_061b2a4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 

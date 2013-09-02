@@ -4,7 +4,7 @@
 # written by powtrix (@gmail.com)
 
 PRGNAM=libwebp
-VERSION=0.2.0
+VERSION=0.3.0
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
