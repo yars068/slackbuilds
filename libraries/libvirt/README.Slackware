@@ -1,0 +1,58 @@
+If you want to start the libvirt daemon at boot, add this to
+/etc/rc.d/rc.local
+
+# Start libvirt:
+if [ -x /etc/rc.d/rc.libvirt ]; then
+  /etc/rc.d/rc.libvirt start
+fi
+
+and if you want it to stop at shutdown add this to
+/etc/rc.d/rc.local_shutdown
+
+# Stop libvirt:
+if [ -x /etc/rc.d/rc.libvirt ]; then
+  /etc/rc.d/rc.libvirt stop
+fi
+
+If you have problems starting domains with a cgroup error, modify
+this part of /etc/rc.d/rc.S 
+
+# Mount Control Groups filesystem interface:
+if grep -wq cgroup /proc/filesystems ; then
+  if [ -d /sys/fs/cgroup ]; then
+    mount -t cgroup cgroup /sys/fs/cgroup
+  else
+    mkdir -p /dev/cgroup
+    mount -t cgroup cgroup /dev/cgroup
+  fi
+fi
+
+like this
+
+# Mount Control Groups filesystem interface:
+if grep -wq cgroup /proc/filesystems ; then
+  if [ -d /sys/fs/cgroup ]; then
+    # See /usr/src/linux-*/Documentation/cgroups/cgroups.txt (1.6)
+    # Check if we have some tools to autodetect the available cgroup controllers
+    if ([ -x /usr/bin/lssubsys ] && [ -x /usr/bin/tr ] && [ -x /usr/bin/sed ]); then
+      # Mount a tmpfs as the cgroup filesystem root
+      mount -t tmpfs -o mode=0755 cgroup_root /sys/fs/cgroup
+      # Autodetect the available controllers and mount them in subfolders
+      controllers="$(lssubsys -a 2>/dev/null | tr '\n' ' ' | sed s/.$//)"
+      for i in $controllers; do
+        mkdir /sys/fs/cgroup/$i
+        mount -t cgroup -o $i $i /sys/fs/cgroup/$i
+      done
+    else
+      # We can't use autodetection so fall back mounting them all together
+      mount -t cgroup cgroup /sys/fs/cgroup
+    fi
+  else
+    mkdir -p /dev/cgroup
+    mount -t cgroup cgroup /dev/cgroup
+  fi
+fi
+
+and reboot.
+
+Have a look at the commented part of rc.libvirt for some gotchas.

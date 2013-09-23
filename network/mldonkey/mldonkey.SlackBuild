@@ -85,6 +85,9 @@ fi
 # Change the O6 to something saner
 sed -i "s/O6/O2/" config/Makefile.in
 
+# Cut away jobs number from the MAKEFLAGS
+MAKEFLAGS=$(echo "$MAKEFLAGS" | sed "s/-j[0-999]//g")
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -97,7 +100,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --build=$ARCH-slackware-linux \
   $GUIOPT
 
-make
+make -j1
 make install DESTDIR=$PKG
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \

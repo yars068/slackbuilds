@@ -1,0 +1,29 @@
+From af8952e924921189180ee9f7dcbe6086071525f7 Mon Sep 17 00:00:00 2001
+From: Michal Privoznik <mprivozn@redhat.com>
+Date: Tue, 3 Sep 2013 18:56:06 +0200
+Subject: [PATCH 1/9] virFileNBDDeviceAssociate: Avoid use of uninitialized
+ variable
+
+The @qemunbd variable can be used uninitialized.
+
+(cherry picked from commit 2dba0323ff0cec31bdcea9dd3b2428af297401f2)
+---
+ src/util/virfile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/util/virfile.c b/src/util/virfile.c
+index 2b07ac9..7af0843 100644
+--- a/src/util/virfile.c
++++ b/src/util/virfile.c
+@@ -732,7 +732,7 @@ int virFileNBDDeviceAssociate(const char *file,
+                               char **dev)
+ {
+     char *nbddev;
+-    char *qemunbd;
++    char *qemunbd = NULL;
+     virCommandPtr cmd = NULL;
+     int ret = -1;
+     const char *fmtstr = NULL;
+-- 
+1.8.4
+

@@ -4,7 +4,12 @@ digital recordings, edit Ogg, MP3, and WAV sound files, and much more.
 
 Support for optional dependencies can be enabled passing the script
 optional parameters, such as:
-FFMPEG=yes     (requires ffmpeg - BROKEN ATM)
+FFMPEG=yes     (requires ffmpeg010)
 SOUNDTOUCH=yes (requires soundtouch)
 TWOLAME=yes    (requires twolame)
 VAMP=yes       (requires vamp-plugin-sdk)
+
+To use ffmpeg010 for import/export, you might need to tell audacity
+where to find the compat ffmpeg library libavformat.so: to do so
+select it in /usr/lib$LIBDIRSUFFIX/ffmpeg010 from
+Edit -> Preferences -> Libraries -> FFmpeg Library (Locate) -> Browse
