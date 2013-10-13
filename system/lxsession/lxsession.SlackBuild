@@ -42,6 +42,9 @@
 #            * updated.
 # 20111224_9e50fdf: 26/dec/2011 by Matteo Bernardini <ponce@slackbuilds.org>
 #             * update.
+# 20130828_dcf73af: 14/jul/2013 by Matteo Bernardini <ponce@slackbuilds.org>
+#             * update: now includes lxpolkit, lxsession-edit, lxlock,
+#               lxsession-default-apps and lxsettings-daemon.
 #
 # Run 'sh lxsession.SlackBuild' to build a Slackware package.
 # The package (.txz) plus descriptive .txt file are created in /tmp .
@@ -50,7 +53,7 @@
 # -----------------------------------------------------------------------------
 
 PRGNAM=lxsession
-VERSION=${VERSION:-20111224_9e50fdf}
+VERSION=${VERSION:-20130828_dcf73af}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -98,6 +101,9 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# We have to do with the old libgee
+sed -i "s|gee-0\.8|gee-1.0|" configure.ac lxsession-db/Makefile.* lxsession/Makefile.*
+
 sh autogen.sh || true
 
 CXXFLAGS="$SLKCFLAGS" \
@@ -111,6 +117,8 @@ CFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --program-prefix= \
   --program-suffix= \
+  --enable-buildin-clipboard \
+  --enable-buildin-polkit \
   --build=$ARCH-slackware-linux
 
 make
@@ -126,6 +134,7 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

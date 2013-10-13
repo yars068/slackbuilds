@@ -31,7 +31,7 @@
 #			add missing --libdir (patched in qemu-trivial upstream)
 
 PRGNAM=qemu
-VERSION=${VERSION:-1.4.0}
+VERSION=${VERSION:-1.6.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -117,8 +117,10 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-kvm \
   --enable-mixemu \
   --disable-debug-info \
+  --disable-gtk \
+  --enable-sdl \
   --audio-drv-list=alsa,oss,sdl,esd \
-  --audio-card-list=ac97,es1370,sb16,cs4231a,adlib,gus,hda \
+  --enable-linux-aio \
   $targets \
   $with_spice \
   $with_usbredir
@@ -146,7 +148,7 @@ fi
 
 # Add docs, and if present, built documentation to the proper location
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a TODO README LICENSE COPYING COPYING.LIB MAINTAINERS $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a README LICENSE COPYING COPYING.LIB MAINTAINERS $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a docs/* $PKG/usr/doc/$PRGNAM-$VERSION
 if [ -d $PKG/usr/share/doc ]; then
   mv $PKG/usr/share/doc/qemu/* $PKG/usr/doc/$PRGNAM-$VERSION/

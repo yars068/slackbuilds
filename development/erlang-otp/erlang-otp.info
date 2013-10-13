@@ -1,10 +1,10 @@
 PRGNAM="erlang-otp"
-VERSION="15B02"
+VERSION="16B01"
 HOMEPAGE="http://www.erlang.org"
-DOWNLOAD="http://www.erlang.org/download/otp_src_R15B02.tar.gz \
-          http://www.erlang.org/download/otp_doc_man_R15B02.tar.gz"
-MD5SUM="ccbe5e032a2afe2390de8913bfe737a1 \
-        974020ba533242fca759a7f5eaf628e5"
+DOWNLOAD="http://www.erlang.org/download/otp_src_R16B01.tar.gz \
+          http://www.erlang.org/download/otp_doc_man_R16B01.tar.gz"
+MD5SUM="266b95db35560e505c9f69cc3e539e41 \
+        951be958bc9af55df6062165cf21fe1f"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
 REQUIRES="jdk"

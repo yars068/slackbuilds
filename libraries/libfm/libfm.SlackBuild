@@ -2,6 +2,7 @@
 
 # Slackware build script for libfm
 
+# Copyright 2013 Matteo Bernardini <ponce@slackbuilds.org>
 # Copyright 2010 Chris Abela <chris.abela@maltats.com>
 # All rights reserved.
 #
@@ -21,12 +22,10 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# slightly modified by Matteo Bernardini <ponce@slackbuilds.org>
 
 PRGNAM=libfm
-VERSION=${VERSION:-1.1.0}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-1.1.2.2}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -73,11 +72,6 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
-
-# Apply patches from upstream
-for i in $CWD/patches/* ; do patch -p1 < $i ; done
-
-autoreconf -fi
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \

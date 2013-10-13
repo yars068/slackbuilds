@@ -4,7 +4,7 @@
 # Written Evandro Alves Rodrigues evandrofisico@gmail.com
 
 PRGNAM=gpicview
-VERSION=20120805_f06a367
+VERSION=20130905_da22cc7
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 

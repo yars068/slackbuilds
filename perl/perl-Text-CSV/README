@@ -1,0 +1,6 @@
+Text::CSV provides facilities for the composition and decomposition of
+comma-separated values.
+An instance of the Text::CSV class can combine field into a CSV string
+and parse a CSV string into fields.
+
+perl-Text-CSV_XS is an optional dependency but it's highly recommended.

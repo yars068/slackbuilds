@@ -1,0 +1,44 @@
+From e3fb8465ec10494163671862158234572100f6c0 Mon Sep 17 00:00:00 2001
+From: Ryota Ozaki <ozaki.ryota@gmail.com>
+Date: Sat, 5 Oct 2013 14:56:36 +0900
+Subject: [PATCH 8/8] rpc: fix getsockopt for LOCAL_PEERCRED on Mac OS X
+
+This fixes the following error:
+  error : virGetUserEnt:703 : Failed to find user record for uid '32654'
+
+'32654' (it's random and varies) comes from getsockopt with
+LOCAL_PEERCRED option. getsockopt returns w/o error but seems
+to not set any value to the buffer for uid.
+
+For Mac OS X, LOCAL_PEERCRED has to be used with SOL_LOCAL level.
+With SOL_LOCAL, getsockopt returns a correct uid.
+
+Note that SOL_LOCAL can be found in
+/System/Library/Frameworks/Kernel.framework/Versions/A/Headers/sys/un.h.
+
+Signed-off-by: Ryota Ozaki <ozaki.ryota@gmail.com>
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+(cherry picked from commit 5a468b38b6b9ac66c1db5d8ed5d5a122a9cf01cd)
+---
+ src/rpc/virnetsocket.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/rpc/virnetsocket.c b/src/rpc/virnetsocket.c
+index 152c5fc..a2823ef 100644
+--- a/src/rpc/virnetsocket.c
++++ b/src/rpc/virnetsocket.c
+@@ -1159,7 +1159,11 @@ int virNetSocketGetUNIXIdentity(virNetSocketPtr sock,
+     socklen_t cr_len = sizeof(cr);
+     virObjectLock(sock);
+ 
++# if defined(__APPLE__)
++    if (getsockopt(sock->fd, SOL_LOCAL, LOCAL_PEERCRED, &cr, &cr_len) < 0) {
++# else
+     if (getsockopt(sock->fd, SOL_SOCKET, LOCAL_PEERCRED, &cr, &cr_len) < 0) {
++# endif
+         virReportSystemError(errno, "%s",
+                              _("Failed to get client socket identity"));
+         virObjectUnlock(sock);
+-- 
+1.8.4.1
+
