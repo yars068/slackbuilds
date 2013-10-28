@@ -27,7 +27,7 @@
 # Including input by Yalla-One and some code cleanup by rworkman
 
 PRGNAM=scribus
-VERSION=1.4.1
+VERSION=${VERSION:-1.4.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -63,12 +63,13 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf Scribus
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
-cd Scribus
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
+cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R a-s,u+w,go+r-w .
 
+LDFLAGS="-lpthread" \
 cmake \
   -DCMAKE_C_FLAGS="$SLKCFLAGS" \
   -DCMAKE_CXX_FLAGS="$SLKCFLAGS" \
@@ -79,7 +80,7 @@ cmake \
 make
 make install DESTDIR=$PKG
 
-mkdir -p $PKG/usr/share/{applications,pixmaps}
+mkdir -p $PKG/usr/share/applications $PKG/usr/share/pixmaps
 cat scribus.desktop > $PKG/usr/share/applications/scribus.desktop
 
 cd $PKG/usr/share/pixmaps

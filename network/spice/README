@@ -4,5 +4,3 @@ Spice achieves a user experience similar to an interaction with a
 local machine, while trying to offload most of the intensive CPU and
 GPU tasks to the client. Spice is suitable for both LAN and WAN usage,
 without compromising on the user experience.
-
-libcacard is an optional dependency.

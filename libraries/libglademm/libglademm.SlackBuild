@@ -24,7 +24,7 @@
 
 PRGNAM=libglademm
 VERSION=2.6.7
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 # Automatically determine the architecture we're building on:
@@ -67,6 +67,9 @@ cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
 
+# This breaks the build, so skip it (examples are not even installed)
+sed -i "s|variablesmap\ ||" examples/Makefile.in
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS"
   ./configure \
@@ -75,17 +78,10 @@ CXXFLAGS="$SLKCFLAGS"
   --sysconfdir=/etc \
   --localstatedir=/var \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --with-perl=/usr/bin/perl \
-  --enable-eps \
-  --enable-gif \
-  --enable-png \
   --build=$ARCH-slackware-linux
 
 make
-make install DESTDIR=$PKG
-
-find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
-  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+make install-strip DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS ChangeLog COPYING INSTALL NEWS README TODO \

@@ -8,7 +8,7 @@
 # at slackbuilds.org
 
 PRGNAM=LiVES
-VERSION=${VERSION:-r1566}
+VERSION=${VERSION:-2.0.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 

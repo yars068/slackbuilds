@@ -72,6 +72,8 @@ chmod -R a-s,u+rw,go+r-w .
 patch -p1 < $CWD/patches/gcc47.patch
 # Fix spam that breaks build after autoreconfing
 patch -p1 < $CWD/patches/spam.patch
+# Avoid building pdf docs (seems broken ATM)
+patch -p0 < $CWD/patches/nopdfdocs.patch
 autoreconf -i
 
 CFLAGS="$SLKCFLAGS" \
