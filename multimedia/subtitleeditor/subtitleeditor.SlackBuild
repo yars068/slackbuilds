@@ -23,7 +23,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=subtitleeditor
-VERSION=${VERSION:-0.40.0}
+VERSION=${VERSION:-0.41.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -64,10 +64,6 @@ tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
-
-# Starting with glib 2.32 it is now mandatory to
-# include glib.h instead of individual headers.
-patch -p1 -i $CWD/glib-single-include.patch
 
 CFLAGS="$SLKCFLAGS" \
 ./configure \

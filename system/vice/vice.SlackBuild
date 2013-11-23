@@ -21,9 +21,11 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Modified by Matteo Bernardini <ponce@slackbuilds.org> for version 2.4.2.
 
 PRGNAM=vice
-VERSION=${VERSION:-2.3.22}
+VERSION=${VERSION:-2.4.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -60,7 +62,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.?z
+tar xvf $CWD/$PRGNAM-$VERSION.tar.?z*
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -71,13 +73,13 @@ find -L . \
 
 # Set the help path correctly with respect to the actually installed doc
 # folder (the folder set up by "make install" is quite broken).
-patch -p1 <$CWD/patches/vice-fix-help.patch
+sed "s|@VERSION@|$VERSION|" $CWD/patches/vice-fix-help.patch | patch -p1
 
-# Small fixes for html doc building, avoid pdf (broken)
-patch -p1 < $CWD/patches/vice-2.3.21-docs-fixes.patch
+# A small fix to avoid avoid building the pdf (broken, we use the one provided)
+patch -p1 < $CWD/patches/vice-2.4.4-no-pdf.patch
 
 # Use /usr/lib64 on 64-bit Slackware
-[ "$ARCH" == "x86_64" ] && patch -p1 < $CWD/patches/vice-2.3.21-64bit.patch
+[ "$ARCH" = "x86_64" ] && patch -p1 < $CWD/patches/vice-2.4.1-64bit.patch
 
 sh autogen.sh || true
 
@@ -125,6 +127,7 @@ mkdir -p $PKG/usr/doc
 cp -a doc $PKG/usr/doc/$PRGNAM-$VERSION
 find $PKG/usr/doc/$PRGNAM-$VERSION -name "Makefile*" -exec rm -f {} \;
 find $PKG/usr/doc/$PRGNAM-$VERSION -name "tex*" -exec rm -f {} \;
+find $PKG/usr/doc/$PRGNAM-$VERSION -name "*.orig" -exec rm -f {} \;
 # Copy additional program documentation
 cp -a AUTHORS ChangeLog COPYING FEEDBACK INSTALL NEWS README \
    $PKG/usr/doc/$PRGNAM-$VERSION
