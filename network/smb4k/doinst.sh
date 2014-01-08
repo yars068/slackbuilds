@@ -11,7 +11,7 @@ config() {
   # Otherwise, we leave the .new copy for the admin to consider...
 }
 
-config etc/dbus-1/system.d/de.berlios.smb4k.mounthelper.conf.new
+config etc/dbus-1/system.d/net.sourceforge.smb4k.mounthelper.conf.new
 
 if [ -x /usr/bin/update-desktop-database ]; then
   /usr/bin/update-desktop-database -q usr/share/applications >/dev/null 2>&1

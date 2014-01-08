@@ -1,0 +1,21 @@
+Wolfenstein Enemy Territory : Legacy is a project that aims
+to create a fully compatible client and server for the popular
+online FPS game Wolfenstein: Enemy Territory.
+
+This script builds the client and the server with omni-bot
+support ( http://www.omni-bot.com/ ).
+
+This command line switches are available:
+- FREETYPE=yes (default: no) enables freetype support;
+- OPENAL=yes (default: no) enables OpenAL support
+  (for this you need the optional dependency OpenAL)
+- VORBIS=yes (default: no) enables vorbis support
+  (for game samples - any around yet);
+
+To play you need also the data files from the original game
+(etlegacy-data).
+
+* WARNING *
+
+To have a client/server compatible with the existing
+client/servers, build it on/for a 32bit platform.
