@@ -26,7 +26,7 @@ PRGNAM=x265
 VERSION=${VERSION:-0.8}
 REVISION=${REVISION:-527d03c56d68}
 SRCNAM=multicoreware
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -62,12 +62,12 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $SRCNAM-$PRGNAM-$REVISION
-tar xvf $CWD/$SRCNAM-$PRGNAM-$REVISION.tar.bz2
+tar xvf $CWD/$VERSION.tar.bz2 || tar xvf $CWD/$SRCNAM-$PRGNAM-$REVISION.tar.bz2
 cd $SRCNAM-$PRGNAM-$REVISION
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
-  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 

@@ -24,7 +24,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libfm
-VERSION=${VERSION:-20131123_fb4bdbe}
+VERSION=${VERSION:-1.2.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -55,8 +55,11 @@ else
   LIBDIRSUFFIX=""
 fi
 
-# Enable custom actions if we have vala available
-if [ -h /usr/bin/vapigen ]; then actions=""; else actions="--disable-actions"; fi
+case "$GTK" in
+  3) gtk="--with-gtk=3 --enable-gtk-doc" ;;
+  0) gtk="--without-gtk" ;;
+  *) gtk="--with-gtk=2 --enable-gtk-doc" ;;
+esac
 
 set -e
 
@@ -84,7 +87,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --enable-static=no \
-  --enable-gtk-doc \
+  $gtk \
   $actions \
   --build=$ARCH-slackware-linux
 
