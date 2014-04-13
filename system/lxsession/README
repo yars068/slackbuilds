@@ -3,3 +3,7 @@ lxsession (LXDE session manager)
 LXSession is the standard session manager used by LXDE (Lightweight X11
 Desktop Environment).  A session manager is used to automatically start
 a set of applications and set up a working desktop environment.
+
+Pass the switch QT=yes if you are building this for use with LXDE-Qt:
+the resulting package won't be usable with the gtk version
+(and vice-versa).

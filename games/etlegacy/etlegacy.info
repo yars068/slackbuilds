@@ -1,0 +1,12 @@
+PRGNAM="etlegacy"
+VERSION="20140119_cd1790f"
+HOMEPAGE="http://www.etlegacy.com"
+DOWNLOAD="http://ponce.cc/slackware/sources/repo/etlegacy-20140119_cd1790f.tar.xz \
+          http://ponce.cc/slackware/sources/repo/omnibot-linux-latest.tar.gz"
+MD5SUM="65c4af970af0753a51c6287446ec1f3c \
+        9bf78d4d6878b8842e373b3b1d548bed"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+REQUIRES="%README% etlegacy-data lua zenity"
+MAINTAINER="Matteo Bernardini"
+EMAIL="ponce@slackbuilds.org"
