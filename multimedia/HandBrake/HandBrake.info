@@ -25,7 +25,7 @@ DOWNLOAD="http://downloads.sourceforge.net/handbrake/HandBrake-0.9.9.tar.bz2 \
           http://mp4v2.googlecode.com/files/mp4v2-trunk-r355.tar.bz2 \
           http://download.m0k.org/handbrake/contrib/mpeg2dec-0.5.1.tar.gz \
           http://download.m0k.org/handbrake/contrib/pthreads-w32-cvs20100909.tar.bz2 \
-          http://download.handbrake.fr/handbrake/contrib/x264-r2273-b3065e6.tar.gz \
+          http://ponce.cc/slackware/sources/repo/x264-r2273_aff928d.tar.bz2 \
           http://download.m0k.org/handbrake/contrib/zlib-1.2.3.tar.gz"
 MD5SUM="ee81337a46f8af76599d6038f193a2c1 \
         ce5a978bb359f642dcbd24c6e14a45a7 \
@@ -51,7 +51,7 @@ MD5SUM="ee81337a46f8af76599d6038f193a2c1 \
         38a753e936df5ef4c2f7de3d16f440f6 \
         a6173dc90cfe7f0414624c3c8bbad727 \
         d1dea735b53176567e9841ca77388633 \
-        10a0f3307027f2d8321f4d834e319208 \
+        95a848eddf84a4c3ba6477d7f365ff63 \
         af3358a811ad3469a2e54db49f77d52a"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""

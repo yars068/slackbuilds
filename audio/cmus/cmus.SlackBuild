@@ -3,6 +3,7 @@
 # Slackware build script for cmus
 
 # Copyright (c) 2008-2010, Antonio Hernández Blas <hba.nihilismus@gmail.com>
+# Copyright 2013-2014, Matteo Bernardini <ponce@slackbuilds.org>, Pisa, Italy
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -22,7 +23,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=cmus
-VERSION=${VERSION:-20131125_a854f85}
+VERSION=${VERSION:-20140429_f7dfe9d}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
