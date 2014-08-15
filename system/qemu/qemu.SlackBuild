@@ -36,8 +36,8 @@
 # 1.4a 04-MAY-2014     fixed typos thanks to sandb0y
 
 PRGNAM=qemu
-VERSION=${VERSION:-2.0.0}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-2.1.0}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
 KVMGROUP=${KVMGROUP:-users}
