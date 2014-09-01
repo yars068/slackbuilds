@@ -26,7 +26,7 @@
 
 
 PRGNAM=webkitgtk3
-VERSION=${VERSION:-2.2.2}
+VERSION=${VERSION:-2.4.5}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -91,7 +91,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --build=$ARCH-slackware-linux
 
 make clean
-make -j1 Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
+make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
 make install-strip DESTDIR=$PKG
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
