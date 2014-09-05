@@ -6,7 +6,7 @@
 
 PRGNAM=vamp-plugin-sdk
 VERSION=${VERSION:-2.4}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_SBo}
 
 if [ -z "$ARCH" ]; then
@@ -54,6 +54,8 @@ find -L . \
 # Fix libdir on x86_64
 [ "$ARCH" = "x86_64" ] && patch -p1 < $CWD/libdir_x86_64.diff
 
+# Explicitly link to libsndfile
+LIBS="-lsndfile" \
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -64,6 +66,9 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make
 make install DESTDIR=$PKG
+
+# These confuse our linker
+rm -f $PKG/usr/lib$LIBDIRSUFFIX/*.la
 
 mkdir -p $PKG/etc/profile.d/
 cat << EOF > $PKG/etc/profile.d/vamp.csh

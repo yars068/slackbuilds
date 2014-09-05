@@ -29,7 +29,7 @@
 # Modified by the SlackBuilds.org project
 
 PRGNAM=audacity
-VERSION=${VERSION:-2.0.5}
+VERSION=${VERSION:-r13299}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -98,7 +98,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --with-libflac \
   --with-libsndfile \
   --with-libid3tag \
-  --with-libresample \
+  --with-libsoxr \
   --with$do_ffmpeg-ffmpeg \
   --with$do_soundtouch-soundtouch \
   --with$do_twolame-libtwolame \
