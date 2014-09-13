@@ -1,0 +1,36 @@
+--- podofo-0.9.2/cmake/modules/FindFREETYPE.cmake
++++ podofo-0.9.2/cmake/modules/FindFREETYPE.cmake
+@@ -16,17 +16,30 @@
+   /usr/include/
+   /usr/local/include/
+   /usr/X11/include/
++  /usr/include/freetype2
++  /usr/local/include/freetype2
++  /usr/X11/include/freetype2
+   NO_CMAKE_SYSTEM_PATH
+ )
+ 
+-FIND_PATH(FREETYPE_INCLUDE_DIR_FTHEADER freetype/config/ftheader.h
+-  /usr/include/freetype2
++FIND_PATH(FREETYPE_INCLUDE_DIR_FTHEADER config/ftheader.h
++  usr/include/freetype2
+   /usr/local/include/freetype2
+   /usr/X11/include/freetype2
+   ${FREETYPE_INCLUDE_DIR_FT2BUILD}
+-  ${FREETYPE_INCLUDE_DIR_FT2BUILD}/freetype2
+   NO_CMAKE_SYSTEM_PATH
+ )
++
++if(NOT FREETYPE_INCLUDE_DIR_FTHEADER)
++  FIND_PATH(FREETYPE_INCLUDE_DIR_FTHEADER freetype/config/ftheader.h
++    /usr/include/freetype2
++    /usr/local/include/freetype2
++    /usr/X11/include/freetype2
++    ${FREETYPE_INCLUDE_DIR_FT2BUILD}
++    ${FREETYPE_INCLUDE_DIR_FT2BUILD}/freetype2
++    NO_CMAKE_SYSTEM_PATH
++  )
++endif()
+ 
+ IF ( FREETYPE_INCLUDE_DIR_FTHEADER AND FREETYPE_INCLUDE_DIR_FT2BUILD )
+ 	SET(FREETYPE_INCLUDE_DIR
