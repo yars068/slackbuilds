@@ -1,0 +1,5 @@
+Qt configuration tool for X composite manager.
+
+Additional build switches:
+QT5=yes (default: no) to build against qt5 (needs this optional dependency)
+CLANG=yes (default: no) to use clang for building (instead of gcc)
