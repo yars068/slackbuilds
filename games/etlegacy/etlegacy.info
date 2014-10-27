@@ -1,0 +1,12 @@
+PRGNAM="etlegacy"
+VERSION="20140812_93aa9ca"
+HOMEPAGE="http://www.etlegacy.com"
+DOWNLOAD="http://ponce.cc/slackware/sources/repo/etlegacy-20140812_93aa9ca.tar.xz \
+          http://ponce.cc/slackware/sources/repo/omnibot-linux-latest.tar.gz"
+MD5SUM="174d3b7f316fc902fabcae3d511fefc3 \
+        9bf78d4d6878b8842e373b3b1d548bed"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+REQUIRES="%README% etlegacy-data lua zenity"
+MAINTAINER="Matteo Bernardini"
+EMAIL="ponce@slackbuilds.org"
