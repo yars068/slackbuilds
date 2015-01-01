@@ -22,7 +22,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=nomacs
-VERSION=${VERSION:-2.0.0}
+VERSION=${VERSION:-2.0.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -73,7 +73,7 @@ find -L . \
 cd ImageLounge
 
 # Fix man pages installation path
-sed -i "s|share\/man|man|" CMakeLists.txt || exit 1
+sed -i "s|share\/man|man|" cmake/UnixBuildTarget.cmake || exit 1
 
 mkdir -p build
 cd build
