@@ -27,20 +27,10 @@
 
 
 PRGNAM=freerdp
-VERSION=${VERSION:-1.2.0_beta1_android9}
-BUILD=${BUILD:-3}
+SRCNAM=FreeRDP
+VERSION=${VERSION:-20150422_e61620b}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
-
-TARNAME=${VERSION%_*}+${VERSION##*_}
-TARNAME=${TARNAME/_/-}.tar.gz
-DIRNAME=FreeRDP-${VERSION//_/-}
-
-# If the source is downloaded with a browser or content_disposition set the
-# filename is different.
-ALTTARNAME=FreeRDP-${VERSION//_/-}.tar.gz
-if [ -f $ALTTARNAME ]; then
-	TARNAME=$ALTTARNAME
-fi
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -80,9 +70,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $DIRNAME
-tar xvf $CWD/$TARNAME
-cd $DIRNAME
+rm -rf $SRCNAM-$VERSION
+tar xvf $CWD/$SRCNAM-$VERSION.tar.?z*
+cd $SRCNAM-$VERSION
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
