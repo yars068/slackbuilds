@@ -3,8 +3,10 @@ VERSION="0.9.17.1.g9b85d43.7"
 HOMEPAGE="http://www.spotify.com"
 DOWNLOAD="UNSUPPORTED"
 MD5SUM=""
-DOWNLOAD_x86_64="http://repository-origin.spotify.com/pool/non-free/s/spotify/spotify-client_0.9.17.1.g9b85d43.7-1_amd64.deb"
-MD5SUM_x86_64="6cac4995a58f1a8627865f034df42800"
+DOWNLOAD_x86_64="http://repository-origin.spotify.com/pool/non-free/s/spotify/spotify-client_0.9.17.1.g9b85d43.7-1_amd64.deb \
+                 http://sourceforge.net/projects/slackbuildsdirectlinks/files/spotify64/libgcrypt11.tar.xz"
+MD5SUM_x86_64="6cac4995a58f1a8627865f034df42800 \
+               53704d7575a57b85d38c003e35ae5094"
 REQUIRES=""
 MAINTAINER="Ryan P.C. McQuen"
 EMAIL="ryan.q@linux.com"
