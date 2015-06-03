@@ -1,7 +1,7 @@
 PRGNAM="chromaprint"
 VERSION="1.2"
 HOMEPAGE="http://acoustid.org/chromaprint"
-DOWNLOAD="https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.2.tar.gz"
+DOWNLOAD="http://ponce.cc/slackware/sources/repo/chromaprint-1.2.tar.gz"
 MD5SUM="748da044a8f0ee5f31edec8b67045b3e"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
