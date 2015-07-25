@@ -86,6 +86,10 @@ rm -rf $PRGNAM-$VERSION
 tar xvf $CWD/${PRGNAM}-$VERSION-gnu1.tar.bz2
 cd ${PRGNAM}-$VERSION
 
+# Fix building with gcc-4.9.x
+# https://bugzilla.mozilla.org/show_bug.cgi?id=999496
+patch -p1 < $CWD/999496.patch
+
 # Fix a long standing bug that's prevented staying current on GTK+.
 # Thanks to the BLFS folks.  :-)
 cat << EOF >> layout/build/Makefile.in
