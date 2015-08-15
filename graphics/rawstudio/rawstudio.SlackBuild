@@ -74,6 +74,12 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
+# Patch for libpng16 (-current) from Arch Linux
+patch -p1 < $CWD/libpng15.patch
+
+# Patch for lensfun-0.3 from Arch Linux
+patch -p1 < $CWD/lensfun03.patch
+
 # Add libgthread-2.0.so to linked-in library list
 find . -name "Makefile.in" -exec \
   sed -i "s,@PACKAGE_LIBS@,@PACKAGE_LIBS@ -lgthread-2.0,g" {} \;
