@@ -52,7 +52,7 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-make
+make CC="gcc -fgnu89-inline"
 install -D -m 0644 memtest.bin $PKG/boot/memtest86.bin
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
